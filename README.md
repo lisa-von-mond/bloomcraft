@@ -1,34 +1,34 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-## Getting Started
+## ABOUT
 
-First, run the development server:
+Bloomcraft is a game for children, young teenies and adults who like playing.
+As a future space activist, living in an aera, when earth has became uninhabitable because of climate crisis, your task is to preserve intergalactic species and transport seed ressources from planets to others.
+For every mission, you need to preprogram the route of your spaceship, to collect a package and bring it to a certain destination.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+## BASIC GAME INFO (IN PROGRESS)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### How the game field is structured:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+The game field consists of a base planet, first order planets, second order planets (and third order planets - optional part of this project). For each level there will be three important positions:
+- Your departure planet
+- the place, where the seed pack is placed
+- your destination planet
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Some planets contain SCOPES - subgroups of next order planets, which can be reached from there. In every scope, there is one planet with a BASE STATION. The base station indicates the default planet to be focused in a scope.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### How to navigate
 
-## Learn More
+Your spaceship is able to jump from a certain order planet to a next upper or next lower ordered planet via the commands UP and DOWN.
+For jumping down, there is only one possibility, jumping up always means to reach the currently focused planet.
+With help of the commands LEFT and RIGHT, the focus can be changed in clockwise or anti-clockwise direction.
 
-To learn more about Next.js, take a look at the following resources:
+### How to play
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Playing does not mean navigating live, but writing the right commands in a command-line for pre-programming the route. For more complex missions, you can use numbers (to repeat commands) and brackets (to repeat sequences of commands). Pressing the GO-button will start your spaceship.
+For completing a level successfully, you will have to navigate to the planet with the seeds - passing this planet will let you automatically pick the seeds - and then navigate to your destination. 
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## CONTRIBUTING
 
-## Deploy on Vercel
+For everyone who is reading this: If somebody is interested in creating a level, please contact me!
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
