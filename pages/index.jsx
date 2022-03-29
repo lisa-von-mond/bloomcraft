@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import styled, {css} from "styled-components";
 import { Field } from "../components/field";
+import { Cockpit } from "../components/cockpit";
 
 export default function App () {
 
@@ -15,7 +16,7 @@ export default function App () {
       <main>
         <MyMain>
         <Center>
-        <Field />
+        <Cockpit />
         </Center>
       </MyMain>
       </main>
