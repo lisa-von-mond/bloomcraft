@@ -3,7 +3,7 @@ module.exports = {
         "browser": true,
         "es2021": true
     },
-    "extends": ["eslint:recommended", "next"],
+    "extends": ["eslint:recommended", "plugin:@next/next/recommended"],
     "parserOptions": {
         "ecmaVersion": "latest",
         "sourceType": "module"
