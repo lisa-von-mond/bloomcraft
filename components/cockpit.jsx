@@ -6,11 +6,13 @@ export function Cockpit(){
 
 const commands = ["UP","DOWN","DOWN","RIGHT","LEFT","RIGHT","UP"]
 
-const [commandLine, setCommandLine] = useState([])
+const [commandLine, setCommandLine] = useState(["YOLO"])
 
-function addRight(){commandLine.push("RIGHT")
-console.log(commandLine)
-setCommandLine(commandLine)
+function addRight(){
+const newCommandLine = commandLine
+newCommandLine.push("RIGHT")
+console.log(newCommandLine)
+setCommandLine(newCommandLine)
 }
 
 function addLeft(){commandLine.push("LEFT")
@@ -34,7 +36,7 @@ setCommandLine(commandLine)
 }
 
 return(
-
+    <>
 <CockpitFrame>
 <Keyboard>
 <Key onClick={addUp}>UP</Key>
@@ -45,8 +47,10 @@ return(
 </Keyboard>
 <CommandLine>
 {commandLine.map((element)=>(<Command key={nanoid()}>{element}</Command>))}
+<Counter>12</Counter>
 </CommandLine>
 </CockpitFrame>
+</>
 )
 
 
@@ -88,6 +92,7 @@ align-content:flex-start;
 gap:10px;
 padding:10px;
 background-color:black;
+position:relative;
 `
 const Key = styled.div`
 height:50px;
@@ -119,4 +124,12 @@ width:auto;
 padding:20px;
 color:#90EE90;
 border: 2px solid #90EE90;
+`
+
+const Counter = styled.p`
+color:white;
+font-size:18px;
+position:absolute;
+right:35px;
+bottom:15px;
 `
