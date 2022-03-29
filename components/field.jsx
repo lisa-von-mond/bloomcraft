@@ -84,7 +84,6 @@ function hopDownNow(){
 
 // moving functions scope
 
-
 function hopUpInScope(object){
   
   const Focus = object.children.find((element) => (element.focus === true))
@@ -127,19 +126,32 @@ function hopDownInScope(object){
 
 return(
 <>
-{galaxy.map((one)=><MyGalaxy1 key={one.name} distancev={one.distv} type={one.type} flow={one.flow} active={one.active} focus={one.focus}>
-    {one.children.map((two)=><MyGalaxy2 key={two.name} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} flow={two.flow} type={two.type} active={two.active} focus={two.focus}>
-      {two.children.map((three)=><MyGalaxy3 key={three.name} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} flow={three.flow} type={three.type} active={three.active} focus={three.focus}>
-      {three.children.map((four)=><MyGalaxy4 key={four.name} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} type={four.type} flow={four.flow} active={four.active} focus={four.focus}>
+{galaxy.map((one)=><MyGalaxy1 key={one.name} distancev={one.distv} type={one.type} flow={one.flow} active={one.active} focus={one.focus}>{one.id}
+    {one.children.map((two)=><MyGalaxy2 key={two.name} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} flow={two.flow} type={two.type} active={two.active} focus={two.focus}>{two.id}
+      {two.children.map((three)=><MyGalaxy3 key={three.name} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} flow={three.flow} type={three.type} active={three.active} focus={three.focus}>{three.id}
+      {three.children.map((four)=><MyGalaxy4 key={four.name} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} type={four.type} flow={four.flow} active={four.active} focus={four.focus}>{four.id}
                   </MyGalaxy4>)}
                   </MyGalaxy3>)}
                   </MyGalaxy2>)}
                   </MyGalaxy1>)}
 
-<TestButton1 onClick = {hopUpNow}>UP</TestButton1>
-<TestButton2 onClick = {hopDownNow}>DOWN</TestButton2>
-<TestButton3 onClick = {turnFocusLeftNow}>LEFT</TestButton3>
-<TestButton4 onClick = {turnFocusRightNow}>RIGHT</TestButton4>
+<TestButton1 onClick = {hopUpNow}>HOP<br></br>UP</TestButton1>
+<TestButton2 onClick = {hopDownNow}>HOP<br></br>DOWN</TestButton2>
+<TestButton3 onClick = {turnFocusLeftNow}>TURN<br></br>FOCUS<br></br>LEFT</TestButton3>
+<TestButton4 onClick = {turnFocusRightNow}>TURN<br></br>FOCUS<br></br>RIGHT</TestButton4>
+<Legend>
+  
+  <p>[explanations]</p>
+  <p>Current position (spaceship): skyblue</p>
+  <p>Focus-position: green</p>
+  <p>***</p>
+  <p>JUMP UP = jump to higher-order-planet (e.g. from 2.2 to 2.2.3)</p>
+  <p>The focus indicates, which planet you will hop up</p>
+  <p>***</p>
+  <p>JUMP DOWN = Jump down to lower-order-planets (e.g. from 3.1.2 you will hop down to 3.1)</p>
+  <p>***</p>
+  <p>The default focus position of a scope is indicated by white shadow / id ...1</p>
+ </Legend>
 </>
 )
 }
@@ -160,12 +172,13 @@ border-radius:50%;
 
 ${(props) => props.active === true &&
     css`
-    box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:3px solid gold;`}
+    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+    border:3px solid skyblue;`}
 
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em hotpink;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    border:3px solid #00f700;`}
 `
 
 const MyGalaxy2 = styled.div`
@@ -185,17 +198,18 @@ transform:translate(15px,15px);
    
   ${(props) => props.active === true &&
     css`
-    box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:3px solid gold;
+    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+    border:3px solid skyblue;
     `}
       
   ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    border:3px solid #00f700;`}
   
   ${(props) => props.flow === 1 &&
     css`
-    border:3px dotted black;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em white`}
 `
 
 const MyGalaxy3 = styled.div`
@@ -215,16 +229,17 @@ transform:translate(15px,15px);
       
 ${(props) => props.active === true &&
     css`
-    box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:3px solid gold;`}
+    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+    border:3px solid skyblue;`}
       
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    border:3px solid #00f700`}
 
 ${(props) => props.flow === 1 &&
       css`
-      border:3px dotted black;`}
+      box-shadow: 0.3em 0.3em 3em 0.2em white`}
    
 `
 
@@ -250,11 +265,12 @@ ${(props) => props.active === true &&
       
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    border:3px solid #00f700;`}
 
 ${(props) => props.flow === 1 &&
      css`
-     border:3px dotted black;`}
+     box-shadow: 0.3em 0.3em 3em 0.2em white;`}
 `
 
 const TestButton1 = styled.div`
@@ -269,6 +285,8 @@ const TestButton1 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
+    text-align:center:
+    padding:3px;
     `
 
 const TestButton2 = styled.div`
@@ -283,6 +301,8 @@ const TestButton2 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
+    text-align:center:
+    padding:3px;
     `
 
 const TestButton3 = styled.div`
@@ -297,6 +317,8 @@ const TestButton3 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
+    text-align:center:
+    padding:3px;
     `
 
 const TestButton4 = styled.div`
@@ -311,4 +333,14 @@ const TestButton4 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
+    text-align:center:
+    padding:3px;
     `
+const Legend = styled.div`
+color:white;
+font-size:14px;
+position:fixed;
+right:50px;
+width:200px;
+top:70px;
+`
