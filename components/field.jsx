@@ -111,7 +111,6 @@ function turnFocusRightInScope(objekt){
   const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeXNew}}}
 
-
 function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
 
@@ -123,8 +122,7 @@ function hopDownInScope(object){
   const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
   const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
   const newObject = {...object, children: newChildren, active:true}
-  return newObject
-}}
+  return newObject}}
 
 
 return(
