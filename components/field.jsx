@@ -6,6 +6,8 @@ export function Field(){
 
 const [galaxy, setGalaxy] = useState(levelOne)
 
+// rendering functions
+
 function toRadians(degrees) {
     return degrees * (Math.PI / 180);}
 
@@ -16,6 +18,12 @@ function angleToCooX(angle, distance){
 function angleToCooY(angle, distance){  
     const Y = Math.sin(toRadians(angle)) * distance             
     return parseInt(Y)}
+
+// utility functions
+  
+function track(objekt){
+  const thisone = objekt.children.find((element)=>(element.tracked === true))
+  return thisone}
 
 function IntegrateScope(thisBase, nextBase, nextBaseNew) {
   const newScope = thisBase.children.map((element)=>(element === nextBase ? nextBaseNew : element))
@@ -28,58 +36,54 @@ function Beam1(myFunction, actualBase){
   setGalaxy([myFunction(actualBase)])}
       
 function Beam2(myFunction, actualBase){
-  const baseOne = trackedChild(actualBase)
+  const baseOne = track(actualBase)
   const newBaseOne = myFunction(baseOne)
-  console.log(newBaseOne)
   setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])}
       
 function Beam3(myFunction, actualBase){
-  const baseOne = trackedChild(actualBase)
-  const baseTwo = trackedChild(baseOne)
+  const baseOne = track(actualBase)
+  const baseTwo = track(baseOne)
   const newBaseTwo = myFunction(baseTwo)
   const newBaseOne = IntegrateScope(baseOne,baseTwo, newBaseTwo)
   setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])} 
       
-// navigation functions
-  
-function trackedChild(objekt){
-  const thisone = objekt.children.find((element)=>(element.tracked === true))
-  return thisone}
-
-// moving functions
+// moving functions global
 
 function hopUpNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(hopUpInScope, Base)} else {
-  if (trackedChild(Base).active === true){Beam2(hopUpInScope, Base)} else {
-  if (trackedChild(trackedChild(Base)).active === true){Beam3(hopUpInScope, Base)}  
+  if (track(Base).active === true){Beam2(hopUpInScope, Base)} else {
+  if (track(track(Base)).active === true && track(track(Base)).limit !== true ){Beam3(hopUpInScope, Base)}  
   else {console.log("nothing to go up here")}
  }}}
 
  function turnFocusLeftNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusLeftInScope, Base)} else {
-  if (trackedChild(Base).active === true){Beam2(turnFocusLeftInScope, Base)} else {
-  if (trackedChild(trackedChild(Base)).active === true){Beam3(turnFocusLeftInScope, Base)}  
+  if (track(Base).active === true){Beam2(turnFocusLeftInScope, Base)} else {
+  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){Beam3(turnFocusLeftInScope, Base)}  
   else {console.log("nothing to turn left here")}
  }}}
 
  function turnFocusRightNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusRightInScope, Base)} else {
-  if (trackedChild(Base).active === true){Beam2(turnFocusRightInScope, Base)} else {
-  if (trackedChild(trackedChild(Base)).active === true){Beam3(turnFocusRightInScope, Base)}  
-  else {console.log("nothing to turn left here")}
+  if (track(Base).active === true){Beam2(turnFocusRightInScope, Base)} else {
+  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){Beam3(turnFocusRightInScope, Base)}  
+  else {console.log("nothing to turn right here")}
  }}}
 
 function hopDownNow(){
   let Base = galaxy[0]
   if (Base.active === true){
   console.log("nothing to go down here")} else {
-  if (trackedChild(Base).active === true){Beam1(hopDownInScope, Base)} else {
-  if (trackedChild(trackedChild(Base)).active === true){Beam2(hopDownInScope, Base)} else 
+  if (track(Base).active === true){Beam1(hopDownInScope, Base)} else {
+  if (track(track(Base)).active === true){Beam2(hopDownInScope, Base)} else 
   {Beam3(hopDownInScope, Base)}
   }}}
+
+// moving functions scope
+
 
 function hopUpInScope(object){
   
@@ -87,37 +91,42 @@ function hopUpInScope(object){
   const NewSubChildren = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
   const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubChildren} : element))
   const newObject = {...object, children: newChildren, active:false}
-  return newObject
-}
+  return newObject}
 
 function turnFocusLeftInScope(objekt){
+  if(objekt.limit === true){console.log("nothing to turn left here")} else {
   const scopeX = objekt.children
   const Focus = scopeX.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === scopeX.length ? 1 : Focus.flow + 1
   const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-  return {...objekt, children:scopeXNew}}
+  return {...objekt, children:scopeXNew}}}
 
 function turnFocusRightInScope(objekt){
-    const scopeX = objekt.children
-    const Focus = scopeX.find((element)=>(element.focus === true))
-    const nextFocusIndex = Focus.flow === 1 ? scopeX.length : Focus.flow - 1
-    const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
-    const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-    return {...objekt, children:scopeXNew}}
+  if(objekt.limit === true){console.log("nothing to turn right here")} else {
+  const scopeX = objekt.children
+  const Focus = scopeX.find((element)=>(element.focus === true))
+  const nextFocusIndex = Focus.flow === 1 ? scopeX.length : Focus.flow - 1
+  const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
+  const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
+  return {...objekt, children:scopeXNew}}}
 
 
 function hopDownInScope(object){
+  const Current = object.children.find((element) => (element.active === true))
 
-const Current = object.children.find((element) => (element.active === true))
-const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
-const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
-const newObject = {...object, children: newChildren, active:true}
-return newObject
-       }
+  if (Current.limit === true){
+  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
+  const newObject = {...object, children: newChildren, active:true}
+  return newObject
+  } else {
+  const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
+  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
+  const newObject = {...object, children: newChildren, active:true}
+  return newObject
+}}
 
 
-  
 return(
 <>
 {galaxy.map((one)=><MyGalaxy1 key={one.name} distancev={one.distv} type={one.type} flow={one.flow} active={one.active} focus={one.focus}>
@@ -150,11 +159,11 @@ background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
 height: 100px;
 width: 100px;
 border-radius:50%;
-box-shadow: 0.2em 0.2em 2em white;
 
 ${(props) => props.active === true &&
     css`
-    box-shadow: 0.2em 0.2em 2em 0.2em gold;`}
+    box-shadow: 0.2em 0.2em 2em 0.2em gold;
+    border:3px solid gold;`}
 
 ${(props) => props.focus === true &&
     css`
@@ -179,16 +188,16 @@ transform:translate(15px,15px);
   ${(props) => props.active === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:2px dotted gold;
+    border:3px solid gold;
     `}
       
   ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em hotpink;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
   
   ${(props) => props.flow === 1 &&
     css`
-    border:2px dotted white;`}
+    border:3px dotted black;`}
 `
 
 const MyGalaxy3 = styled.div`
@@ -209,15 +218,15 @@ transform:translate(15px,15px);
 ${(props) => props.active === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:2px dotted gold;`}
+    border:3px solid gold;`}
       
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em hotpink;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
 
 ${(props) => props.flow === 1 &&
       css`
-      border:2px dotted white;`}
+      border:3px dotted black;`}
    
 `
 
@@ -239,15 +248,15 @@ transform:translate(15px,15px);
 ${(props) => props.active === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:2px dotted gold;`}
+    border:3px solid gold;`}
       
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em hotpink;`}
+    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;`}
 
 ${(props) => props.flow === 1 &&
      css`
-     border:2px dotted white;`}
+     border:3px dotted black;`}
 `
 
 const TestButton1 = styled.div`
