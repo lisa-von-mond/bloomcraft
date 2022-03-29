@@ -25,7 +25,7 @@ export default function App () {
 }
 
 const MyMain = styled.div`
-  background-color:#152238;
+  background-color:black;
   height:100vh;
   width:100vw;
   display:flex;
@@ -54,8 +54,6 @@ const Sight  = styled.div`
     width: 5px;`
 
 // GALAXY ELEMENT STYLE
-
-
 
 const Center = styled.div`
 height:500px;
