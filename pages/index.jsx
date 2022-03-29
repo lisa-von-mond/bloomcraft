@@ -16,7 +16,7 @@ export default function App () {
       <main>
         <MyMain>
         <Center>
-        <Field />
+        <Cockpit/>
         </Center>
       </MyMain>
       </main>

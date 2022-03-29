@@ -7,32 +7,36 @@ export function Cockpit(){
 const commands = ["UP","DOWN","DOWN","RIGHT","LEFT","RIGHT","UP"]
 
 const [commandLine, setCommandLine] = useState(["YOLO"])
+const [count, setCount]= useState(0)
 
-function addRight(){
-const newCommandLine = commandLine
-newCommandLine.push("RIGHT")
-console.log(newCommandLine)
-setCommandLine(newCommandLine)
+function addRight(){commandLine.push("RIGHT")
+console.log(commandLine)
+setCommandLine(commandLine)
+setCount(commandLine.length)
 }
 
 function addLeft(){commandLine.push("LEFT")
 console.log(commandLine)
 setCommandLine(commandLine)
+setCount(commandLine.length)
 }
 
 function addUp(){commandLine.push("UP")
 console.log(commandLine)
 setCommandLine(commandLine)
+setCount(commandLine.length)
 }
 
 function addDown(){commandLine.push("DOWN")
 console.log(commandLine)
 setCommandLine(commandLine)
+setCount(commandLine.length)
 }
 
 function del(){commandLine.pop()
 console.log(commandLine)
 setCommandLine(commandLine)
+setCount(commandLine.length)
 }
 
 return(
@@ -47,7 +51,7 @@ return(
 </Keyboard>
 <CommandLine>
 {commandLine.map((element)=>(<Command key={nanoid()}>{element}</Command>))}
-<Counter>12</Counter>
+<Counter>{count}</Counter>
 </CommandLine>
 </CockpitFrame>
 </>
