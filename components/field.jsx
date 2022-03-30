@@ -1,54 +1,17 @@
 import styled, {css} from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {levelOne} from "../testlevel";
+import {angleToCooX, angleToCooY} from "../utils/rendering-functions"
+import {track, integrateScope} from "../utils/utility-functions"
+import { turnFocusLeftInScope, turnFocusRightInScope, hopUpInScope, hopDownInScope } from "../utils/scope-functions";
 import { Cockpit } from "./cockpit";
 
 export function Field(){
 
 const [galaxy, setGalaxy] = useState(levelOne)
+const[current,setCurrent] = useState(0)
 
-// rendering functions
 
-function toRadians(degrees) {
-    return degrees * (Math.PI / 180);}
-
-function angleToCooX(angle, distance){
-  const X = Math.cos(toRadians(angle)) * distance
-    return parseInt(X)} 
-
-function angleToCooY(angle, distance){  
-    const Y = Math.sin(toRadians(angle)) * distance             
-    return parseInt(Y)}
-
-// utility functions
-  
-function track(objekt){
-  const thisone = objekt.children.find((element)=>(element.tracked === true))
-  return thisone}
-
-function IntegrateScope(thisBase, nextBase, nextBaseNew) {
-  const newScope = thisBase.children.map((element)=>(element === nextBase ? nextBaseNew : element))
-  const newBase = {...thisBase, children:newScope}
-  return newBase}
-
-// operation functions
-      
-function Beam1(myFunction, actualBase){
-  setGalaxy([myFunction(actualBase)])}
-      
-function Beam2(myFunction, actualBase){
-  const baseOne = track(actualBase)
-  const newBaseOne = myFunction(baseOne)
-  setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])}
-      
-function Beam3(myFunction, actualBase){
-  const baseOne = track(actualBase)
-  const baseTwo = track(baseOne)
-  const newBaseTwo = myFunction(baseTwo)
-  const newBaseOne = IntegrateScope(baseOne,baseTwo, newBaseTwo)
-  setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])} 
-      
-// moving functions global
 
 function hopUpNow(){
   let Base = galaxy[0]
@@ -58,7 +21,7 @@ function hopUpNow(){
   else {console.log("nothing to go up here")}
  }}}
 
- function turnFocusLeftNow(){
+function turnFocusLeftNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusLeftInScope, Base)} else {
   if (track(Base).active === true){Beam2(turnFocusLeftInScope, Base)} else {
@@ -66,7 +29,7 @@ function hopUpNow(){
   else {console.log("nothing to turn left here")}
  }}}
 
- function turnFocusRightNow(){
+function turnFocusRightNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusRightInScope, Base)} else {
   if (track(Base).active === true){Beam2(turnFocusRightInScope, Base)} else {
@@ -83,81 +46,58 @@ function hopDownNow(){
   {Beam3(hopDownInScope, Base)}
   }}}
 
-// moving functions scope
+// operation functions
+      
+function Beam1(myFunction, actualBase){
+  setGalaxy([myFunction(actualBase)])}
+      
+function Beam2(myFunction, actualBase){
+  const baseOne = track(actualBase)
+  const newBaseOne = myFunction(baseOne)
+  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])}
+      
+function Beam3(myFunction, actualBase){
+  const baseOne = track(actualBase)
+  const baseTwo = track(baseOne)
+  const newBaseTwo = myFunction(baseTwo)
+  const newBaseOne = integrateScope(baseOne,baseTwo, newBaseTwo)
+  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])} 
+      
 
-function hopUpInScope(object){
-  
-  const Focus = object.children.find((element) => (element.focus === true))
-  const NewSubChildren = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
-  const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubChildren} : element))
-  const newObject = {...object, children: newChildren, active:false}
-  return newObject}
-
-function turnFocusLeftInScope(objekt){
-  if(objekt.limit === true){console.log("nothing to turn left here")} else {
-  const scopeX = objekt.children
-  const Focus = scopeX.find((element)=>(element.focus === true))
-  const nextFocusIndex = Focus.flow === scopeX.length ? 1 : Focus.flow + 1
-  const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
-  const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-  return {...objekt, children:scopeXNew}}}
-
-function turnFocusRightInScope(objekt){
-  if(objekt.limit === true){console.log("nothing to turn right here")} else {
-  const scopeX = objekt.children
-  const Focus = scopeX.find((element)=>(element.focus === true))
-  const nextFocusIndex = Focus.flow === 1 ? scopeX.length : Focus.flow - 1
-  const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
-  const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-  return {...objekt, children:scopeXNew}}}
-
-function hopDownInScope(object){
-  const Current = object.children.find((element) => (element.active === true))
-
-  if (Current.limit === true){
-  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
-  const newObject = {...object, children: newChildren, active:true}
-  return newObject
-  } else {
-  const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
-  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
-  const newObject = {...object, children: newChildren, active:true}
-  return newObject}}
+  function moveNow(input){
+    if(input === 1){turnFocusRightNow()} else {
+      if(input === 2){turnFocusLeftNow()} else {
+        if(input === 3){hopUpNow()} else {
+          if(input === 4){hopDownNow()} else {console.log("makes no sense")
+    
+          }
+        }
+      }
+    }}
 
 
 // INTERVAL FUNCTION
 
-function moveNow(input){
-if(input === 1){turnFocusRightNow()} else {
-  if(input === 2){turnFocusLeftNow()} else {
-    if(input === 3){hopUpNow()} else {
-      if(input === 4){hopDownNow()} else {console.log("makes no sense")
 
-      }
-    }
-  }
-}}
+const testArrayA = [2,1,3,2,2]
 
-// for test array A
+function moveLine(){
 
-const testArrayA = [2,2,2]
-const[current,setCurrent] = useState(0)
+    const go = setInterval(move, 1000);
+    function stopMoving(){clearInterval(go)}
+ 
+  
+  function move() {
+    if (current === testArrayA.length){stopMoving()} else {
+  
+    const doThis = testArrayA[current]
+    console.log(doThis)
+    moveNow(doThis)
+    setCurrent(current++)}}
 
-function moveLineA(){
-
-  const go = setInterval(move, 1000);
-  function stopMoving(){clearInterval(go)}
-
-function move() {
-  if (current === testArrayA.length){stopMoving()} else {}}
+}
 
 
-  // const doThis = testArrayA[current]
-  // console.log(doThis)
-  // moveNow(doThis)
-  // setCurrent(current++)}
-   
-  }
 
 return(
 <>
@@ -171,7 +111,7 @@ return(
                   </MyGalaxy1>)}
 
 
-<TestButton1 onClick = {moveLineA}>TEST A</TestButton1>
+<TestButton1 onClick = {moveLine}>TEST A</TestButton1>
 <TestButton2 onClick = {hopUpNow}>UP</TestButton2>
 <TestButton3 onClick = {hopDownNow}>DOWN</TestButton3>
 <TestButton4 onClick = {turnFocusLeftNow}>LEFT</TestButton4>
@@ -213,15 +153,15 @@ height: 100px;
 width: 100px;
 border-radius:50%;
 
-${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-    border:3px solid skyblue;`}
-
 ${(props) => props.focus === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
     border:3px solid #00f700;`}
+
+  ${(props) => props.active === true &&
+      css`
+      box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+      border:3px solid skyblue;`}
 `
 
 const MyGalaxy2 = styled.div`
@@ -239,17 +179,17 @@ width: 70px;
 border-radius:50%;
 transform:translate(15px,15px);
 
-   
-  ${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-    border:3px solid skyblue;
-    `}
-      
   ${(props) => props.focus === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
-    border:3px solid #00f700;`}`
+    border:3px solid #00f700;`}
+    
+    ${(props) => props.active === true &&
+      css`
+      box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+      border:3px solid skyblue;
+      `}
+    `
 
 const MyGalaxy3 = styled.div`
 top:${props => props.distx}px;
