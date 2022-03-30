@@ -5,7 +5,7 @@ import { nanoid } from 'nanoid';
 export function Cockpit(){
 
 const [commandLine, setCommandLine] = useState([])
-const [count, setCount]= useState(0)
+const count = commandLine.length;
 
 function addRight(){
 if(count < 12){
