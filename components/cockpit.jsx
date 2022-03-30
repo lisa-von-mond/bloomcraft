@@ -1,6 +1,5 @@
 import styled, {css} from "styled-components";
 import { useState } from "react";
-import { nanoid } from 'nanoid';
 
 export function Cockpit(){
 
@@ -8,30 +7,18 @@ const [commandLine, setCommandLine] = useState([])
 const count = commandLine.length;
 
 function addRight(){
-if(count < 12){
-  setCommandLine([...commandLine, "RIGHT"])
-  setCount(commandLine.length)
-}
+if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
 
 function addLeft(){
-if(count < 12){commandLine.push("LEFT")
-setCommandLine(commandLine)
-setCount(commandLine.length)}}
+    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
 
 function addUp(){
-if (count < 12){commandLine.push("UP")
-setCommandLine(commandLine)
-setCount(commandLine.length)}}
+    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
 
 function addDown(){
-if (count < 12){
-commandLine.push("DOWN")
-setCommandLine(commandLine)
-setCount(commandLine.length)}}
+    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
 
-function del(){
-setCommandLine(commandLine.slice(0, -1));
-setCount(commandLine.length)}
+function del(){setCommandLine(commandLine.slice(0, -1))}
 
 function go(){
 console.log("go")}

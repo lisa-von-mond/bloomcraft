@@ -14,9 +14,12 @@ export default function App () {
       </Head>
 
       <main>
+      <FixedCockpit>
+        <Cockpit/>
+        </FixedCockpit>
         <MyMain>
         <Center>
-        <Cockpit/>
+        <Field/>
         </Center>
         </MyMain>
       </main>
@@ -43,6 +46,12 @@ display:flex;
 justify-content:center;
 align-items:center;
 background-image: linear-gradient(to right, #434343 0%, black 100%);
+`
+
+const FixedCockpit = styled.div`
+position:fixed;
+left:250;
+bottom:50;
 `
 
 

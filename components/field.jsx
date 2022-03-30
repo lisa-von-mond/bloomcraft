@@ -270,14 +270,15 @@ const TestButton1 = styled.div`
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    left:100px;
-    top:100px;
+    right:100px;
+    bottom:100px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center:
     padding:3px;
+    cursor:pointer;
     `
 
 const TestButton2 = styled.div`
@@ -286,14 +287,15 @@ const TestButton2 = styled.div`
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    left:100px;
-    top:250px;
+    right:220px;
+    bottom:100px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center:
     padding:3px;
+    cursor:pointer;
     `
 
 const TestButton3 = styled.div`
@@ -302,14 +304,15 @@ const TestButton3 = styled.div`
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    left:100px;
-    top:400px;
+    right:340px;
+    bottom:100px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center:
     padding:3px;
+    cursor:pointer;
     `
 
 const TestButton4 = styled.div`
@@ -318,14 +321,15 @@ const TestButton4 = styled.div`
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    left:100px;
-    top:550px;
+    bottom:100px;
+    right:460px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
     text-align:center:
     padding:3px;
+    cursor:pointer;
     `
 const Legend = styled.div`
 color:white;
