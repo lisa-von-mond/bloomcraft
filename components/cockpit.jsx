@@ -4,40 +4,51 @@ import { nanoid } from 'nanoid';
 
 export function Cockpit(){
 
-const commands = ["UP","DOWN","DOWN","RIGHT","LEFT","RIGHT","UP"]
 
-const [commandLine, setCommandLine] = useState(["YOLO"])
+const [commandLine, setCommandLine] = useState([])
 const [count, setCount]= useState(0)
+const [max, setMax]= useState(false)
 
-function addRight(){commandLine.push("RIGHT")
-console.log(commandLine)
+function counter(allowed){
+    return (allowed - count)}
+
+function addRight(){
+if(count < 12){commandLine.push("RIGHT")
 setCommandLine(commandLine)
-setCount(commandLine.length)
+setCount(commandLine.length)} else {setMax(true)}
 }
 
-function addLeft(){commandLine.push("LEFT")
-console.log(commandLine)
+function addLeft(){
+if(count < 12){commandLine.push("LEFT")
 setCommandLine(commandLine)
-setCount(commandLine.length)
+setCount(commandLine.length)} else {setMax(true)}
 }
 
-function addUp(){commandLine.push("UP")
-console.log(commandLine)
+function addUp(){
+if (count < 12){commandLine.push("UP")
 setCommandLine(commandLine)
-setCount(commandLine.length)
+setCount(commandLine.length)} else {setMax(true)}
 }
 
-function addDown(){commandLine.push("DOWN")
-console.log(commandLine)
+function addDown(){
+if (count < 12){
+commandLine.push("DOWN")
 setCommandLine(commandLine)
-setCount(commandLine.length)
+setCount(commandLine.length)} else {setMax(true)}
 }
 
-function del(){commandLine.pop()
-console.log(commandLine)
+function del(){
+commandLine.pop()
 setCommandLine(commandLine)
 setCount(commandLine.length)
+setMax(false)
 }
+
+
+
+function go(){
+console.log("go")
+    }
 
 return(
     <>
@@ -51,8 +62,9 @@ return(
 </Keyboard>
 <CommandLine>
 {commandLine.map((element)=>(<Command key={nanoid()}>{element}</Command>))}
-<Counter>{count}</Counter>
 </CommandLine>
+<GoPanel><GoKey onClick={go}>GO</GoKey>
+<Counter>{counter(12)}</Counter></GoPanel>
 </CockpitFrame>
 </>
 )
@@ -62,7 +74,7 @@ return(
 
 const CockpitFrame = styled.div `
 height:530px;
-width:530px;
+width:330px;
 border-radius:20px;
 background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
 background-blend-mode: multiply,multiply;
@@ -75,8 +87,8 @@ gap:10px;
 padding:10px;
 `
 const Keyboard = styled.div `
-height:250px;
-width:510px;
+height:150px;
+width:310px;
 display:flex;
 flex-wrap:wrap;
 align-items: flex-start;
@@ -85,14 +97,25 @@ gap:10px;
 padding:10px;
 `
 const CommandLine = styled.div `
-height:250px;
-width:510px;
+width:310px;
+height:300px;
 border-radius:20px;
 display:flex;
 flex-wrap:wrap;
 justify-content:flex-start;
 align-items:flex-start;
 align-content:flex-start;
+gap:10px;
+padding:10px;
+background-color:black;
+position:relative;
+`
+const GoPanel = styled.div `
+width:310px;
+border-radius:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
 gap:10px;
 padding:10px;
 background-color:black;
@@ -118,6 +141,17 @@ width:auto;
 padding:20px;
 background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
 `
+
+const GoKey = styled.div`
+height:50px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:20px;
+background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+`
 const Command = styled.div`
 height:50px;
 display:flex;
@@ -130,10 +164,15 @@ color:#90EE90;
 border: 2px solid #90EE90;
 `
 
-const Counter = styled.p`
+const Counter = styled.div`
+height:50px;
+display:flex;
+border-radius:50px;
 color:white;
-font-size:18px;
-position:absolute;
-right:35px;
-bottom:15px;
+border:2px solid white;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:20px;
 `
+
