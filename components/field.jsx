@@ -135,8 +135,8 @@ return(
                   </MyGalaxy2>)}
                   </MyGalaxy1>)}
 
-<TestButton1 onClick = {hopUpNow}>HOP<br></br>UP</TestButton1>
-<TestButton2 onClick = {hopDownNow}>HOP<br></br>DOWN</TestButton2>
+<TestButton1 onClick = {hopUpNow}>HOP<br></br>FURTHER</TestButton1>
+<TestButton2 onClick = {hopDownNow}>HOP<br></br>CLOSER</TestButton2>
 <TestButton3 onClick = {turnFocusLeftNow}>TURN<br></br>FOCUS<br></br>LEFT</TestButton3>
 <TestButton4 onClick = {turnFocusRightNow}>TURN<br></br>FOCUS<br></br>RIGHT</TestButton4>
 <Legend>
@@ -145,10 +145,10 @@ return(
   <p>Current position (spaceship): skyblue</p>
   <p>Focus-position: green</p>
   <p>***</p>
-  <p>JUMP UP = jump to higher-order-planet (e.g. from 2.2 to 2.2.3)</p>
+  <p>JUMP FURTHER = jump to further planet (e.g. from 2.2 to 2.2.3)</p>
   <p>The focus indicates, which planet you will hop up</p>
   <p>***</p>
-  <p>JUMP DOWN = Jump down to lower-order-planets (e.g. from 3.1.2 you will hop down to 3.1)</p>
+  <p>JUMP DOWN = Jump down to closer (e.g. from 3.1.2 you will hop down to 3.1)</p>
   <p>***</p>
   <p>The default focus position of a scope is indicated by white shadow / id ...1</p>
  </Legend>
@@ -177,7 +177,7 @@ ${(props) => props.active === true &&
 
 ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
     border:3px solid #00f700;`}
 `
 
@@ -195,6 +195,7 @@ height: 70px;
 width: 70px;
 border-radius:50%;
 transform:translate(15px,15px);
+
    
   ${(props) => props.active === true &&
     css`
@@ -204,12 +205,10 @@ transform:translate(15px,15px);
       
   ${(props) => props.focus === true &&
     css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+    box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
     border:3px solid #00f700;`}
   
-  ${(props) => props.flow === 1 &&
-    css`
-    box-shadow: 0.3em 0.3em 3em 0.2em white`}
+
 `
 
 const MyGalaxy3 = styled.div`
@@ -226,7 +225,7 @@ height: 70px;
 width: 70px;
 border-radius:50%;
 transform:translate(15px,15px);
-      
+
 ${(props) => props.active === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
@@ -236,11 +235,6 @@ ${(props) => props.focus === true &&
     css`
     box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
     border:3px solid #00f700`}
-
-${(props) => props.flow === 1 &&
-      css`
-      box-shadow: 0.3em 0.3em 3em 0.2em white`}
-   
 `
 
 const MyGalaxy4 = styled.div`
@@ -257,20 +251,17 @@ height: 50px;
 width: 50px;
 border-radius:50%;
 transform:translate(15px,15px);
-      
-${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em gold;
-    border:3px solid gold;`}
-      
-${(props) => props.focus === true &&
-    css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
-    border:3px solid #00f700;`}
 
-${(props) => props.flow === 1 &&
-     css`
-     box-shadow: 0.3em 0.3em 3em 0.2em white;`}
+${(props) => props.active === true &&
+  css`
+  box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
+  border:3px solid skyblue;`}
+    
+${(props) => props.focus === true &&
+  css`
+  box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
+  border:3px solid #00f700`}
+    
 `
 
 const TestButton1 = styled.div`
