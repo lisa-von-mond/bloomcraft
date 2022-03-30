@@ -8,9 +8,10 @@ const [commandLine, setCommandLine] = useState([])
 const [count, setCount]= useState(0)
 
 function addRight(){
-if(count < 12){commandLine.push("RIGHT")
-setCommandLine(commandLine)
-setCount(commandLine.length)}}
+if(count < 12){
+  setCommandLine([...commandLine, "RIGHT"])
+  setCount(commandLine.length)
+}
 
 function addLeft(){
 if(count < 12){commandLine.push("LEFT")
