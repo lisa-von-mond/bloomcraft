@@ -1,6 +1,7 @@
 import styled, {css} from "styled-components";
 import { useState } from "react";
 import {levelOne} from "../testlevel";
+import { Cockpit } from "./cockpit";
 
 export function Field(){
 
@@ -124,6 +125,40 @@ function hopDownInScope(object){
   return newObject}}
 
 
+// INTERVAL FUNCTION
+
+function moveNow(input){
+if(input === 1){turnFocusRightNow()} else {
+  if(input === 2){turnFocusLeftNow()} else {
+    if(input === 3){hopUpNow()} else {
+      if(input === 4){hopDownNow()} else {console.log("makes no sense")
+
+      }
+    }
+  }
+}}
+
+// for test array A
+
+const testArrayA = [2,2,2]
+const[current,setCurrent] = useState(0)
+
+function moveLineA(){
+
+  const go = setInterval(move, 1000);
+  function stopMoving(){clearInterval(go)}
+
+function move() {
+  if (current === testArrayA.length){stopMoving()} else {}}
+
+
+  // const doThis = testArrayA[current]
+  // console.log(doThis)
+  // moveNow(doThis)
+  // setCurrent(current++)}
+   
+  }
+
 return(
 <>
 {galaxy.map((one)=><MyGalaxy1 key={one.name} distancev={one.distv} type={one.type} flow={one.flow} active={one.active} focus={one.focus}>{one.id}
@@ -135,11 +170,16 @@ return(
                   </MyGalaxy2>)}
                   </MyGalaxy1>)}
 
-<TestButton1 onClick = {hopUpNow}>HOP<br></br>FURTHER</TestButton1>
-<TestButton2 onClick = {hopDownNow}>HOP<br></br>CLOSER</TestButton2>
-<TestButton3 onClick = {turnFocusLeftNow}>TURN<br></br>FOCUS<br></br>LEFT</TestButton3>
-<TestButton4 onClick = {turnFocusRightNow}>TURN<br></br>FOCUS<br></br>RIGHT</TestButton4>
-<Legend>
+
+<TestButton1 onClick = {moveLineA}>TEST A</TestButton1>
+<TestButton2 onClick = {hopUpNow}>UP</TestButton2>
+<TestButton3 onClick = {hopDownNow}>DOWN</TestButton3>
+<TestButton4 onClick = {turnFocusLeftNow}>LEFT</TestButton4>
+<TestButton5 onClick = {turnFocusRightNow}>RIGHT</TestButton5>
+{/* <TestButton2 onClick = {moveLineB}>TEST B</TestButton2>
+<TestButton3 onClick = {moveLineC}>TEST C</TestButton3> */}
+
+<LegendFix>
   
   <p>[explanations]</p>
   <p>Current position (spaceship): skyblue</p>
@@ -151,7 +191,10 @@ return(
   <p>JUMP DOWN = Jump down to closer (e.g. from 3.1.2 you will hop down to 3.1)</p>
   <p>***</p>
   <p>The default focus position of a scope is indicated by white shadow / id ...1</p>
- </Legend>
+ </LegendFix>
+
+ <CockpitFix>
+</CockpitFix>
 </>
 )
 }
@@ -206,10 +249,7 @@ transform:translate(15px,15px);
   ${(props) => props.focus === true &&
     css`
     box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
-    border:3px solid #00f700;`}
-  
-
-`
+    border:3px solid #00f700;`}`
 
 const MyGalaxy3 = styled.div`
 top:${props => props.distx}px;
@@ -263,14 +303,13 @@ ${(props) => props.focus === true &&
   border:3px solid #00f700`}
     
 `
-
 const TestButton1 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    right:100px;
+    left:100px;
     bottom:100px;
     color:white;
     display:flex;
@@ -280,14 +319,13 @@ const TestButton1 = styled.div`
     padding:3px;
     cursor:pointer;
     `
-
 const TestButton2 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    right:220px;
+    left:220px;
     bottom:100px;
     color:white;
     display:flex;
@@ -304,7 +342,23 @@ const TestButton3 = styled.div`
     border:5px solid white;
     border-radius:50%;
     position:fixed;
-    right:340px;
+    left:340px;
+    bottom:100px;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center:
+    padding:3px;
+    cursor:pointer;
+    `
+const TestButton4 = styled.div`
+    height:100px;
+    width:100px;
+    border:5px solid white;
+    border-radius:50%;
+    position:fixed;
+    left:460px;
     bottom:100px;
     color:white;
     display:flex;
@@ -315,14 +369,14 @@ const TestButton3 = styled.div`
     cursor:pointer;
     `
 
-const TestButton4 = styled.div`
+    const TestButton5 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
     position:fixed;
+    left:580px;
     bottom:100px;
-    right:460px;
     color:white;
     display:flex;
     align-items:center;
@@ -331,7 +385,8 @@ const TestButton4 = styled.div`
     padding:3px;
     cursor:pointer;
     `
-const Legend = styled.div`
+
+const LegendFix = styled.div`
 color:white;
 font-size:14px;
 position:fixed;
@@ -339,3 +394,7 @@ right:50px;
 width:200px;
 top:70px;
 `
+const CockpitFix = styled.div`
+position:fixed;
+left:10px;
+top:10px;`

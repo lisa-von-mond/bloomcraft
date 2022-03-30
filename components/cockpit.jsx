@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 import { useState } from "react";
+import { max } from "../testlevel";
 
 export function Cockpit(){
 
@@ -7,21 +8,18 @@ const [commandLine, setCommandLine] = useState([])
 const count = commandLine.length;
 
 function addRight(){
-if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
+if(count < max){setCommandLine([...commandLine, "RIGHT"])}}
 
 function addLeft(){
-    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
+    if(count < max){setCommandLine([...commandLine, "LEFT"])}}
 
 function addUp(){
-    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
+    if(count < max){setCommandLine([...commandLine, "UP"])}}
 
 function addDown(){
-    if(count < 12){setCommandLine([...commandLine, "RIGHT"])}}
+    if(count < max){setCommandLine([...commandLine, "DOWN"])}}
 
 function del(){setCommandLine(commandLine.slice(0, -1))}
-
-function go(){
-console.log("go")}
 
 return(
     <>

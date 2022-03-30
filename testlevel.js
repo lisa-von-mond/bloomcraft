@@ -4,6 +4,7 @@ export const levelOne =[
     active: true,
     focus: false,
     tracked: false,
+    limit:false,
     children: [
 
 
@@ -214,6 +215,8 @@ export const levelOne =[
         dist:300}]
 
 }]
+
+export const max = 12
         
     
 
