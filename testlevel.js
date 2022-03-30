@@ -1,7 +1,6 @@
 export const levelOne =[
 
-    {name:"earth",
-    type:"sun",
+    {name:"new earth",
     active: true,
     focus: false,
     tracked: false,
@@ -9,6 +8,7 @@ export const levelOne =[
 
 
         {name: "zen",
+        id: "1",
         active: false,
         focus: true,
         tracked: false,
@@ -17,8 +17,7 @@ export const levelOne =[
 
 
                { name: "valerie",
-                type:"moon",
-                parent:"yin",
+               id: "1.1",
                 active: false,
                 focus: false,
                 tracked: false,
@@ -28,11 +27,13 @@ export const levelOne =[
                 angl:10,
                 dist:140},
 
-                { name: "lucy",
+                {name: "lucy",
+                id: "1.2",
                 active: false,
                 focus: false,
                 tracked: false,
                 children: [     {name: "max",
+                                id: "1.2.1",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -43,6 +44,7 @@ export const levelOne =[
                                 dist:80},
             
                                 {name: "anna",
+                                id: "1.2.2",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -53,6 +55,7 @@ export const levelOne =[
                                 dist:80},
                             
                                 {name: "sam",
+                                id: "1.2.3",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -67,7 +70,7 @@ export const levelOne =[
                 dist:170},
 
                 { name:"jay",
-                parent:"yin",
+                id:"1.3",
                 active: false,
                 focus: false,
                 tracked: false,
@@ -79,12 +82,11 @@ export const levelOne =[
 
 
         ],
-        parent:"earth",
         angl:50,
         dist:300},
             
         { name: "gaia",
-        done:false,
+        id: "2",
         active: false,
         focus: false,
         tracked: false,
@@ -92,10 +94,10 @@ export const levelOne =[
         children:[
 
             {   name: "venus",
+                id: "2.1",
                 active: false,
                 focus: false,
                 tracked: false,
-                base:true,
                 children: [],
                 limit:true,
                 flow:1,
@@ -103,6 +105,7 @@ export const levelOne =[
                 dist:150},
 
             {   name: "ash",
+                id: "2.2",
                 active: false,
                 focus: false,
                 tracked: false,
@@ -113,6 +116,7 @@ export const levelOne =[
                 dist: 150},
 
                 { name: "mona",
+                id: "2.3",
                 active: false,
                 focus: false,
                 tracked: false,
@@ -128,6 +132,7 @@ export const levelOne =[
     },
     
         { name: "yin",
+        id: "3",
         active: false,
         focus: false,
         tracked: false,
@@ -135,6 +140,7 @@ export const levelOne =[
         children:[
 
             {   name: "goa",
+                id: "3.1",
                 active: false,
                 focus: false,
                 tracked: false,
@@ -145,6 +151,7 @@ export const levelOne =[
                 dist:150},
 
             {   name: "runa",
+                id: "3.2",
                 parent:"gaia",
                 order:3,
                 active: false,
@@ -152,7 +159,8 @@ export const levelOne =[
                 tracked: false,
                 children: 
                 
-                        [       {name: "max",
+                        [       {name: "jose",
+                                id: "3.2.1",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -162,7 +170,8 @@ export const levelOne =[
                                 angl:90,
                                 dist:90},
                             
-                                {name: "anna",
+                                {name: "mars",
+                                id: "3.2.2",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -172,7 +181,8 @@ export const levelOne =[
                                 angl:250,
                                 dist:120},
                             
-                                {name: "sam",
+                                {name: "svea",
+                                id: "3.2.3",
                                 active: false,
                                 focus: false,
                                 tracked: false,
@@ -188,6 +198,7 @@ export const levelOne =[
                 dist:140},
 
             {   name: "leo",
+                id: "3.3",
                 active: false,
                 focus: false,
                 tracked: false,
