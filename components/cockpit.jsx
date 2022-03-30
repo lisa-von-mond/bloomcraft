@@ -47,7 +47,7 @@ return(
 <DelKey onClick={del}>DEL</DelKey>
 </Keyboard>
 <CommandLine>
-{commandLine.map((element)=>(<Command key={nanoid()}>{element}</Command>))}
+{commandLine.map((element, index)=>(<Command key={index}>{element}</Command>))}
 </CommandLine>
 <GoPanel><GoKey onClick={go}>GO</GoKey>
 <Counter limit={count}>{12-count}</Counter></GoPanel>
