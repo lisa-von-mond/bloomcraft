@@ -30,8 +30,7 @@ setCommandLine(commandLine)
 setCount(commandLine.length)}}
 
 function del(){
-commandLine.pop()
-setCommandLine(commandLine)
+setCommandLine(commandLine.slice(0, -1));
 setCount(commandLine.length)}
 
 function go(){
