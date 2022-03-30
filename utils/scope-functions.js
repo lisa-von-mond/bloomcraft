@@ -1,10 +1,16 @@
 export function hopUpInScope(object){
-  
+    if(seeds === true){
     const Focus = object.children.find((element) => (element.focus === true))
     const NewSubChildren = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
-    const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubChildren} : element))
+    const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, seeds:true, tracked:true, children: NewSubChildren} : element))
+    const newObject = {...object, children: newChildren, active:false, seeds:false}
+    return newObject
+    } else {
+    const Focus = object.children.find((element) => (element.focus === true))
+    const NewSubChildren = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
+    const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked: true, children: NewSubChildren} : element))
     const newObject = {...object, children: newChildren, active:false}
-    return newObject}
+    return newObject}}
   
 export function turnFocusLeftInScope(objekt){
     if(objekt.limit === true){console.log("nothing to turn left here")} else {
@@ -25,14 +31,34 @@ export function turnFocusLeftInScope(objekt){
     return {...objekt, children:scopeXNew}}}
   
   export function hopDownInScope(object){
-    const Current = object.children.find((element) => (element.active === true))
+
+    if(seeds === true)
+    
+            {const Current = object.children.find((element) => (element.active === true))
+        
+            if (Current.limit === true){
+            const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, seeds:false, tracked: false} : element))
+            const newObject = {...object, children: newChildren, active:true, seeds:true}
+            return newObject
+            } else {
+            const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
+            const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, seeds:false, tracked: false, children: NewSubChildren} : element))
+            const newObject = {...object, children: newChildren, active:true, seeds:true}
+            return newObject}} 
+        
+    else    {const Current = object.children.find((element) => (element.active === true))
   
-    if (Current.limit === true){
-    const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
-    const newObject = {...object, children: newChildren, active:true}
-    return newObject
-    } else {
-    const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
-    const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
-    const newObject = {...object, children: newChildren, active:true}
-    return newObject}}
+            if (Current.limit === true){
+            const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
+            const newObject = {...object, children: newChildren, active:true}
+            return newObject
+                } else {
+            const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
+            const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
+            const newObject = {...object, children: newChildren, active:true}
+            return newObject
+            }}}
+
+
+
+
