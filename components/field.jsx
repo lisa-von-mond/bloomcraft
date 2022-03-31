@@ -12,23 +12,15 @@ const [seeds, setSeeds] = useState(false)
 const [destination, setDestination] = useState(false)
 const [globalCount, setGlobalCount] = useState(0)
 
-
-// moving functions global
+// moving functions scope
 
 function hopUpInScope(object){
   const Focus = object.children.find((element) => (element.focus === true))
+  if (seeds === true) { if (Focus.goal === true){setDestination(true)}} else { if (Focus.seedpack === true){setSeeds(true)}}
   const NewSubScope = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
- 
-  if(seeds === true){
-  if(Focus.goal === true){setDestination(true)}
-  const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, seeds:true, tracked:true, children: NewSubScope} : element))
+  const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubScope} : element))
   const newObject = {...object, children: newScope, active:false, seeds:false}
-  return newObject
-  } else {
-  if(Focus.seedpack === true){setSeeds(true)}
-  const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked: true, children: NewSubScope} : element))
-  const newObject = {...object, children: newScope, active:false}
-  return newObject}}
+  return newObject}
 
 function turnFocusLeftInScope(objekt){
   if(objekt.limit === true){console.log("nothing to turn left here")} else {
@@ -51,34 +43,19 @@ function turnFocusRightInScope(objekt){
 function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
 
-  if(seeds === true)
+  if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.seedpack === true){setSeeds(true)}}
   
-          {if(object.goal === true){setDestination(true)}
-          if (Current.limit === true){
-          const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, seeds:false, tracked: false} : element))
-          const newObject = {...object, children: newScope, active:true, seeds:true}
-          return newObject
-          } else {
-          const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
-          const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, seeds:false, tracked: false, children: NewSubChildren} : element))
-          const newObject = {...object, children: newScope, active:true, seeds:true}
-          return newObject}} 
-      
-  else    {if(object.seedpack === true){
-          setSeeds(true)}
+     if (Current.limit === true){
+    const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
+    const newObject = {...object, children: newScope, active:true}
+    return newObject
+        } else {
+    const NewSubScope = Current.children.map((element) => ({...element, focus: false}))
+    const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubScope} : element))
+    const newObject = {...object, children: newScope, active:true}
+    return newObject}}
 
-          if (Current.limit === true){
-          const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
-          const newObject = {...object, children: newScope, active:true}
-          return newObject
-              } else {
-          const NewSubScope = Current.children.map((element) => ({...element, focus: false}))
-          const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubScope} : element))
-          const newObject = {...object, children: newScope, active:true}
-          return newObject
-          }}}
-
-// moving functions scope
+// moving functions global
 
 function hopUpNow(){
   let Base = galaxy[0]
@@ -133,7 +110,6 @@ function Beam3(myFunction, actualBase){
   setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])
   setGlobalCount(globalCount+1)} 
 
-
 return(
 <>
 {galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} flow={one.flow} active={one.active} focus={one.focus} seedpack={one.seedpack} seedstatus={seeds} goal={one.goal}>{one.id}
@@ -148,10 +124,10 @@ return(
 
 <TestNavi>
 <TestNaviInner>
-<TestButton1 onClick = {hopUpNow}>BEAM<br></br>FURTHER</TestButton1>
-<TestButton4 onClick = {hopDownNow}>BEAM<br></br>CLOSER</TestButton4>
-<TestButton2 onClick = {turnFocusLeftNow}>ANTI<br></br>CLOCK-<br></br>WISE</TestButton2>
-<TestButton3 onClick = {turnFocusRightNow}>CLOCK-<br></br>WISE</TestButton3>
+<TestButton1 onClick = {hopUpNow}><p>BEAM<br></br>FURTHER</p></TestButton1>
+<TestButton4 onClick = {hopDownNow}><p>BEAM<br></br>CLOSER</p></TestButton4>
+<TestButton2 onClick = {turnFocusLeftNow}><p>ANTI<br></br>CLOCK-<br></br>WISE</p></TestButton2>
+<TestButton3 onClick = {turnFocusRightNow}><p>CLOCK-<br></br>WISE</p></TestButton3>
 </TestNaviInner>
 </TestNavi>
 
@@ -202,6 +178,11 @@ ${(props) => props.scope === 3 &&
   height: 50px;
   width: 50px;`}
 
+${(props) => props.goal === true &&
+    css`
+    box-shadow: 0.3em 0.3em 3em 0.2em white;
+    border:5px solid white`}
+
 ${(props) => props.focus === true &&
   css`
   box-shadow: 0.3em 0.3em 3em 0.2em skyblue;
@@ -234,11 +215,9 @@ const TestButton1 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
-
-    p{test-align:center;}
+    p{text-align:center;}
     `
 const TestButton2 = styled.div`
     height:100px;
@@ -252,11 +231,10 @@ const TestButton2 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center;}
     `
-
 const TestButton3 = styled.div`
     height:100px;
     width:100px;
@@ -269,9 +247,9 @@ const TestButton3 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center}
     `
 const TestButton4 = styled.div`
     height:100px;
@@ -285,11 +263,10 @@ const TestButton4 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center}
     `
-
     const TestButton5 = styled.div`
     height:100px;
     width:100px;
@@ -302,15 +279,10 @@ const TestButton4 = styled.div`
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center;}
     `
-
-const CockpitFix = styled.div`
-position:fixed;
-left:10px;
-top:10px;`
 
 const TestNavi = styled.div`
 position:fixed;
@@ -343,7 +315,7 @@ ${(props) => props.thereornot === false &&
 display:none`}`
 
 const DestInfo = styled.p`
-color: hotpink;
+color: skyblue;
 ${(props) => props.hereornot === false &&
   css`
 display:none`}`

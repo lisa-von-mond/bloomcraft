@@ -18,6 +18,9 @@ export function Legend(){
         <p>***</p>
         <p>BEAM DOWN = Hop down to closer planet (e.g. from 3.1.2 you will hop down to 3.1)</p>
         <p>***</p>
+        <p>COUNTER</p>
+        <p>This is a dummy, in the real game you will only have 14 moves to complete your mission. So if counter is warning, you normally would have failed =)</p>
+        <p>***</p>
         <p>Have a nice journey!</p>
         </LegendFix>
     )
@@ -28,5 +31,5 @@ color:white;
 font-size:14px;
 position:fixed;
 right:50px;
-width:200px;
-top:70px;`
+width:350px;
+top:30px;`
