@@ -1,52 +1,60 @@
 import styled, {css} from "styled-components";
-import { useState } from "react";
-import {levelOne} from "../testlevel";
+import { useState, useEffect } from "react";
+import {levelOne, max} from "../testlevel";
+import {angleToCooX, angleToCooY} from "../utils/rendering-functions"
+import {track, integrateScope} from "../utils/utility-functions"
+import { Cockpit } from "./cockpit";
+import { Legend } from "./legend";
 
 export function Field(){
-
 const [galaxy, setGalaxy] = useState(levelOne)
+const [seeds, setSeeds] = useState(false)
+const [destination, setDestination] = useState(false)
+const [globalCount, setGlobalCount] = useState(0)
 
-// rendering functions
+// moving functions scope
 
-function toRadians(degrees) {
-    return degrees * (Math.PI / 180);}
+function hopUpInScope(object){
+  const Focus = object.children.find((element) => (element.focus === true))
+  if (seeds === true) { if (Focus.goal === true){setDestination(true)}} else { if (Focus.seedpack === true){setSeeds(true)}}
+  const NewSubScope = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
+  const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubScope} : element))
+  const newObject = {...object, children: newScope, active:false, seeds:false}
+  return newObject}
 
-function angleToCooX(angle, distance){
-  const X = Math.cos(toRadians(angle)) * distance
-    return parseInt(X)} 
+function turnFocusLeftInScope(objekt){
+  if(objekt.limit === true){console.log("nothing to turn left here")} else {
+  const scope = objekt.children
+  const Focus = scope.find((element)=>(element.focus === true))
+  const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1
+  const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
+  const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
+  return {...objekt, children:scopeB}}}
 
-function angleToCooY(angle, distance){  
-    const Y = Math.sin(toRadians(angle)) * distance             
-    return parseInt(Y)}
+function turnFocusRightInScope(objekt){
+  if(objekt.limit === true){console.log("nothing to turn right here")} else {
+  const scope = objekt.children
+  const Focus = scope.find((element)=>(element.focus === true))
+  const nextFocusIndex = Focus.flow === 1 ? scope.length : Focus.flow - 1
+  const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
+  const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
+  return {...objekt, children:scopeB}}}
 
-// utility functions
+function hopDownInScope(object){
+  const Current = object.children.find((element) => (element.active === true))
+
+  if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.seedpack === true){setSeeds(true)}}
   
-function track(objekt){
-  const thisone = objekt.children.find((element)=>(element.tracked === true))
-  return thisone}
+     if (Current.limit === true){
+    const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
+    const newObject = {...object, children: newScope, active:true}
+    return newObject
+        } else {
+    const NewSubScope = Current.children.map((element) => ({...element, focus: false}))
+    const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubScope} : element))
+    const newObject = {...object, children: newScope, active:true}
+    return newObject}}
 
-function IntegrateScope(thisBase, nextBase, nextBaseNew) {
-  const newScope = thisBase.children.map((element)=>(element === nextBase ? nextBaseNew : element))
-  const newBase = {...thisBase, children:newScope}
-  return newBase}
-
-// operation functions
-      
-function Beam1(myFunction, actualBase){
-  setGalaxy([myFunction(actualBase)])}
-      
-function Beam2(myFunction, actualBase){
-  const baseOne = track(actualBase)
-  const newBaseOne = myFunction(baseOne)
-  setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])}
-      
-function Beam3(myFunction, actualBase){
-  const baseOne = track(actualBase)
-  const baseTwo = track(baseOne)
-  const newBaseTwo = myFunction(baseTwo)
-  const newBaseOne = IntegrateScope(baseOne,baseTwo, newBaseTwo)
-  setGalaxy([IntegrateScope(actualBase, baseOne, newBaseOne)])} 
-      
 // moving functions global
 
 function hopUpNow(){
@@ -57,7 +65,7 @@ function hopUpNow(){
   else {console.log("nothing to go up here")}
  }}}
 
- function turnFocusLeftNow(){
+function turnFocusLeftNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusLeftInScope, Base)} else {
   if (track(Base).active === true){Beam2(turnFocusLeftInScope, Base)} else {
@@ -65,7 +73,7 @@ function hopUpNow(){
   else {console.log("nothing to turn left here")}
  }}}
 
- function turnFocusRightNow(){
+function turnFocusRightNow(){
   let Base = galaxy[0]
   if (Base.active === true){Beam1(turnFocusRightInScope, Base)} else {
   if (track(Base).active === true){Beam2(turnFocusRightInScope, Base)} else {
@@ -82,81 +90,60 @@ function hopDownNow(){
   {Beam3(hopDownInScope, Base)}
   }}}
 
-// moving functions scope
-
-function hopUpInScope(object){
-  
-  const Focus = object.children.find((element) => (element.focus === true))
-  const NewSubChildren = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
-  const newChildren = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubChildren} : element))
-  const newObject = {...object, children: newChildren, active:false}
-  return newObject}
-
-function turnFocusLeftInScope(objekt){
-  if(objekt.limit === true){console.log("nothing to turn left here")} else {
-  const scopeX = objekt.children
-  const Focus = scopeX.find((element)=>(element.focus === true))
-  const nextFocusIndex = Focus.flow === scopeX.length ? 1 : Focus.flow + 1
-  const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
-  const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-  return {...objekt, children:scopeXNew}}}
-
-function turnFocusRightInScope(objekt){
-  if(objekt.limit === true){console.log("nothing to turn right here")} else {
-  const scopeX = objekt.children
-  const Focus = scopeX.find((element)=>(element.focus === true))
-  const nextFocusIndex = Focus.flow === 1 ? scopeX.length : Focus.flow - 1
-  const scopeXA = scopeX.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
-  const scopeXNew = scopeXA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
-  return {...objekt, children:scopeXNew}}}
-
-function hopDownInScope(object){
-  const Current = object.children.find((element) => (element.active === true))
-
-  if (Current.limit === true){
-  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
-  const newObject = {...object, children: newChildren, active:true}
-  return newObject
-  } else {
-  const NewSubChildren = Current.children.map((element) => ({...element, focus: false}))
-  const newChildren = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubChildren} : element))
-  const newObject = {...object, children: newChildren, active:true}
-  return newObject}}
-
+// operation functions
+      
+function Beam1(myFunction, actualBase){
+  setGalaxy([myFunction(actualBase)])
+  setGlobalCount(globalCount+1)}
+      
+function Beam2(myFunction, actualBase){
+  const baseOne = track(actualBase)
+  const newBaseOne = myFunction(baseOne)
+  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])
+  setGlobalCount(globalCount+1)}
+      
+function Beam3(myFunction, actualBase){
+  const baseOne = track(actualBase)
+  const baseTwo = track(baseOne)
+  const newBaseTwo = myFunction(baseTwo)
+  const newBaseOne = integrateScope(baseOne,baseTwo, newBaseTwo)
+  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])
+  setGlobalCount(globalCount+1)} 
 
 return(
 <>
-{galaxy.map((one)=><MyGalaxy1 key={one.name} distancev={one.distv} type={one.type} flow={one.flow} active={one.active} focus={one.focus}>{one.id}
-    {one.children.map((two)=><MyGalaxy2 key={two.name} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} flow={two.flow} type={two.type} active={two.active} focus={two.focus}>{two.id}
-      {two.children.map((three)=><MyGalaxy3 key={three.name} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} flow={three.flow} type={three.type} active={three.active} focus={three.focus}>{three.id}
-      {three.children.map((four)=><MyGalaxy4 key={four.name} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} type={four.type} flow={four.flow} active={four.active} focus={four.focus}>{four.id}
-                  </MyGalaxy4>)}
-                  </MyGalaxy3>)}
-                  </MyGalaxy2>)}
-                  </MyGalaxy1>)}
+{galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} flow={one.flow} active={one.active} focus={one.focus} seedpack={one.seedpack} seedstatus={seeds} goal={one.goal}>{one.id}
+    {one.children.map((two)=><MyGalaxy key={two.name} scope={two.scope} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} flow={two.flow} type={two.type} active={two.active} focus={two.focus} seedpack={two.seedpack} seedstatus={seeds} goal={two.goal}>{two.id}
+      {two.children.map((three)=><MyGalaxy key={three.name} scope={three.scope} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} flow={three.flow} type={three.type} active={three.active} focus={three.focus} seedpack={three.seedpack} seedstatus={seeds} goal={three.goal}>{three.id}
+      {three.children.map((four)=><MyGalaxy key={four.name} scope={three.scope} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} type={four.type} flow={four.flow} active={four.active} focus={four.focus} seedpack={four.seedpack} seedstatus={seeds} goal={four.goal}>{four.id}
+                  </MyGalaxy>)}
+                  </MyGalaxy>)}
+                  </MyGalaxy>)}
+                  </MyGalaxy>)}
 
-<TestButton1 onClick = {hopUpNow}>HOP<br></br>FURTHER</TestButton1>
-<TestButton2 onClick = {hopDownNow}>HOP<br></br>CLOSER</TestButton2>
-<TestButton3 onClick = {turnFocusLeftNow}>TURN<br></br>FOCUS<br></br>LEFT</TestButton3>
-<TestButton4 onClick = {turnFocusRightNow}>TURN<br></br>FOCUS<br></br>RIGHT</TestButton4>
-<Legend>
-  
-  <p>[explanations]</p>
-  <p>Current position (spaceship): skyblue</p>
-  <p>Focus-position: green</p>
-  <p>***</p>
-  <p>JUMP FURTHER = jump to further planet (e.g. from 2.2 to 2.2.3)</p>
-  <p>The focus indicates, which planet you will hop up</p>
-  <p>***</p>
-  <p>JUMP DOWN = Jump down to closer (e.g. from 3.1.2 you will hop down to 3.1)</p>
-  <p>***</p>
-  <p>The default focus position of a scope is indicated by white shadow / id ...1</p>
- </Legend>
+
+<TestNavi>
+<TestNaviInner>
+<TestButton1 onClick = {hopUpNow}><p>BEAM<br></br>FURTHER</p></TestButton1>
+<TestButton4 onClick = {hopDownNow}><p>BEAM<br></br>CLOSER</p></TestButton4>
+<TestButton2 onClick = {turnFocusLeftNow}><p>ANTI<br></br>CLOCK-<br></br>WISE</p></TestButton2>
+<TestButton3 onClick = {turnFocusRightNow}><p>CLOCK-<br></br>WISE</p></TestButton3>
+</TestNaviInner>
+</TestNavi>
+
+<InfoFix>
+<GlobalCounter max={max} count={globalCount}>Count: {globalCount} / {max}</GlobalCounter>
+<SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
+<DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
+</InfoFix>
+
+<Legend />
+
 </>
 )
 }
 
-const MyGalaxy1 = styled.div`
+const MyGalaxy = styled.div`
 top:${props => props.distx}px;
 left:${props => props.disty}px;
 
@@ -165,177 +152,179 @@ position:absolute;
 display:flex;
 justify-content:center;
 align-items:center;
-background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
-height: 100px;
-width: 100px;
 border-radius:50%;
 
-${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-    border:3px solid skyblue;`}
-
-${(props) => props.focus === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
-    border:3px solid #00f700;`}
-`
-
-const MyGalaxy2 = styled.div`
-top:${props => props.distx}px;
-left:${props => props.disty}px;
-      
-text-align:center;
-position:absolute;
-display:flex;
-justify-content:center;
-align-items:center;
-background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
-height: 70px;
-width: 70px;
-border-radius:50%;
-transform:translate(15px,15px);
-
-   
-  ${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-    border:3px solid skyblue;
-    `}
-      
-  ${(props) => props.focus === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
-    border:3px solid #00f700;`}
-  
-
-`
-
-const MyGalaxy3 = styled.div`
-top:${props => props.distx}px;
-left:${props => props.disty}px;
-      
-text-align:center;
-position:absolute;
-display:flex;
-justify-content:center;
-align-items:center;
-background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
-height: 70px;
-width: 70px;
-border-radius:50%;
-transform:translate(15px,15px);
-
-${(props) => props.active === true &&
-    css`
-    box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-    border:3px solid skyblue;`}
-      
-${(props) => props.focus === true &&
-    css`
-    box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
-    border:3px solid #00f700`}
-`
-
-const MyGalaxy4 = styled.div`
-top:${props => props.distx}px;
-left:${props => props.disty}px;
-      
-text-align:center;
-position:absolute;
-display:flex;
-justify-content:center;
-align-items:center;
-background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);;
-height: 50px;
-width: 50px;
-border-radius:50%;
-transform:translate(15px,15px);
-
-${(props) => props.active === true &&
+${(props) => props.scope === 0 &&
   css`
-  box-shadow: 0.2em 0.2em 2em 0.2em skyblue;
-  border:3px solid skyblue;`}
-    
+  background-image: linear-gradient(to top, #30cfd0 0%, #330867 100%);
+  height: 100px;
+  width: 100px;`}
+
+${(props) => props.scope === 1 &&
+  css`
+  background-image: linear-gradient(to top, #5ee7df 0%, #b490ca 100%);
+  height: 80px;
+  width: 80px;`}
+
+${(props) => props.scope === 2 &&
+  css`
+  background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+  height: 60px;
+  width: 60px;`}
+
+${(props) => props.scope === 3 &&
+  css`
+  background-image: linear-gradient(-20deg, #e9defa 0%, #fbfcdb 100%);;
+  height: 50px;
+  width: 50px;`}
+
+${(props) => props.goal === true &&
+    css`
+    box-shadow: 0.3em 0.3em 3em 0.2em white;
+    border:5px solid white`}
+
 ${(props) => props.focus === true &&
   css`
-  box-shadow: 0.3em 0.3em 3em 0.2em #00f700;
-  border:3px solid #00f700`}
-    
-`
+  box-shadow: 0.3em 0.3em 3em 0.2em skyblue;
+  border:5px solid skyblue`}
 
+${(props) => (props.active === true && props.seedstatus === false) &&
+  css`
+  box-shadow: 0.2em 0.2em 2em 0.2em hotpink;
+  border:5px solid hotpink;`}
+
+${(props) => (props.seedstatus === false && props.seedpack === true) &&
+  css`
+  box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
+  border:3px solid #00f700;`}
+
+${(props) => (props.active === true && props.seedstatus === true) &&
+  css`
+  box-shadow: 0.2em 0.2em 2em 0.2em #00f700;;
+  border:5px solid #00f700;`}
+`
 const TestButton1 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
-    position:fixed;
-    right:100px;
-    bottom:100px;
+    position:absolute;
+    left:100px;
+    top:0;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center;}
     `
-
 const TestButton2 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
-    position:fixed;
-    right:220px;
-    bottom:100px;
+    position:absolute;
+    left:0;
+    top:100px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center;}
     `
-
 const TestButton3 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
-    position:fixed;
-    right:340px;
-    bottom:100px;
+    position:absolute;
+    left:200px;
+    top:100px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center}
     `
-
 const TestButton4 = styled.div`
     height:100px;
     width:100px;
     border:5px solid white;
     border-radius:50%;
-    position:fixed;
-    bottom:100px;
-    right:460px;
+    position:absolute;
+    left:100px;
+    bottom:0px;
     color:white;
     display:flex;
     align-items:center;
     justify-content:center;
-    text-align:center:
     padding:3px;
     cursor:pointer;
+    p{text-align:center}
     `
-const Legend = styled.div`
-color:white;
-font-size:14px;
+    const TestButton5 = styled.div`
+    height:100px;
+    width:100px;
+    border:5px solid white;
+    border-radius:50%;
+    position:absolute;
+    left:580px;
+    bottom:100px;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:3px;
+    cursor:pointer;
+    p{text-align:center;}
+    `
+
+const TestNavi = styled.div`
 position:fixed;
-right:50px;
-width:200px;
-top:70px;
+left:10px;
+top:10px;
+width:300px;
+height:300px;
+display:flex;`
+
+const TestNaviInner = styled.div`
+position:relative;
+width:100%;
+height:100%;`
+
+const InfoFix = styled.div`
+position:fixed;
+left:30px;
+bottom:30px;
+width:300px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+color:white;
+font-size: 24px;
 `
+const SeedInfo = styled.p`
+color: #00f700;
+${(props) => props.thereornot === false &&
+  css`
+display:none`}`
+
+const DestInfo = styled.p`
+color: skyblue;
+${(props) => props.hereornot === false &&
+  css`
+display:none`}`
+
+const GlobalCounter = styled.p`
+color: white;
+${(props) => props.count >= props.max &&
+  css`
+  animation: blinker 1s linear infinite;
+  @keyframes blinker { 50% {opacity: 0;}}
+  color:yellow;`}`
+
