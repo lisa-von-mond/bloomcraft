@@ -1,5 +1,5 @@
 import styled, {css} from "styled-components";
-import { Field } from "../components/field";
+import { Field } from "./field";
 
 export function Game () {
 
@@ -14,7 +14,6 @@ export function Game () {
   )
 }
 
-// GALAXY ELEMENT STYLE
 
 const Center = styled.div`
 height:500px;
