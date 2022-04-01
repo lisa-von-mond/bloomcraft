@@ -2,9 +2,11 @@ import styled, {css} from "styled-components";
 import { useState } from "react";
 import { max } from "../testlevel";
 
-export function Cockpit(){
+export function Cockpit({}){
 
 const [commandLine, setCommandLine] = useState([])
+
+
 const count = commandLine.length;
 
 function addRight(){
@@ -22,7 +24,7 @@ function addDown(){
 function del(){setCommandLine(commandLine.slice(0, -1))}
 
 return(
-    <>
+<CpFix>
 <CockpitFrame>
 <Keyboard>
 <Key onClick={addUp}>UP</Key>
@@ -34,10 +36,10 @@ return(
 <CommandLine>
 {commandLine.map((element, index)=>(<Command key={index}>{element}</Command>))}
 </CommandLine>
-<GoPanel><GoKey onClick={go}>GO</GoKey>
+<GoPanel><GoKey>GO</GoKey>
 <Counter limit={count}>{12-count}</Counter></GoPanel>
 </CockpitFrame>
-</>
+</CpFix>
 )
 
 }
@@ -156,3 +158,14 @@ ${(props) => props.limit > 11 &&
 
 `
 
+const CpFix = styled.div`
+position:fixed;
+right:10px;
+top:10px;
+width:400px;
+display:flex;
+flex-direction:column;
+justify-content:flex-end;
+color:white;
+font-size: 24px;
+`
