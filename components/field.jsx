@@ -17,8 +17,8 @@ const [myIntId, setMyIntId] = useState(0);
 const [commandLine, setCommandLine] = useState([])
 const [tempArr, setTempArr] = useState([])
 const [cpStatus, setCpStatus] = useState(1)
-// const cpCount = commandLine.length
 const [commands, setCommands] = useState([])
+const [cCount, setCCount] = useState(0)
 const commandsFlat = commands.flat(3)
 const movingArr = ["ZERO", ...commandsFlat]
 
@@ -120,25 +120,29 @@ function hopDownNow(universe){
 function addRight(){
 if(cpStatus === 1){
   setCommandLine([...commandLine, "RIGHT"])
-  setCommands([...commands, "RIGHT"])}
+  setCommands([...commands, "RIGHT"])
+  setCCount(cCount++)}
 else {setTempArr([...tempArr, "RIGHT"])}}
 
 function addLeft(){
   if(cpStatus === 1){
     setCommandLine([...commandLine, "LEFT"])
-    setCommands([...commands, "LEFT"])}
+    setCommands([...commands, "LEFT"])
+    setCCount(cCount++)}
   else {setTempArr([...tempArr, "LEFT"])}}
   
 function addUp(){
   if(cpStatus === 1){
       setCommandLine([...commandLine, "UP"])
-      setCommands([...commands, "UP"])}
+      setCommands([...commands, "UP"])
+      setCCount(cCount++)}
   else {setTempArr([...tempArr, "UP"])}}
 
 function addDown(){
   if(cpStatus === 1){
      setCommandLine([...commandLine, "DOWN"])
-     setCommands([...commands, "DOWN"])}
+     setCommands([...commands, "DOWN"])
+     setCCount(cCount++)}
   else {setTempArr([...tempArr, "DOWN"])}}
 
 function addTwo(){
@@ -155,18 +159,18 @@ function del(){setCommandLine(commandLine.slice(0, -1))
   setCommands(commands.slice(0, -1))}
 
 function set(){
-  if(cpStatus !== 1){
+  if(tempArr.length > 1){
   setCommandLine([...commandLine, tempArr])
   setTempArr([])
   setCpStatus(1)
+  setCCount(cCount++)
   setCommands([...commands, resolve(tempArr)])
 }}
 
 function resolve(array){
-  const multi = array[0]
   const moves = array.slice(1)
   const newArray = moves.map((element)=>([element, element]))
-  const output=newArray.flat(3)
+  const output = newArray.flat(3)
   return output}
 
 useEffect(() => {
@@ -191,19 +195,21 @@ if(intCount === length){
     clearInterval(myIntId);
     setMyIntId(0)
     setIntCount(0)
-    setCommandLine([])}
+    setCommandLine([])
+    setCommands([])
+    setGlobalCount(cCount+globalCount)
+    setCCount(0)}
   }
 
 return(
 <>
 <Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
 <InfoFix>
-<GlobalCounter max={max} count={globalCount}>Count: {globalCount} / Int-Count: {intCount}</GlobalCounter>
+<GlobalCounter max={max} count={globalCount}>Count: {globalCount} / {max}</GlobalCounter>
 <SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
 <DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
 </InfoFix>
-<Cockpit test={moveThis} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr}/>
-<Navi up={up} down={down} left={left} right={right}/>
+<Cockpit test={moveThis} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr} cCount={cCount}/>
 </>
 )}
 

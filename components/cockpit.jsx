@@ -2,7 +2,7 @@ import styled, {css} from "styled-components";
 import { useState } from "react";
 import { max } from "../testlevel";
 
-export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, test, cpCount}){
+export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, test, cCount}){
 
 return(
 <CpFix>
@@ -23,8 +23,9 @@ return(
 </CommandLine2>
 <Keyboard>
 <DelKey onClick={del}>DEL</DelKey>
-<GoKey onClick={test}>GO</GoKey>
 <SetKey onClick={set}>SET</SetKey>
+<GoKey onClick={test}>GO</GoKey>
+<CpCounter>{cCount}</CpCounter>
 </Keyboard>
 </CockpitFrame>
 </CpFix>
@@ -34,17 +35,15 @@ const CockpitFrame = styled.div `
 height:auto;
 width:350px;
 border-radius:20px;
-border:2px solid white;
 display:flex;
 flex-direction:column;
 justify-content:flex-start;
 align-items:center;
 gap:10px;
-padding:10px;
 `
 const Keyboard = styled.div `
 height:auto;
-width:320px;
+width:350px;
 display:flex;
 flex-wrap:wrap;
 align-items: flex-start;
@@ -54,7 +53,7 @@ padding:10px;
 `
 const CommandLine1 = styled.div `
 height:auto;
-width:320px;
+width:350px;
 border:2px solid skyblue;
 border-radius:20px;
 display:flex;
@@ -69,10 +68,9 @@ background-color:black;
 position:relative;`
 
 const CommandLine2 = styled.div`
-width:320px;
+width:350px;
 height:auto;
-width:320px;
-border:2px solid hotpink;
+border:2px solid #90EE90;
 min-height:70px;
 border-radius:20px;
 display:flex;
@@ -157,8 +155,7 @@ padding:20px;
 color:skyblue;
 border: 2px solid skyblue;
 `
-
-const Counter = styled.div`
+const CpCounter = styled.div`
 height:50px;
 display:flex;
 border-radius:50px;
@@ -175,14 +172,13 @@ ${(props) => props.limit > 11 &&
     border:2px solid hotpink;
     animation: blinker 1s linear infinite;
     @keyframes blinker { 50% {opacity: 0;}}`}
-
 `
 
 const CpFix = styled.div`
 position:fixed;
-right:10px;
-top:10px;
-width:400px;
+right:0px;
+top:30px;
+width:450px;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
