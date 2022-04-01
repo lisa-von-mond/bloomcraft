@@ -1,7 +1,7 @@
 import styled, {css} from "styled-components";
 
 
-export function Navi({up, down, right, left, test}){
+export function Navi({up, down, right, left}){
 
 return(
 <TestNavi>
@@ -10,7 +10,6 @@ return(
 <TestButton4 onClick = {down}><p>BEAM CLOSER</p></TestButton4>
 <TestButton2 onClick = {left}><p>ANTI CLOCK WISE</p></TestButton2>
 <TestButton3 onClick = {right}><p>CLOCK WISE</p></TestButton3>
-<TestButton5 onClick = {test}><p>RUN</p></TestButton5>
 </TestNaviInner>
 </TestNavi>)
 }
@@ -18,7 +17,7 @@ return(
 const TestButton1 = styled.div`
     height:100px;
     width:100px;
-    border:5px solid white;
+    border:3px solid white;
     border-radius:50%;
     position:absolute;
     left:100px;
@@ -34,7 +33,7 @@ const TestButton1 = styled.div`
 const TestButton2 = styled.div`
     height:100px;
     width:100px;
-    border:5px solid white;
+    border:3px solid white;
     border-radius:50%;
     position:absolute;
     left:0;
@@ -50,7 +49,7 @@ const TestButton2 = styled.div`
 const TestButton3 = styled.div`
     height:100px;
     width:100px;
-    border:5px solid white;
+    border:3px solid white;
     border-radius:50%;
     position:absolute;
     left:200px;
@@ -66,7 +65,7 @@ const TestButton3 = styled.div`
 const TestButton4 = styled.div`
     height:100px;
     width:100px;
-    border:5px solid white;
+    border:3px solid white;
     border-radius:50%;
     position:absolute;
     left:100px;
@@ -82,7 +81,7 @@ const TestButton4 = styled.div`
     const TestButton5 = styled.div`
     height:80px;
     width:80px;
-    border:5px solid white;
+    border:3px solid white;
     border-radius:50%;
     position:absolute;
     left:110px;

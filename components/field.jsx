@@ -15,8 +15,12 @@ const [globalCount, setGlobalCount] = useState(0)
 const [intCount, setIntCount] = useState(0)
 const [myIntId, setMyIntId] = useState(0);
 const [commandLine, setCommandLine] = useState([])
-const cpCount = commandLine.length
-const movingArr = ["ZERO", ...commandLine]
+const [tempArr, setTempArr] = useState([])
+const [cpStatus, setCpStatus] = useState(1)
+// const cpCount = commandLine.length
+const [commands, setCommands] = useState([])
+const commandsFlat = commands.flat(3)
+const movingArr = ["ZERO", ...commandsFlat]
 
 console.log(commandLine)
 
@@ -114,18 +118,56 @@ function hopDownNow(universe){
 // cockpit functions
 
 function addRight(){
-if(cpCount < max){setCommandLine([...commandLine, "RIGHT"])}}
+if(cpStatus === 1){
+  setCommandLine([...commandLine, "RIGHT"])
+  setCommands([...commands, "RIGHT"])}
+else {setTempArr([...tempArr, "RIGHT"])}}
 
 function addLeft(){
-if(cpCount < max){setCommandLine([...commandLine, "LEFT"])}}
-
+  if(cpStatus === 1){
+    setCommandLine([...commandLine, "LEFT"])
+    setCommands([...commands, "LEFT"])}
+  else {setTempArr([...tempArr, "LEFT"])}}
+  
 function addUp(){
-if(cpCount < max){setCommandLine([...commandLine, "UP"])}}
+  if(cpStatus === 1){
+      setCommandLine([...commandLine, "UP"])
+      setCommands([...commands, "UP"])}
+  else {setTempArr([...tempArr, "UP"])}}
 
 function addDown(){
-if(cpCount < max){setCommandLine([...commandLine, "DOWN"])}}
+  if(cpStatus === 1){
+     setCommandLine([...commandLine, "DOWN"])
+     setCommands([...commands, "DOWN"])}
+  else {setTempArr([...tempArr, "DOWN"])}}
 
-function del(){setCommandLine(commandLine.slice(0, -1))}
+function addTwo(){
+  if(cpStatus === 1)
+ {setTempArr([...tempArr, 2])
+  setCpStatus(2)}}
+
+ function addThree(){
+  if(cpStatus === 1)
+ {setTempArr([...tempArr, 3])
+  setCpStatus(3)}}
+    
+function del(){setCommandLine(commandLine.slice(0, -1))
+  setCommands(commands.slice(0, -1))}
+
+function set(){
+  if(cpStatus !== 1){
+  setCommandLine([...commandLine, tempArr])
+  setTempArr([])
+  setCpStatus(1)
+  setCommands([...commands, resolve(tempArr)])
+}}
+
+function resolve(array){
+  const multi = array[0]
+  const moves = array.slice(1)
+  const newArray = moves.map((element)=>([element, element]))
+  const output=newArray.flat(3)
+  return output}
 
 useEffect(() => {
     const hereNow = movingArr[intCount]
@@ -160,8 +202,8 @@ return(
 <SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
 <DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
 </InfoFix>
-<Cockpit addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} del={del} commandLine={commandLine}/>
-<Navi up={up} down={down} left={left} right={right} test={moveThis}/>
+<Cockpit test={moveThis} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr}/>
+<Navi up={up} down={down} left={left} right={right}/>
 </>
 )}
 

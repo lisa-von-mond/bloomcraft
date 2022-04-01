@@ -2,8 +2,7 @@ import styled, {css} from "styled-components";
 import { useState } from "react";
 import { max } from "../testlevel";
 
-export function Cockpit({addUp, addDown, addLeft, addRight, del, commandLine, cpCount}){
-
+export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, test, cpCount}){
 
 return(
 <CpFix>
@@ -13,33 +12,38 @@ return(
 <Key onClick={addDown}>DOWN</Key>
 <Key onClick={addLeft}>LEFT</Key>
 <Key onClick={addRight}>RIGHT</Key>
-<DelKey onClick={del}>DEL</DelKey>
+<Key onClick={addTwo}>2</Key>
+<Key onClick={addThree}>3</Key>
 </Keyboard>
-<CommandLine>
+<CommandLine1>
+{tempArr.map((element, index)=>(<Command2 key={index}>{element}</Command2>))}
+</CommandLine1>
+<CommandLine2>
 {commandLine.map((element, index)=>(<Command key={index}>{element}</Command>))}
-</CommandLine>
-{/* <GoPanel><GoKey>GO</GoKey>
-<Counter limit={cpCount}>{12-cpCount}</Counter></GoPanel> */}
+</CommandLine2>
+<Keyboard>
+<DelKey onClick={del}>DEL</DelKey>
+<GoKey onClick={test}>GO</GoKey>
+<SetKey onClick={set}>SET</SetKey>
+</Keyboard>
 </CockpitFrame>
 </CpFix>
-)
-
-}
+)}
 
 const CockpitFrame = styled.div `
-height:530px;
+height:auto;
 width:350px;
 border-radius:20px;
 border:2px solid white;
 display:flex;
 flex-direction:column;
-justify-content:center;
+justify-content:flex-start;
 align-items:center;
 gap:10px;
 padding:10px;
 `
 const Keyboard = styled.div `
-height:150px;
+height:auto;
 width:320px;
 display:flex;
 flex-wrap:wrap;
@@ -48,9 +52,28 @@ justify-content:flex-start;
 gap:10px;
 padding:10px;
 `
-const CommandLine = styled.div `
+const CommandLine1 = styled.div `
+height:auto;
 width:320px;
-min-height:250px;
+border:2px solid skyblue;
+border-radius:20px;
+display:flex;
+flex-wrap:wrap;
+min-height:70px;
+justify-content:flex-start;
+align-items:flex-start;
+align-content:flex-start;
+gap:10px;
+padding:10px;
+background-color:black;
+position:relative;`
+
+const CommandLine2 = styled.div`
+width:320px;
+height:auto;
+width:320px;
+border:2px solid hotpink;
+min-height:70px;
 border-radius:20px;
 display:flex;
 flex-wrap:wrap;
@@ -62,19 +85,10 @@ padding:10px;
 background-color:black;
 position:relative;
 `
-const GoPanel = styled.div `
-width:320px;
-border-radius:20px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-gap:10px;
-padding:10px;
-position:relative;
-`
 const Key = styled.div`
 height:50px;
 display:flex;
+color:black;
 border-radius:50px;
 align-items:center;
 justify-content:center;
@@ -93,6 +107,7 @@ width:auto;
 padding:20px;
 background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
 cursor:pointer;
+color:black;
 `
 
 const GoKey = styled.div`
@@ -103,9 +118,22 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:20px;
-background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
 cursor:pointer;
+color:black;
 `
+const SetKey = styled.div`
+height:50px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:20px;
+background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
+cursor:pointer;
+color:black;`
+
 const Command = styled.div`
 height:50px;
 display:flex;
@@ -116,6 +144,18 @@ width:auto;
 padding:20px;
 color:#90EE90;
 border: 2px solid #90EE90;
+`
+
+const Command2 = styled.div`
+height:50px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:20px;
+color:skyblue;
+border: 2px solid skyblue;
 `
 
 const Counter = styled.div`
@@ -147,5 +187,4 @@ display:flex;
 flex-direction:column;
 justify-content:flex-end;
 color:white;
-font-size: 24px;
-`
+font-size: 24px;`
