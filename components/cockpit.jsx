@@ -2,26 +2,8 @@ import styled, {css} from "styled-components";
 import { useState } from "react";
 import { max } from "../testlevel";
 
-export function Cockpit({}){
+export function Cockpit({addUp, addDown, addLeft, addRight, del, commandLine, cpCount}){
 
-const [commandLine, setCommandLine] = useState([])
-
-
-const count = commandLine.length;
-
-function addRight(){
-if(count < max){setCommandLine([...commandLine, "RIGHT"])}}
-
-function addLeft(){
-    if(count < max){setCommandLine([...commandLine, "LEFT"])}}
-
-function addUp(){
-    if(count < max){setCommandLine([...commandLine, "UP"])}}
-
-function addDown(){
-    if(count < max){setCommandLine([...commandLine, "DOWN"])}}
-
-function del(){setCommandLine(commandLine.slice(0, -1))}
 
 return(
 <CpFix>
@@ -36,8 +18,8 @@ return(
 <CommandLine>
 {commandLine.map((element, index)=>(<Command key={index}>{element}</Command>))}
 </CommandLine>
-<GoPanel><GoKey>GO</GoKey>
-<Counter limit={count}>{12-count}</Counter></GoPanel>
+{/* <GoPanel><GoKey>GO</GoKey>
+<Counter limit={cpCount}>{12-cpCount}</Counter></GoPanel> */}
 </CockpitFrame>
 </CpFix>
 )
@@ -48,8 +30,6 @@ const CockpitFrame = styled.div `
 height:530px;
 width:350px;
 border-radius:20px;
-background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
-background-blend-mode: multiply,multiply;
 border:2px solid white;
 display:flex;
 flex-direction:column;
@@ -70,7 +50,7 @@ padding:10px;
 `
 const CommandLine = styled.div `
 width:320px;
-height:250px;
+min-height:250px;
 border-radius:20px;
 display:flex;
 flex-wrap:wrap;

@@ -14,7 +14,11 @@ const [destination, setDestination] = useState(false)
 const [globalCount, setGlobalCount] = useState(0)
 const [intCount, setIntCount] = useState(0)
 const [myIntId, setMyIntId] = useState(0);
-const [moveArr, setMoveArr] = useState(["INIT", "L", "R", "L", "L"])
+const [commandLine, setCommandLine] = useState([])
+const cpCount = commandLine.length
+const movingArr = ["ZERO", ...commandLine]
+
+console.log(commandLine)
 
 function up(){setGalaxy(hopUpNow(galaxy))
   setGlobalCount(prevCount => prevCount + 1)}
@@ -107,20 +111,35 @@ function hopDownNow(universe){
   {return Beam3(hopDownInScope, Base)}
   }}}
 
+// cockpit functions
+
+function addRight(){
+if(cpCount < max){setCommandLine([...commandLine, "RIGHT"])}}
+
+function addLeft(){
+if(cpCount < max){setCommandLine([...commandLine, "LEFT"])}}
+
+function addUp(){
+if(cpCount < max){setCommandLine([...commandLine, "UP"])}}
+
+function addDown(){
+if(cpCount < max){setCommandLine([...commandLine, "DOWN"])}}
+
+function del(){setCommandLine(commandLine.slice(0, -1))}
+
 useEffect(() => {
-    const hereNow = moveArr[intCount]
-    if(hereNow === "L"){left()} else {
-      if(hereNow === "R"){right()} else {
-        if(hereNow === "U"){up()} else {
-          if(hereNow === "D"){down()} else {
+    const hereNow = movingArr[intCount]
+    if(hereNow === "LEFT"){left()} else {
+      if(hereNow === "RIGHT"){right()} else {
+        if(hereNow === "UP"){up()} else {
+          if(hereNow === "DOWN"){down()} else {
             console.log("nothing")}}}}}
       
 , [intCount])
 
-const length = moveArr.length
+const length = movingArr.length
 
  const moveThis = () => {
-  setGlobalCount(prevCount => prevCount + 1)
   const myInt = setInterval(() => {
     setIntCount(prevCount => prevCount + 1)}, 500)
     setMyIntId(myInt)}
@@ -129,21 +148,22 @@ if(intCount === length){
   if(myIntId) {
     clearInterval(myIntId);
     setMyIntId(0)
-    setIntCount(0)}}
+    setIntCount(0)
+    setCommandLine([])}
+  }
 
 return(
 <>
-<Galaxy galaxy={galaxy} seeds={seeds}/>
+<Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
 <InfoFix>
 <GlobalCounter max={max} count={globalCount}>Count: {globalCount} / Int-Count: {intCount}</GlobalCounter>
 <SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
 <DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
 </InfoFix>
-<Cockpit/>
+<Cockpit addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} del={del} commandLine={commandLine}/>
 <Navi up={up} down={down} left={left} right={right} test={moveThis}/>
 </>
 )}
-
 
 const InfoFix = styled.div`
 position:fixed;

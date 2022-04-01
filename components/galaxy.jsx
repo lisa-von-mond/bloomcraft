@@ -1,7 +1,7 @@
 import styled, {css} from "styled-components";
 import {angleToCooX, angleToCooY} from "../utils/rendering-functions"
 
-export function Galaxy({galaxy, seeds}){
+export function Galaxy({galaxy, seeds, destination}){
 
 return(<>
 {galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} flow={one.flow} active={one.active} focus={one.focus} seedpack={one.seedpack} seedstatus={seeds} goal={one.goal}>{one.id}

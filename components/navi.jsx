@@ -10,7 +10,7 @@ return(
 <TestButton4 onClick = {down}><p>BEAM CLOSER</p></TestButton4>
 <TestButton2 onClick = {left}><p>ANTI CLOCK WISE</p></TestButton2>
 <TestButton3 onClick = {right}><p>CLOCK WISE</p></TestButton3>
-<TestButton5 onClick = {test}><p>TEST</p></TestButton5>
+<TestButton5 onClick = {test}><p>RUN</p></TestButton5>
 </TestNaviInner>
 </TestNavi>)
 }
