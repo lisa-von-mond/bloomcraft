@@ -11,6 +11,15 @@ const [galaxy, setGalaxy] = useState(levelOne)
 const [seeds, setSeeds] = useState(false)
 const [destination, setDestination] = useState(false)
 const [globalCount, setGlobalCount] = useState(0)
+const [intCount, setIntCount] = useState(0)
+const [myIntId, setMyIntId] = useState(0);
+const [next, setNext] = useState(0);
+
+function up(){setGalaxy(hopUpNow(galaxy))}
+function down(){setGalaxy(hopDownNow(galaxy))}
+function right(){setGalaxy(turnFocusRightNow(galaxy))}
+function left(){setGalaxy(turnFocusLeftNow(galaxy))}
+
 
 // moving functions scope
 
@@ -44,7 +53,7 @@ function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
 
   if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.seedpack === true){setSeeds(true)}}
-  
+
      if (Current.limit === true){
     const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
     const newObject = {...object, children: newScope, active:true}
@@ -57,58 +66,90 @@ function hopDownInScope(object){
 
 // moving functions global
 
-function hopUpNow(){
-  let Base = galaxy[0]
-  if (Base.active === true){Beam1(hopUpInScope, Base)} else {
-  if (track(Base).active === true){Beam2(hopUpInScope, Base)} else {
-  if (track(track(Base)).active === true && track(track(Base)).limit !== true ){Beam3(hopUpInScope, Base)}  
-  else {console.log("nothing to go up here")}
+function hopUpNow(universe){
+  let Base = universe[0]
+  if (Base.active === true){return Beam1(hopUpInScope, Base)} else {
+  if (track(Base).active === true){return Beam2(hopUpInScope, Base)} else {
+  if (track(track(Base)).active === true && track(track(Base)).limit !== true ){return Beam3(hopUpInScope, Base)}
+  else {console.log("nothing to go up here")
+  return universe}
  }}}
 
-function turnFocusLeftNow(){
-  let Base = galaxy[0]
-  if (Base.active === true){Beam1(turnFocusLeftInScope, Base)} else {
-  if (track(Base).active === true){Beam2(turnFocusLeftInScope, Base)} else {
-  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){Beam3(turnFocusLeftInScope, Base)}  
-  else {console.log("nothing to turn left here")}
+function turnFocusLeftNow(universe){
+  let Base = universe[0]
+  if (Base.active === true){return Beam1(turnFocusLeftInScope, Base)} else {
+  if (track(Base).active === true){return Beam2(turnFocusLeftInScope, Base)} else {
+  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){return Beam3(turnFocusLeftInScope, Base)}
+  else {console.log("nothing to turn left here")
+  return universe}
  }}}
 
-function turnFocusRightNow(){
-  let Base = galaxy[0]
-  if (Base.active === true){Beam1(turnFocusRightInScope, Base)} else {
-  if (track(Base).active === true){Beam2(turnFocusRightInScope, Base)} else {
-  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){Beam3(turnFocusRightInScope, Base)}  
-  else {console.log("nothing to turn right here")}
+function turnFocusRightNow(universe){
+  let Base = universe[0]
+  if (Base.active === true){return Beam1(turnFocusRightInScope, Base)} else {
+  if (track(Base).active === true){return Beam2(turnFocusRightInScope, Base)} else {
+  if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){return Beam3(turnFocusRightInScope, Base)}
+  else {console.log("nothing to turn right here")
+  return universe}
  }}}
 
-function hopDownNow(){
-  let Base = galaxy[0]
+function hopDownNow(universe){
+  let Base = universe[0]
   if (Base.active === true){
-  console.log("nothing to go down here")} else {
-  if (track(Base).active === true){Beam1(hopDownInScope, Base)} else {
-  if (track(track(Base)).active === true){Beam2(hopDownInScope, Base)} else 
-  {Beam3(hopDownInScope, Base)}
+  console.log("nothing to go down here")
+  return universe} else {
+  if (track(Base).active === true){return Beam1(hopDownInScope, Base)} else {
+  if (track(track(Base)).active === true){return Beam2(hopDownInScope, Base)} else
+  {return Beam3(hopDownInScope, Base)}
   }}}
 
 // operation functions
-      
+
 function Beam1(myFunction, actualBase){
-  setGalaxy([myFunction(actualBase)])
-  setGlobalCount(globalCount+1)}
-      
+  setGlobalCount(globalCount+1)
+  const beamed1 = [myFunction(actualBase)]
+  return beamed1}
+
 function Beam2(myFunction, actualBase){
+  setGlobalCount(globalCount+1)
   const baseOne = track(actualBase)
   const newBaseOne = myFunction(baseOne)
-  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])
-  setGlobalCount(globalCount+1)}
-      
+  const beamed2 = [integrateScope(actualBase, baseOne, newBaseOne)]
+  return beamed2 }
+
 function Beam3(myFunction, actualBase){
+  setGlobalCount(globalCount+1)
   const baseOne = track(actualBase)
   const baseTwo = track(baseOne)
   const newBaseTwo = myFunction(baseTwo)
   const newBaseOne = integrateScope(baseOne,baseTwo, newBaseTwo)
-  setGalaxy([integrateScope(actualBase, baseOne, newBaseOne)])
-  setGlobalCount(globalCount+1)} 
+  const beamed3 = [integrateScope(actualBase, baseOne, newBaseOne)]
+  return beamed3
+ }
+
+ const testArr = ["L", "R", "L"]
+ const length = testArr.length
+
+ const moveThis = () => {
+  const myInt = setInterval(() => {
+    setIntCount(prevCount => prevCount + 1)}, 500)
+    setMyIntId(myInt)}
+
+if(intCount === length){
+  if(myIntId) {
+    clearInterval(myIntId);
+    setMyIntId(0)}}
+
+useEffect(() => {
+
+    const hereNow = testArr[intCount]
+    if(hereNow === "L"){left()} else {
+      if(hereNow === "R"){right()} else {
+        if(hereNow === "U"){up()} else {
+          if(hereNow === "D"){down()} else {
+            console.log("error")}}}}
+
+}, [myIntId] )
 
 return(
 <>
@@ -124,20 +165,20 @@ return(
 
 <TestNavi>
 <TestNaviInner>
-<TestButton1 onClick = {hopUpNow}><p>BEAM<br></br>FURTHER</p></TestButton1>
-<TestButton4 onClick = {hopDownNow}><p>BEAM<br></br>CLOSER</p></TestButton4>
-<TestButton2 onClick = {turnFocusLeftNow}><p>ANTI<br></br>CLOCK-<br></br>WISE</p></TestButton2>
-<TestButton3 onClick = {turnFocusRightNow}><p>CLOCK-<br></br>WISE</p></TestButton3>
+<TestButton1 onClick = {up}><p>STOP</p></TestButton1>
+<TestButton4 onClick = {down}><p>BEAM CLOSER</p></TestButton4>
+<TestButton2 onClick = {left}><p>ANTI CLOCK WISE</p></TestButton2>
+<TestButton3 onClick = {right}><p>CLOCK WISE</p></TestButton3>
+<TestButton5 onClick = {moveThis}><p>TEST</p></TestButton5>
 </TestNaviInner>
 </TestNavi>
 
 <InfoFix>
-<GlobalCounter max={max} count={globalCount}>Count: {globalCount} / {max}</GlobalCounter>
+<GlobalCounter max={max} count={globalCount}>Count: {intCount} / Next: {next}</GlobalCounter>
 <SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
 <DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
 </InfoFix>
 
-<Legend />
 
 </>
 )
@@ -185,8 +226,8 @@ ${(props) => props.goal === true &&
 
 ${(props) => props.focus === true &&
   css`
-  box-shadow: 0.3em 0.3em 3em 0.2em skyblue;
-  border:5px solid skyblue`}
+  box-shadow: 0.3em 0.3em 3em 0.2em blue;
+  border:5px solid blue`}
 
 ${(props) => (props.active === true && props.seedstatus === false) &&
   css`
@@ -268,13 +309,13 @@ const TestButton4 = styled.div`
     p{text-align:center}
     `
     const TestButton5 = styled.div`
-    height:100px;
-    width:100px;
+    height:80px;
+    width:80px;
     border:5px solid white;
     border-radius:50%;
     position:absolute;
-    left:580px;
-    bottom:100px;
+    left:110px;
+    bottom:110px;
     color:white;
     display:flex;
     align-items:center;
@@ -301,7 +342,7 @@ const InfoFix = styled.div`
 position:fixed;
 left:30px;
 bottom:30px;
-width:300px;
+width:400px;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
