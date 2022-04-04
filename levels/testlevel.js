@@ -25,8 +25,8 @@ export const levelOne =[
 
 
                { name: "valerie",
-               id: "1.1",
-               scope:2,
+                id: "1.1",
+                scope:2,
                 active: false,
                 focus: false,
                 tracked: false,
@@ -275,7 +275,7 @@ export const levelOne =[
 
 }]
 
-export const max = 14
+export const max = 12
         
     
 

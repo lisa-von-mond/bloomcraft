@@ -1,42 +1,40 @@
 import styled, {css} from "styled-components";
 import { useState, useEffect, useRef } from "react";
-import {levelOne, max} from "../testlevel";
+import {levelOne} from "../levels/testlevel";
 import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
-import { Navi } from "./navi";
 import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
+import { Console } from "./console";
 import { Legend } from "./legend";
 
 export function Field(){
-const [galaxy, setGalaxy] = useState(levelOne)
-const [seeds, setSeeds] = useState(false)
-const [destination, setDestination] = useState(false)
-const [globalCount, setGlobalCount] = useState(0)
-const [intCount, setIntCount] = useState(0)
+const [galaxy, setGalaxy] = useState(levelOne) // general layout
+const [seeds, setSeeds] = useState(false) // is true when seeds picked up
+const [destination, setDestination] = useState(false) // is true when destination is reached
+const [globalCount, setGlobalCount] = useState(0) // counts glabal amount of movings
+const [intCount, setIntCount] = useState(0) // counts interval and triggers use effect
 const [myIntId, setMyIntId] = useState(0);
-const [commandLine, setCommandLine] = useState([])
-const [tempArr, setTempArr] = useState([])
-const [cpStatus, setCpStatus] = useState(1)
-const [commands, setCommands] = useState([])
-const [cCount, setCCount] = useState(0)
-const commandsFlat = commands.flat(3)
-const movingArr = ["ZERO", ...commandsFlat]
+const [commandLine, setCommandLine] = useState([]) // visible Array of commands in line (for cockpit mapping)
+const [commands, setCommands] = useState([]) // invisible Array of commands in line (for moveNow function)
+const [tempArr, setTempArr] = useState([]) // amount of commands in cockpit console (blue)
+const [cpStatus, setCpStatus] = useState(1) 
+const [thisPlanet, setThisPlanet] = useState("new earth") // name and id of current planet
+const [thisId, setThisId] = useState(0) // name and id of current planet
+const movingArr = ["ZERO", ...commands.flat(3)] 
+const length = movingArr.length
+const cockpitCount = commands.length // amount of commands in cockpit console (green)
 
-console.log(commandLine)
-
-function up(){setGalaxy(hopUpNow(galaxy))
-  setGlobalCount(prevCount => prevCount + 1)}
-function down(){setGalaxy(hopDownNow(galaxy))
-  setGlobalCount(prevCount => prevCount + 1)}
-function right(){setGalaxy(turnFocusRightNow(galaxy))
-  setGlobalCount(prevCount => prevCount + 1)}
-function left(){setGalaxy(turnFocusLeftNow(galaxy))
-  setGlobalCount(prevCount => prevCount + 1)}
+function up(){setGalaxy(hopUpNow(galaxy))}
+function down(){setGalaxy(hopDownNow(galaxy))}
+function right(){setGalaxy(turnFocusRightNow(galaxy))}
+function left(){setGalaxy(turnFocusLeftNow(galaxy))}
 
 // moving functions scope
 
 function hopUpInScope(object){
   const Focus = object.children.find((element) => (element.focus === true))
+  setThisPlanet(Focus.name)
+  setThisId (Focus.id)
   if (seeds === true) { if (Focus.goal === true){setDestination(true)}} else { if (Focus.seedpack === true){setSeeds(true)}}
   const NewSubScope = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
   const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubScope} : element))
@@ -63,6 +61,8 @@ function turnFocusRightInScope(objekt){
 
 function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
+  setThisPlanet(Current.name)
+  setThisId (Current.id)
 
   if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.seedpack === true){setSeeds(true)}}
 
@@ -78,38 +78,38 @@ function hopDownInScope(object){
 
 // moving functions global
 
-function hopUpNow(universe){
-  let Base = universe[0]
+function hopUpNow(y){
+  let Base = y[0]
   if (Base.active === true){return Beam1(hopUpInScope, Base)} else {
   if (track(Base).active === true){return Beam2(hopUpInScope, Base)} else {
   if (track(track(Base)).active === true && track(track(Base)).limit !== true ){return Beam3(hopUpInScope, Base)}
-  else {console.log("nothing to go up here")
-  return universe}
+  else {console.log("not possible to hop further here")
+  return y}
  }}}
 
-function turnFocusLeftNow(universe){
-  let Base = universe[0]
+function turnFocusLeftNow(y){
+  let Base = y[0]
   if (Base.active === true){return Beam1(turnFocusLeftInScope, Base)} else {
   if (track(Base).active === true){return Beam2(turnFocusLeftInScope, Base)} else {
   if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){return Beam3(turnFocusLeftInScope, Base)}
   else {console.log("nothing to turn left here")
-  return universe}
+  return y}
  }}}
 
-function turnFocusRightNow(universe){
-  let Base = universe[0]
+function turnFocusRightNow(y){
+  let Base = y[0]
   if (Base.active === true){return Beam1(turnFocusRightInScope, Base)} else {
   if (track(Base).active === true){return Beam2(turnFocusRightInScope, Base)} else {
   if (track(track(Base)).active === true  && track(track(Base)).limit !== true ){return Beam3(turnFocusRightInScope, Base)}
   else {console.log("nothing to turn right here")
-  return universe}
+  return y}
  }}}
 
-function hopDownNow(universe){
-  let Base = universe[0]
+function hopDownNow(y){
+  let Base = y[0]
   if (Base.active === true){
-  console.log("nothing to go down here")
-  return universe} else {
+  console.log("nothing to go closer here")
+  return y} else {
   if (track(Base).active === true){return Beam1(hopDownInScope, Base)} else {
   if (track(track(Base)).active === true){return Beam2(hopDownInScope, Base)} else
   {return Beam3(hopDownInScope, Base)}
@@ -120,39 +120,35 @@ function hopDownNow(universe){
 function addRight(){
 if(cpStatus === 1){
   setCommandLine([...commandLine, "RIGHT"])
-  setCommands([...commands, "RIGHT"])
-  setCCount(cCount++)}
+  setCommands([...commands, "RIGHT"])}
 else {setTempArr([...tempArr, "RIGHT"])}}
 
 function addLeft(){
   if(cpStatus === 1){
     setCommandLine([...commandLine, "LEFT"])
-    setCommands([...commands, "LEFT"])
-    setCCount(cCount++)}
+    setCommands([...commands, "LEFT"])}
   else {setTempArr([...tempArr, "LEFT"])}}
   
 function addUp(){
   if(cpStatus === 1){
-      setCommandLine([...commandLine, "UP"])
-      setCommands([...commands, "UP"])
-      setCCount(cCount++)}
-  else {setTempArr([...tempArr, "UP"])}}
+      setCommandLine([...commandLine, "FAR"])
+      setCommands([...commands, "FAR"])}
+  else {setTempArr([...tempArr, "FAR"])}}
 
 function addDown(){
   if(cpStatus === 1){
-     setCommandLine([...commandLine, "DOWN"])
-     setCommands([...commands, "DOWN"])
-     setCCount(cCount++)}
-  else {setTempArr([...tempArr, "DOWN"])}}
+     setCommandLine([...commandLine, "CLOSE"])
+     setCommands([...commands, "CLOSE"])}
+  else {setTempArr([...tempArr, "CLOSE"])}}
 
 function addTwo(){
   if(cpStatus === 1)
- {setTempArr([...tempArr, 2])
+ {setTempArr([2])
   setCpStatus(2)}}
 
  function addThree(){
   if(cpStatus === 1)
- {setTempArr([...tempArr, 3])
+ {setTempArr([3])
   setCpStatus(3)}}
     
 function del(){setCommandLine(commandLine.slice(0, -1))
@@ -163,29 +159,27 @@ function set(){
   setCommandLine([...commandLine, tempArr])
   setTempArr([])
   setCpStatus(1)
-  setCCount(cCount++)
-  setCommands([...commands, resolve(tempArr)])
-}}
+  setCommands([...commands, resolve(tempArr)])} else {console.log("not possible")}}
 
 function resolve(array){
   const moves = array.slice(1)
-  const newArray = moves.map((element)=>([element, element]))
-  const output = newArray.flat(3)
-  return output}
+  if(cpStatus === 2){
+  const newArray2 = [...moves, ...moves]
+  return newArray2.flat(3)}
+  else {
+  const newArray3 = [...moves, ...moves, ...moves]
+  return newArray3.flat(3)}}
 
 useEffect(() => {
     const hereNow = movingArr[intCount]
     if(hereNow === "LEFT"){left()} else {
       if(hereNow === "RIGHT"){right()} else {
-        if(hereNow === "UP"){up()} else {
-          if(hereNow === "DOWN"){down()} else {
-            console.log("nothing")}}}}}
+        if(hereNow === "FAR"){up()} else {
+          if(hereNow === "CLOSE"){down()}}}}}
       
 , [intCount])
 
-const length = movingArr.length
-
- const moveThis = () => {
+const move = () => {
   const myInt = setInterval(() => {
     setIntCount(prevCount => prevCount + 1)}, 500)
     setMyIntId(myInt)}
@@ -196,51 +190,29 @@ if(intCount === length){
     setMyIntId(0)
     setIntCount(0)
     setCommandLine([])
-    setCommands([])
-    setGlobalCount(cCount+globalCount)
-    setCCount(0)}
-  }
-
+    setGlobalCount(prevCount => prevCount + cockpitCount)
+    setCommands([])}}
+  
 return(
 <>
+<FieldFrame>
 <Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
-<InfoFix>
-<GlobalCounter max={max} count={globalCount}>Count: {globalCount} / {max}</GlobalCounter>
-<SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
-<DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
-</InfoFix>
-<Cockpit test={moveThis} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr} cCount={cCount}/>
+</FieldFrame>
+<Cockpit move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
+<Console globalCount={globalCount} thisPlanet={thisPlanet} seeds={seeds} thisId={thisId} destination={destination} />
+<Legend />
 </>
 )}
 
-const InfoFix = styled.div`
+const FieldFrame = styled.div`
+height:100vh;
+width:100vw;
 position:fixed;
-left:30px;
-bottom:30px;
-width:400px;
 display:flex;
-flex-direction:column;
-justify-content:flex-end;
-color:white;
-font-size: 24px;
+align-items:center;
+justify-content:center;
+
 `
-const SeedInfo = styled.p`
-color: #00f700;
-${(props) => props.thereornot === false &&
-  css`
-display:none`}`
 
-const DestInfo = styled.p`
-color: skyblue;
-${(props) => props.hereornot === false &&
-  css`
-display:none`}`
 
-const GlobalCounter = styled.p`
-color: white;
-${(props) => props.count >= props.max &&
-  css`
-  animation: blinker 1s linear infinite;
-  @keyframes blinker { 50% {opacity: 0;}}
-  color:yellow;`}`
 

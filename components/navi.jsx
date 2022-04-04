@@ -1,5 +1,6 @@
 import styled, {css} from "styled-components";
 
+// actually offline
 
 export function Navi({up, down, right, left}){
 

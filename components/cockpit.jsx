@@ -1,15 +1,14 @@
 import styled, {css} from "styled-components";
 import { useState } from "react";
-import { max } from "../testlevel";
 
-export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, test, cCount}){
+export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, move, cockpitCount}){
 
 return(
 <CpFix>
 <CockpitFrame>
 <Keyboard>
-<Key onClick={addUp}>UP</Key>
-<Key onClick={addDown}>DOWN</Key>
+<Key onClick={addUp}>FAR</Key>
+<Key onClick={addDown}>CLOSE</Key>
 <Key onClick={addLeft}>LEFT</Key>
 <Key onClick={addRight}>RIGHT</Key>
 <Key onClick={addTwo}>2</Key>
@@ -24,8 +23,8 @@ return(
 <Keyboard>
 <DelKey onClick={del}>DEL</DelKey>
 <SetKey onClick={set}>SET</SetKey>
-<GoKey onClick={test}>GO</GoKey>
-<CpCounter>{cCount}</CpCounter>
+<GoKey onClick={move}>GO</GoKey>
+<CpCounter>{cockpitCount}</CpCounter>
 </Keyboard>
 </CockpitFrame>
 </CpFix>
@@ -33,7 +32,7 @@ return(
 
 const CockpitFrame = styled.div `
 height:auto;
-width:350px;
+width:400px;
 border-radius:20px;
 display:flex;
 flex-direction:column;
@@ -43,7 +42,7 @@ gap:10px;
 `
 const Keyboard = styled.div `
 height:auto;
-width:350px;
+width:400px;
 display:flex;
 flex-wrap:wrap;
 align-items: flex-start;
@@ -53,7 +52,7 @@ padding:10px;
 `
 const CommandLine1 = styled.div `
 height:auto;
-width:350px;
+width:400px;
 border:2px solid skyblue;
 border-radius:20px;
 display:flex;
@@ -64,11 +63,10 @@ align-items:flex-start;
 align-content:flex-start;
 gap:10px;
 padding:10px;
-background-color:black;
-position:relative;`
+background-color:black;`
 
 const CommandLine2 = styled.div`
-width:350px;
+width:400px;
 height:auto;
 border:2px solid #90EE90;
 min-height:70px;
@@ -81,7 +79,6 @@ align-content:flex-start;
 gap:10px;
 padding:10px;
 background-color:black;
-position:relative;
 `
 const Key = styled.div`
 height:50px;
@@ -154,6 +151,12 @@ width:auto;
 padding:20px;
 color:skyblue;
 border: 2px solid skyblue;
+${(props) => props.key === 1 &&
+    css`
+    background-color:skyblue;
+    color:black;
+    `}
+
 `
 const CpCounter = styled.div`
 height:50px;
