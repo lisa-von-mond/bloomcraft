@@ -3,7 +3,7 @@ export const levelOne =[
     {name:"new earth",
     id: "0 (BASE)",
     scope:0,
-    active: false,
+    active: true,
     focus: false,
     tracked: true,
     limit:false,
@@ -16,8 +16,8 @@ export const levelOne =[
         id: "1",
         scope:1,
         active: false,
-        focus: false,
-        tracked: true,
+        focus: true,
+        tracked: false,
         seedpack:false,
         goal:false,
         flow:1,
@@ -25,8 +25,8 @@ export const levelOne =[
 
 
                { name: "valerie",
-               id: "1.1",
-               scope:2,
+                id: "1.1",
+                scope:2,
                 active: false,
                 focus: false,
                 tracked: false,
@@ -41,16 +41,16 @@ export const levelOne =[
                 {name: "lucy",
                 id: "1.2",
                 scope:2,
-                active: true,
+                active: false,
                 focus: false,
-                tracked: true,
+                tracked: false,
                 seedpack:false,
                 goal:false,
                 children: [     {name: "max",
                                 id: "1.2.1",
                                 scope:3,
                                 active: false,
-                                focus: true,
+                                focus: false,
                                 tracked: false,
                                 seedpack:false,
                                 children: [],
@@ -275,7 +275,7 @@ export const levelOne =[
 
 }]
 
-export const max = 14
+export const max = 12
         
     
 
