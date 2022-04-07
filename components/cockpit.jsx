@@ -7,10 +7,10 @@ return(
 <CpFix>
 <CockpitFrame>
 <Keyboard>
-<Key onClick={addUp}>FAR</Key>
-<Key onClick={addDown}>CLOSE</Key>
-<Key onClick={addLeft}>LEFT</Key>
-<Key onClick={addRight}>RIGHT</Key>
+<Key onClick={addUp}>far</Key>
+<Key onClick={addDown}>close</Key>
+<Key onClick={addLeft}>left</Key>
+<Key onClick={addRight}>right</Key>
 <Key onClick={addTwo}>2</Key>
 <Key onClick={addThree}>3</Key>
 </Keyboard>
