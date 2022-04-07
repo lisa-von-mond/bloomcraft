@@ -57,7 +57,7 @@ export const levelTwo =[
 
         ],
         angl:50,
-        dist:300,
+        dist:200,
         ring:0},
             
         {name:"dennis",
@@ -129,7 +129,7 @@ export const levelTwo =[
                 limit:true,
                 goal:false,
                 flow:1,
-                angl:70,
+                angl:170,
                 dist:150,
                 ring:2},
 
@@ -145,7 +145,7 @@ export const levelTwo =[
                 children:[],
                 limit:true,
                 flow:2,
-                angl:190,
+                angl:290,
                 dist:140,
                 ring:0}
 
@@ -153,7 +153,7 @@ export const levelTwo =[
         ],
         limit:false,
         angl:290,
-        dist:300,
+        dist:130,
         ring:0}]
 
 }]

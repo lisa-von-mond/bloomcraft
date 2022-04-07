@@ -20,10 +20,11 @@ const [myIntId, setMyIntId] = useState(0);
 const [commandLine, setCommandLine] = useState([]) // visible Array of commands in line (for cockpit mapping)
 const [commands, setCommands] = useState([]) // invisible Array of commands in line (for moveNow function)
 const [tempArr, setTempArr] = useState([]) // amount of commands in cockpit console (blue)
-const [cpStatus, setCpStatus] = useState(1) 
+const [cpStatus, setCpStatus] = useState(1) // factor for command line (1, 2 or 3)
 const [thisPlanet, setThisPlanet] = useState("caro") // name and id of current planet
 const [thisId, setThisId] = useState(0) // name and id of current planet
 const [focusNow, setFocusNow] = useState("linh")
+const [hand, setHand] = useState(true)
 const movingArr = ["ZERO", ...commands.flat(3)] 
 const length = movingArr.length
 const cockpitCount = commands.length // amount of commands in cockpit console (green)
@@ -53,7 +54,7 @@ function turnFocusLeftInScope(objekt){
   const Focus = scope.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1
   const nextFocus = (scope.find((element)=>(element.flow === nextFocusIndex)))
-  setFocusNow(nextFocus.name)
+  console.log(nextFocus)
   const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
@@ -204,34 +205,46 @@ if(intCount === length){
     setCommandLine([])
     setGlobalCount(prevCount => prevCount + cockpitCount)
     setCommands([])}}
+
+function changeHand(){
+  setHand(!hand)
+}
   
 return(
 <>
-
 <BackgroundFrame>
-<FieldFrame>
+
+
+<Frame hand={hand}>
 <WholeGalaxy>
 <Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
 </WholeGalaxy>
-</FieldFrame>
-<Cockpit move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
-<Console globalCount={globalCount} thisPlanet={thisPlanet} seeds={seeds} thisId={thisId} destination={destination} focusNow={focusNow} />
+</Frame>
+<Cockpit hand={hand} move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
+<Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} seeds={seeds} thisId={thisId} destination={destination} focusNow={focusNow} />
+<WhichHandFix>
+<WhichHand onClick={changeHand}>LEFT/RIGHT</WhichHand>
+</WhichHandFix>
 </BackgroundFrame>
-
 </>
 )}
 
-const FieldFrame = styled.div`
+const Frame = styled.div`
 height:100vh;
 width:100vh;
 position:fixed;
 display:flex;
 align-items:center;
 justify-content:center;
-scroll-behavior: smooth;
-overflow:hidden;
-`
 
+${(props) => props.hand === true &&
+css`
+right:33vw;`}
+
+${(props) => props.hand === false &&
+css`
+left:33vw;`}
+`
 const BackgroundFrame = styled.div`
 height:100vh;
 width:100vw;
@@ -240,15 +253,27 @@ display:flex;
 align-items:center;
 justify-content:center;
 `
-
 const WholeGalaxy = styled.div`
 height:300px;
 width:300px;
-position:fixed;
+bottom:20px;
+left:50%;
 display:flex;
 align-items:center;
 justify-content:center;
 `
+const WhichHandFix = styled.div`
+position:fixed;
+bottom:10px;
+width:100px;
+display:flex;
+justify-content:space-between`
+
+const WhichHand = styled.div`
+color:white;
+cursor:pointer;`
+
+
 
 
 
