@@ -18,11 +18,10 @@ return(<>
 
 {galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} seedstatus={seeds}>
 
-<Planet goal={one.goal}><Image src={planet1} />
-<LegendId>{one.id} {one.name}</LegendId></Planet>
-
+<Planet goal={one.goal}><Image src={planet1} /></Planet>
+<LegendId><p>{one.id} {one.name}</p></LegendId>
 <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-<UfoContainer active={one.active}><Image src={ufo}/></UfoContainer>
+<UfoContainer active={one.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
 <GreensContainer greens={one.greens}><Image src={greenslayer}/></GreensContainer>
 
   
@@ -30,12 +29,10 @@ return(<>
 {one.children.map((two)=><MyGalaxy key={two.name} scope={two.scope} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} seedstatus={seeds}>
     
     
-    <Planet goal={two.goal}><Image src={planet2}/>
-    <UfoContainer active={two.active}><Image src={ufo}/></UfoContainer>
-    <LegendId>{two.id} {two.name}</LegendId></Planet>
-
+    <Planet goal={two.goal}><Image src={planet2}/></Planet>
+  <LegendId><p>{two.id} {two.name}</p></LegendId>
     <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-  
+    <UfoContainer active={two.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
     <GreensContainer greens={two.greens}><Image src={greenslayer}/></GreensContainer>
     <FocusContainer focus={two.focus}> <Image src={focusind}/></FocusContainer>
     <PlanetRing ring={two.ring}><Image src={planetring}/></PlanetRing>
@@ -44,11 +41,10 @@ return(<>
   <div className="scope">
       {two.children.map((three)=><MyGalaxy key={three.name} scope={three.scope} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} seedstatus={seeds}>
       
-        <Planet goal={three.goal}> <Image src={planet4} className="planetimage"/>
-        <LegendId>{three.id} {three.name}</LegendId></Planet>
-
+        <Planet goal={three.goal}> <Image src={planet4} className="planetimage"/></Planet>
+        <LegendId><p>{three.id} {three.name}</p></LegendId>
         <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-        <UfoContainer active={three.active}><Image src={ufo}/></UfoContainer>
+        <UfoContainer active={three.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
         <GreensContainer greens={three.greens}><Image src={greenslayer}/></GreensContainer>
         <FocusContainer focus={three.focus}> <Image src={focusind}/></FocusContainer>
         <PlanetRing ring={three.ring}><Image src={planetring}/></PlanetRing>
@@ -56,11 +52,10 @@ return(<>
 
       <div className="scope">
           {three.children.map((four)=><MyGalaxy key={four.name} scope={four.scope} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} seedstatus={seeds}>
-          <Planet goal={four.goal}> <Image src={planet4} className="planetimage" />
-          <LegendId>{four.id} {four.name}</LegendId></Planet>
-
+          <Planet goal={four.goal}> <Image src={planet4} className="planetimage" /></Planet>
+           <LegendId><p>{four.id} {four.name}</p></LegendId>
              <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-             <UfoContainer active={four.active}><Image src={ufo}/></UfoContainer>
+             <UfoContainer active={four.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
              <GreensContainer greens={four.greens}><Image src={greenslayer}/></GreensContainer>
              <FocusContainer focus={four.focus}> <Image src={focusind}/></FocusContainer>
              <PlanetRing ring={four.ring}><Image src={planetring}/></PlanetRing>
@@ -153,15 +148,22 @@ ${(props) => props.focus === false &&
 
 const UfoContainer = styled.div`
 position:absolute;
-top:-20px;
+height:150%;
+width:150%;
+display:flex;
+justify-content:center;
+align-items:flex-start;
 animation: orbit-rev 600s linear infinite;
-transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } }  
+@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
 
 ${(props) => props.active === false &&
   css`
-  visibility:hidden;`}
+  visibility:hidden;
+ `}
 `
+const UfoContainerInner = styled.div`
+`
+
 const GreensContainer = styled.div`
 position:absolute;
 animation: orbit-rev 600s linear infinite;
@@ -178,23 +180,26 @@ width:101;
 height:101;
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } }  
+@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
 `
-const LegendIdZero = styled.div`
-position:absolute;
-top:-20px;
-right:-30px;
-color:white;
-font-size:14px;
-text-align:left;
-vertical-align:bottom;`
 
 const LegendId = styled.div`
 position:absolute;
-top:-20px;
-right:-30px;
-color:white;
-font-size:14px;
-text-align:left;
-vertical-align:bottom;`
+animation: orbit-rev 600s linear infinite;
+@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
+width:180%;
+height:180%;
+display:flex;
+justify-content:flex-end;
+align-content:flex-end;
+text-align:right;
+align-items: flex-start;
+
+p{
+  color:white;
+  font-size:13px;
+  test-align:right;
+  padding:0;
+  margin:0;
+}`
 

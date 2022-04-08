@@ -6,6 +6,7 @@ import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
 import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
 import { Console } from "./console";
+import { Starry } from "./starry";
 import { Legend } from "./legend";
 import Image from 'next/image';
 import background_image from '../public/images/galaxy.jpg';
@@ -23,7 +24,7 @@ const [tempArr, setTempArr] = useState([]) // amount of commands in cockpit cons
 const [cpStatus, setCpStatus] = useState(1) // factor for command line (1, 2 or 3)
 const [thisPlanet, setThisPlanet] = useState("caro") // name and id of current planet
 const [thisId, setThisId] = useState(0) // name and id of current planet
-const [focusNow, setFocusNow] = useState("linh")
+const [focusNow, setFocusNow] = useState("Beam further to Linh")
 const [hand, setHand] = useState(true)
 const movingArr = ["ZERO", ...commands.flat(3)] 
 const length = movingArr.length
@@ -42,8 +43,8 @@ function hopUpInScope(object){
   setThisId (Focus.id)
   if (seeds === true) { if (Focus.goal === true){setDestination(true)}} else { if (Focus.greens === true){setSeeds(true)}}
   const NewSubScope = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
-  const nextFocus = (Focus.children.find((element)=>(element.flow === 1)))
-  setFocusNow(nextFocus.name)
+  const nextFocus = (Focus.children.find((element)=>(element.focus === true)))
+  if (nextFocus === true){setFocusNow("Beam furter to" + nextFocus.name)} else {setFocusNow("")}
   const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubScope} : element))
   const newObject = {...object, children: newScope, active:false, seeds:false}
   return newObject}
@@ -54,7 +55,7 @@ function turnFocusLeftInScope(objekt){
   const Focus = scope.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1
   const nextFocus = (scope.find((element)=>(element.flow === nextFocusIndex)))
-  console.log(nextFocus)
+  if (nextFocus === true){setFocusNow("Beam further to " + nextFocus.name)}else{setFocusNow("this is still a bug")}
   const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
@@ -65,7 +66,7 @@ function turnFocusRightInScope(objekt){
   const Focus = scope.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === 1 ? scope.length : Focus.flow - 1
   const nextFocus = (scope.find((element)=>(element.flow === nextFocusIndex)))
-  setFocusNow(nextFocus.name)
+  if (nextFocus === true){setFocusNow("Beam further to " + nextFocus.name)}else{setFocusNow("this is still a bug")}
   const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
@@ -75,7 +76,7 @@ function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
   setThisPlanet(Current.name)
   setThisId (Current.id)
-  setFocusNow(Current.name)
+  setFocusNow("Beam Further to" + Current.name)
 
   if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.greens === true){setSeeds(true)}}
 
@@ -164,8 +165,10 @@ function addTwo(){
  {setTempArr([3])
   setCpStatus(3)}}
     
-function del(){setCommandLine(commandLine.slice(0, -1))
-  setCommands(commands.slice(0, -1))}
+function del(){
+  if(cpStatus !== 1){console.log("not possible")} else{
+  setCommandLine(commandLine.slice(0, -1))
+  setCommands(commands.slice(0, -1))}}
 
 function set(){
   if(tempArr.length > 1){
@@ -193,9 +196,10 @@ useEffect(() => {
 , [intCount])
 
 const move = () => {
+  if(cpStatus !== 1){console.log("not possible")}else{
   const myInt = setInterval(() => {
     setIntCount(prevCount => prevCount + 1)}, 500)
-    setMyIntId(myInt)}
+    setMyIntId(myInt)}}
 
 if(intCount === length){
   if(myIntId) {
@@ -213,8 +217,7 @@ function changeHand(){
 return(
 <>
 <BackgroundFrame>
-
-
+<Starry/>
 <Frame hand={hand}>
 <WholeGalaxy>
 <Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
