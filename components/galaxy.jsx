@@ -1,10 +1,9 @@
 import styled, {css} from "styled-components";
 import {angleToCooX, angleToCooY} from "../utils/rendering-functions"
 import Image from 'next/image';
-import test from '../public/images/test.jpg';
-import ufo from '../public/images/ufo2.svg';
-import greenslayer from '../public/images/greens.svg';
-import focusind from '../public/images/focus2.svg';
+import ufo from '../public/images/future_ufo.svg';
+import greenslayer from '../public/images/charge.svg';
+import focusind from '../public/images/green_focus.svg';
 import planetring from '../public/images/planetring_narrow.svg';
 import planetoverlay from '../public/images/overlay150.svg';
 import planet1 from '../public/images/planets/planet1.svg';
@@ -12,55 +11,50 @@ import planet2 from '../public/images/planets/planet2.svg';
 import planet3 from '../public/images/planets/planet3.svg';
 import planet4 from '../public/images/planets/planet4.svg';
 
-export function Galaxy({galaxy, seeds}){
+export function Galaxy({galaxy, chargeStatus}){
 
 return(<>
 
-{galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} seedstatus={seeds}>
+{galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} chargeStatus={chargeStatus}>
 
 <Planet goal={one.goal}><Image src={planet1} /></Planet>
 <LegendId><p>{one.id} {one.name}</p></LegendId>
 <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-<UfoContainer active={one.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
-<GreensContainer greens={one.greens}><Image src={greenslayer}/></GreensContainer>
+<GreensContainer greens={one.greens} chargeStatus={chargeStatus}><Image src={greenslayer}/></GreensContainer>
+<UfoContainer active={one.active} chargeStatus={chargeStatus}><div><Image src={ufo}/></div></UfoContainer>
 
-  
 <div className="scope">
-{one.children.map((two)=><MyGalaxy key={two.name} scope={two.scope} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} seedstatus={seeds}>
-    
-    
+{one.children.map((two)=><MyGalaxy key={two.name} scope={two.scope} distx={angleToCooX(two.angl, two.dist)} disty={angleToCooY(two.angl, two.dist)} chargeStatus={chargeStatus}>
     <Planet goal={two.goal}><Image src={planet2}/></Planet>
-  <LegendId><p>{two.id} {two.name}</p></LegendId>
+    <LegendId><p>{two.id} {two.name}</p></LegendId>
     <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-    <UfoContainer active={two.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
-    <GreensContainer greens={two.greens}><Image src={greenslayer}/></GreensContainer>
-    <FocusContainer focus={two.focus}> <Image src={focusind}/></FocusContainer>
+    <GreensContainer greens={two.greens} chargeStatus={chargeStatus}><Image src={greenslayer}/></GreensContainer>
+    <UfoContainer active={two.active} chargeStatus={chargeStatus}><div><Image src={ufo}/></div></UfoContainer>
+    <FocusContainer focus={two.focus} chargeStatus={chargeStatus}> <Image src={focusind}/></FocusContainer>
     <PlanetRing ring={two.ring}><Image src={planetring}/></PlanetRing>
     
 
-  <div className="scope">
-      {two.children.map((three)=><MyGalaxy key={three.name} scope={three.scope} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} seedstatus={seeds}>
+    <div className="scope">
+      {two.children.map((three)=><MyGalaxy key={three.name} focus={three.focus} scope={three.scope} distx={angleToCooX(three.angl, three.dist)} disty={angleToCooY(three.angl, three.dist)} chargeStatus={chargeStatus}>
       
-        <Planet goal={three.goal}> <Image src={planet4} className="planetimage"/></Planet>
+        <Planet goal={three.goal} focus={three.focus}> <Image src={planet3} className="planetimage"/></Planet>
         <LegendId><p>{three.id} {three.name}</p></LegendId>
         <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-        <UfoContainer active={three.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
-        <GreensContainer greens={three.greens}><Image src={greenslayer}/></GreensContainer>
-        <FocusContainer focus={three.focus}> <Image src={focusind}/></FocusContainer>
+        <GreensContainer greens={three.greens} chargeStatus={chargeStatus}><Image src={greenslayer}/></GreensContainer>
+        <UfoContainer active={three.active} chargeStatus={chargeStatus}><div><Image src={ufo}/></div></UfoContainer>
+        <FocusContainer focus={three.focus} chargeStatus={chargeStatus}> <Image src={focusind}/></FocusContainer>
         <PlanetRing ring={three.ring}><Image src={planetring}/></PlanetRing>
        
 
-      <div className="scope">
-          {three.children.map((four)=><MyGalaxy key={four.name} scope={four.scope} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} seedstatus={seeds}>
-          <Planet goal={four.goal}> <Image src={planet4} className="planetimage" /></Planet>
-           <LegendId><p>{four.id} {four.name}</p></LegendId>
-             <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
-             <UfoContainer active={four.active}><UfoContainerInner><Image src={ufo}/></UfoContainerInner></UfoContainer>
-             <GreensContainer greens={four.greens}><Image src={greenslayer}/></GreensContainer>
-             <FocusContainer focus={four.focus}> <Image src={focusind}/></FocusContainer>
-             <PlanetRing ring={four.ring}><Image src={planetring}/></PlanetRing>
-           
-
+        <div className="scope">
+          {three.children.map((four)=><MyGalaxy key={four.name} scope={four.scope} distx={angleToCooX(four.angl, four.dist)} disty={angleToCooY(four.angl, four.dist)} chargeStatus={chargeStatus}>
+              <Planet goal={four.goal}> <Image src={planet4} className="planetimage" /></Planet>
+              <LegendId><p>{four.id} {four.name}</p></LegendId>
+              <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
+              <GreensContainer greens={four.greens} chargeStatus={chargeStatus}><Image src={greenslayer}/></GreensContainer>
+              <UfoContainer active={four.active} chargeStatus={chargeStatus}><div><Image src={ufo}/></div></UfoContainer>
+              <FocusContainer focus={four.focus}> <Image src={focusind}/></FocusContainer>
+              <PlanetRing ring={four.ring}><Image src={planetring}/></PlanetRing>
                 </MyGalaxy>)}</div>
               </MyGalaxy>)}</div>
             </MyGalaxy>)}</div>
@@ -71,18 +65,15 @@ const MyGalaxy = styled.div`
 top:${props => props.distx}px;
 left:${props => props.disty}px;
 
-text-align:center;
 position:absolute;
 display:flex;
 justify-content:center;
 align-items:center;
-border-radius:50%;
 background-size: contain;
 .scope{
   position:absolute;
   top:0;
   left:0;}
-
 
 ${(props) => props.scope === 0 &&
     css`
@@ -108,17 +99,18 @@ ${(props) => props.scope === 3 &&
     height: 50px;
     width: 50px;`}
 `
+//
 
 const Planet = styled.div`
 position:absolute;
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } }  
-
+@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } } 
 ${(props) => props.goal === true &&
   css`
-  filter: grayscale(100%);`}
+  filter: grayscale(100%) brightness(50%);`}
 `
+//
 
 const PlanetRing = styled.div`
 position:absolute;
@@ -126,24 +118,34 @@ width:170%;
 height:170%;
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } } 
+@keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}} 
+
 ${(props) => props.ring === 0 &&
   css`
   display:none;`}
+
 ${(props) => props.ring === 2 &&
-    css`
-    filter: invert(100%) brightness(400%);
+  css`
+  filter: invert(100%) brightness(400%);
     `}
 `
+//
 
 const FocusContainer = styled.div`
 position:absolute;
+height:110%;
+width:110%;
+filter:hue-rotate(40deg);
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } }  
+@keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}}  
 ${(props) => props.focus === false &&
   css`
   display:none;`}
+
+${(props) => props.chargeStatus === false &&
+  css`
+  filter:hue-rotate(-100deg)`}
 `
 
 const UfoContainer = styled.div`
@@ -154,23 +156,29 @@ display:flex;
 justify-content:center;
 align-items:flex-start;
 animation: orbit-rev 600s linear infinite;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
+@keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}};
 
 ${(props) => props.active === false &&
   css`
-  visibility:hidden;
- `}
-`
-const UfoContainerInner = styled.div`
-`
+  visibility:hidden;`}
 
+${(props) => props.chargeStatus === true &&
+  css`
+  filter:hue-rotate(200deg)`}
+`
 const GreensContainer = styled.div`
 position:absolute;
+height:60%;
+width:60%;
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } }  
+@keyframes orbit-rev { from {transform:rotate(0deg)} to {transform:rotate(-360deg)}}  
 
 ${(props) => props.greens === false &&
+  css`
+  display:none;`}
+
+${(props) => props.chargeStatus === true &&
   css`
   display:none;`}
 `
@@ -180,13 +188,12 @@ width:101;
 height:101;
 animation: orbit-rev 600s linear infinite;
 transform-origin: ${props => props.distx}*-1px; ${props => props.disty}*-1px;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
+@keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}};
 `
-
 const LegendId = styled.div`
 position:absolute;
 animation: orbit-rev 600s linear infinite;
-@keyframes orbit-rev { from { transform:rotate(0deg) } to { transform:rotate(-360deg) } };
+@keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}};
 width:180%;
 height:180%;
 display:flex;
@@ -195,8 +202,7 @@ align-content:flex-end;
 text-align:right;
 align-items: flex-start;
 
-p{
-  color:white;
+p{color:white;
   font-size:13px;
   test-align:right;
   padding:0;

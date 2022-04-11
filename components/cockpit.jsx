@@ -1,17 +1,19 @@
 import styled, {css} from "styled-components";
-import { useState } from "react";
-import {max} from "../levels/testlevel2"; // import here
 
-export function Cockpit({hand, addUp, addDown, addLeft, addRight, addTwo, cpStatus, addThree, set, del1, del2, commandLine, tempArr, move, cockpitCount}){
+export function Cockpit({hand, add, addTwo, cpStatus, addThree, set, del1, del2, commandLine, tempArr, move, cockpitCount, maxCount}){
 
 const tempCount = tempArr.length
-const maxCount = max
+
+function addRight(){add("right")}
+function addLeft(){add("left")}
+function addOut(){add("out")}
+function addIn(){add("in")}
 
 return(
 <CockpitFrame hand={hand}>
 <Keyboard>
-<Key onClick={addUp} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>far</Key>
-<Key onClick={addDown} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>close</Key>
+<Key onClick={addOut} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>out</Key>
+<Key onClick={addIn} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>in</Key>
 <Key onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>left</Key>
 <Key onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>right</Key>
 </Keyboard>
@@ -24,7 +26,7 @@ return(
 {tempArr.map((element, index)=>(<Command2 key={index} content={element}>{element}</Command2>))}
 </CommandLineInner>
 <LittleKeyContainer>
-<CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount}</CpCounter2>
+<CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount} / 4</CpCounter2>
 <DelKey2 cpStatus={cpStatus} onClick={del2}>del</DelKey2>
 <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
 </LittleKeyContainer>
@@ -34,7 +36,7 @@ return(
 {commandLine.map((element, index)=>(<Command1 key={index} cpStatus={cpStatus}>{element}</Command1>))}
 </CommandLineInner>
 <LittleKeyContainer>
-<CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount}</CpCounter1>
+<CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount} / {maxCount}</CpCounter1>
 <DelKey1 cpStatus={cpStatus} onClick={del1}>del</DelKey1>
 <GoKey cpStatus={cpStatus} onClick={move}>GO</GoKey>
 </LittleKeyContainer>
@@ -42,7 +44,7 @@ return(
 </CockpitFrame>
 )}
 
-// generql styled components
+// general styled components
 
 const CockpitFrame = styled.div `
 height:auto;
@@ -52,7 +54,7 @@ display:flex;
 flex-direction:column;
 justify-content:flex-start;
 align-items:center;
-gap:10px;
+gap:30px;
 position:fixed;
 top:30px;
 
@@ -83,25 +85,7 @@ align-items:flex-end;
 height:50px;
 gap:10px;
 `
-//
 
-const GoKey = styled.div`
-height:30px;
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:10px;
-background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
-cursor:pointer;
-color:black;
-
-${(props) => props.cpStatus > 1 &&
-  css`
-filter:brightness(50%);
-cursor:default;`}
-`
 // keyboard
 
 const Keyboard = styled.div `
@@ -241,7 +225,8 @@ cursor:default;`}
 ${(props) => props.cpStatus === 1 &&
   css`
 filter:brightness(30%);
-cursor:default;`}`
+cursor:default;`}
+`
 
 //
 
@@ -335,14 +320,12 @@ padding:10px;
 color:#caf880;
 border: 2px solid #caf880;
 animation: cmd 0.3s;
-
 @keyframes cmd {
     0% {opacity:0;
       transform:scale(1);}
     80% { transform:scale(1.1);}
     100% {opacity:1;
-      transform:scale(1);}
-  }
+      transform:scale(1);}}
 
 ${(props) => props.cpStatus > 1 &&
     css`
@@ -370,4 +353,23 @@ ${(props) => props.cockpitCount >= props.maxCount &&
 ${(props) => props.cpStatus > 1 &&
       css`
   color:darkgray;`}
+`
+//
+
+const GoKey = styled.div`
+height:30px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+cursor:pointer;
+color:black;
+
+${(props) => props.cpStatus > 1 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
 `

@@ -1,4 +1,4 @@
-export const levelTwo =[
+export const level =[
 
     {name:"caro",
     id: "0",
@@ -159,6 +159,8 @@ export const levelTwo =[
 }]
 
 export const max = 5
+export const PositionOne = "caro"
+export const FocusOne = "linh"
         
     
 

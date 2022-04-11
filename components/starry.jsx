@@ -3,13 +3,11 @@ import {stars1, stars2, stars3} from "../utils/star-randomizer"
 
 export function Starry(){
 
-    console.log(stars1)
-
     return(
     <Middle>
-    <BlurAlternate>{stars1.map((element)=>(<Star x={element.x} y={element.y}></Star>))}</BlurAlternate>
-    <FadeOut>{stars2.map((element)=>(<Star x={element.x} y={element.y}></Star>))}</FadeOut>
-    <BlurOut>{stars3.map((element)=>(<Star x={element.x} y={element.y}></Star>))}</BlurOut>
+    <BlurAlternate>{stars1.map((element, index)=>(<Star x={element.x} y={element.y} key={index}></Star>))}</BlurAlternate>
+    <FadeOut>{stars2.map((element, index)=>(<Star x={element.x} y={element.y} key={index}></Star>))}</FadeOut>
+    <BlurOut>{stars3.map((element, index)=>(<Star x={element.x} y={element.y} key={index}></Star>))}</BlurOut>
     </Middle>)
      }
     
