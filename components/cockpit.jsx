@@ -2,7 +2,7 @@ import styled, {css} from "styled-components";
 import { useState } from "react";
 import {max} from "../levels/testlevel2"; // import here
 
-export function Cockpit({hand, addUp, addDown, addLeft, addRight, addTwo, cpStatus, addThree, set, del, commandLine, tempArr, move, cockpitCount}){
+export function Cockpit({hand, addUp, addDown, addLeft, addRight, addTwo, cpStatus, addThree, set, del1, del2, commandLine, tempArr, move, cockpitCount}){
 
 const tempCount = tempArr.length
 const maxCount = max
@@ -10,34 +10,35 @@ const maxCount = max
 return(
 <CockpitFrame hand={hand}>
 <Keyboard>
-<Key onClick={addUp}>far</Key>
-<Key onClick={addDown}>close</Key>
-<Key onClick={addLeft}>left</Key>
-<Key onClick={addRight}>right</Key>
+<Key onClick={addUp} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>far</Key>
+<Key onClick={addDown} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>close</Key>
+<Key onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>left</Key>
+<Key onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>right</Key>
 </Keyboard>
 <Keyboard>
-<NumberKey onClick={addTwo} cpStatus={cpStatus}>2</NumberKey>
-<NumberKey onClick={addThree} cpStatus={cpStatus}>3</NumberKey>
+<NumberKey onClick={addTwo} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>2</NumberKey>
+<NumberKey onClick={addThree} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>3</NumberKey>
 </Keyboard>
-<CommandLine1 cpStatus={cpStatus}>
-<CommandLineInner>
-{tempArr.map((element, index)=>(<Command1 key={index} content={element}>{element}</Command1>))}
-</CommandLineInner>
-<LittleKeyContainer>
-<CpCounter1 cpStatus={cpStatus} tempCount={tempCount}>{tempCount}</CpCounter1>
-<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
-</LittleKeyContainer>
-</CommandLine1>
 <CommandLine2 cpStatus={cpStatus}>
 <CommandLineInner>
-{commandLine.map((element, index)=>(<Command2 key={index} cpStatus={cpStatus}>{element}</Command2>))}
+{tempArr.map((element, index)=>(<Command2 key={index} content={element}>{element}</Command2>))}
 </CommandLineInner>
 <LittleKeyContainer>
-<CpCounter2 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount}</CpCounter2>
-<DelKey cpStatus={cpStatus} onClick={del}>delete</DelKey>
-<GoKey cpStatus={cpStatus} onClick={move}>GO</GoKey>
+<CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount}</CpCounter2>
+<DelKey2 cpStatus={cpStatus} onClick={del2}>del</DelKey2>
+<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
 </LittleKeyContainer>
 </CommandLine2>
+<CommandLine1 cpStatus={cpStatus}>
+<CommandLineInner>
+{commandLine.map((element, index)=>(<Command1 key={index} cpStatus={cpStatus}>{element}</Command1>))}
+</CommandLineInner>
+<LittleKeyContainer>
+<CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount}</CpCounter1>
+<DelKey1 cpStatus={cpStatus} onClick={del1}>del</DelKey1>
+<GoKey cpStatus={cpStatus} onClick={move}>GO</GoKey>
+</LittleKeyContainer>
+</CommandLine1>
 </CockpitFrame>
 )}
 
@@ -45,7 +46,7 @@ return(
 
 const CockpitFrame = styled.div `
 height:auto;
-width:250px;
+width:350px;
 border-radius:20px;
 display:flex;
 flex-direction:column;
@@ -96,12 +97,7 @@ background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
 cursor:pointer;
 color:black;
 
-${(props) => props.cpStatus === 2 &&
-  css`
-filter:brightness(50%);
-cursor:default;`}
-
-${(props) => props.cpStatus === 3 &&
+${(props) => props.cpStatus > 1 &&
   css`
 filter:brightness(50%);
 cursor:default;`}
@@ -110,7 +106,7 @@ cursor:default;`}
 
 const Keyboard = styled.div `
 height:auto;
-width:250px;
+width:100%;
 display:flex;
 flex-wrap:wrap;
 align-items: flex-start;
@@ -132,6 +128,16 @@ width:auto;
 padding:10px;
 background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
 cursor:pointer;
+
+${(props) => props.cockpitCount >= props.maxCount &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+
+${(props) => props.tempCount >= 4 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
 `
 //
 
@@ -151,21 +157,25 @@ ${(props) => props.cpStatus === 1 &&
     css`
     cursor:pointer;`}
 
-${(props) => props.cpStatus === 2 &&
+${(props) => props.cpStatus > 1 &&
     css`
-    background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
- background-blend-mode: multiply,multiply;`}
+    filter:brightness(50%);`}
 
-${(props) => props.cpStatus === 3 &&
-    css`
-    background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
- background-blend-mode: multiply,multiply;`}
+${(props) => props.cockpitCount >= props.maxCount &&
+      css`
+    filter:brightness(50%);
+    cursor:default;`}
+    
+${(props) => props.tempCount >= 4 &&
+      css`
+    filter:brightness(50%);
+    cursor:default;`}
 `
 // blue command line 
 
-const CommandLine1 = styled.div `
+const CommandLine2 = styled.div `
 height:auto;
-width:250px;
+width:100%;
 min-height:100px;
 border-radius:20px;
 display:flex;
@@ -177,17 +187,13 @@ padding:10px;
 background-color:black;
 box-shadow: 0px 0px 10px skyblue;
 
-${(props) => props.cpStatus === 2 &&
+${(props) => props.cpStatus > 1 &&
     css`
-border: 2px solid skyblue;`}
-
-${(props) => props.cpStatus === 3 &&
-  css`
 border: 2px solid skyblue;`}`
 
 //
 
-const Command1 = styled.div`
+const Command2 = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
@@ -207,17 +213,11 @@ animation: cmd 0.3s;
     100% {opacity:1;
       transform:scale(1);}}
 
-${(props) => props.content === 2 &&
+${(props) => props.content > 1 &&
     css`
     background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
     color:black;
     `}
-
-${(props) => props.content === 3 &&
-    css`
-    background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
-    color:black;
-     `}
 `
 //
 
@@ -245,7 +245,7 @@ cursor:default;`}`
 
 //
 
-const CpCounter1 = styled.div`
+const CpCounter2 = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
@@ -255,7 +255,7 @@ justify-content:center;
 width:auto;
 padding:10px;
 
-${(props) => props.tempCount > 5 &&
+${(props) => props.tempCount >= 4 &&
     css`
     color:hotpink;
     animation: blinker 1s linear infinite;
@@ -265,10 +265,29 @@ ${(props) => props.cpStatus === 1 &&
       css`
   color:darkgray;`}
 `
+const DelKey2 = styled.div`
+height:30px;
+width:70px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+cursor:pointer;
+color:black;
+background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+
+${(props) => props.cpStatus === 1 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+`
+
 // green command line
 
-const CommandLine2 = styled.div`
-width:250px;
+const CommandLine1 = styled.div`
+width:100%;
 min-height:200px;
 border-radius:20px;
 display:flex;
@@ -285,7 +304,7 @@ border: 2px solid #caf880;`}
 `
 //
 
-const DelKey = styled.div`
+const DelKey1 = styled.div`
 height:30px;
 width:70px;
 display:flex;
@@ -298,21 +317,21 @@ cursor:pointer;
 color:black;
 background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
 
-${(props) => props.cpStatus === 2 &&
+${(props) => props.cpStatus > 1 &&
   css`
 filter:brightness(50%);
 cursor:default;`}
 `
 //
 
-const Command2 = styled.div`
+const Command1 = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
 align-items:center;
 justify-content:center;
 width:auto;
-padding:20px;
+padding:10px;
 color:#caf880;
 border: 2px solid #caf880;
 animation: cmd 0.3s;
@@ -325,19 +344,14 @@ animation: cmd 0.3s;
       transform:scale(1);}
   }
 
-${(props) => props.cpStatus === 2 &&
+${(props) => props.cpStatus > 1 &&
     css`
     border: 2px solid #445232;
-    color:#445232;`}
-
-${(props) => props.cpStatus === 3 &&
-    css`
-    border: 2px solid #445232
     color:#445232;`}
 `
 //
 
-const CpCounter2 = styled.div`
+const CpCounter1 = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
@@ -347,17 +361,13 @@ justify-content:center;
 width:auto;
 padding:10px;
 
-${(props) => props.cockpitCount === props.maxCount &&
+${(props) => props.cockpitCount >= props.maxCount &&
     css`
     color:hotpink;
     animation: blinker 1s linear infinite;
     @keyframes blinker { 50% {opacity: 0;}}`}
 
-${(props) => props.cpStatus === 2 &&
+${(props) => props.cpStatus > 1 &&
       css`
   color:darkgray;`}
-
-  ${(props) => props.cpStatus === 3 &&
-    css`
-color:darkgray;`}
 `

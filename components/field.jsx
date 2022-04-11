@@ -1,7 +1,6 @@
 import styled, {css} from "styled-components";
 import { useState, useEffect, useRef } from "react";
-import {levelOne} from "../levels/testlevel";
-import {levelTwo} from "../levels/testlevel2";
+import {levelTwo, max} from "../levels/testlevel2";
 import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
 import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
@@ -71,7 +70,6 @@ function turnFocusRightInScope(objekt){
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
 
-
 function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
   setThisPlanet(Current.name)
@@ -131,44 +129,39 @@ function hopDownNow(y){
 
 // cockpit functions
 
-function addRight(){
-if(cpStatus === 1){
-  setCommandLine([...commandLine, "right"])
-  setCommands([...commands, "right"])}
-else {setTempArr([...tempArr, "right"])}}
+function add(direction){
+  if(cpStatus === 1){
+    if(commandLine.length <= max-1){
+    setCommandLine([...commandLine, direction])
+    setCommands([...commands, direction])}}
+  else {if(tempArr.length <= 3){setTempArr([...tempArr, direction])}}}
 
-function addLeft(){
-  if(cpStatus === 1){
-    setCommandLine([...commandLine, "left"])
-    setCommands([...commands, "left"])}
-  else {setTempArr([...tempArr, "left"])}}
-  
-function addUp(){
-  if(cpStatus === 1){
-      setCommandLine([...commandLine, "far"])
-      setCommands([...commands, "far"])}
-  else {setTempArr([...tempArr, "far"])}}
-
-function addDown(){
-  if(cpStatus === 1){
-     setCommandLine([...commandLine, "close"])
-     setCommands([...commands, "close"])}
-  else {setTempArr([...tempArr, "close"])}}
+function addRight(){add("right")}
+function addLeft(){add("left")}
+function addUp(){add("far")}
+function addDown(){add("close")}
 
 function addTwo(){
-  if(cpStatus === 1)
+  if(cpStatus === 1 && commandLine.length <= max-1)
  {setTempArr([2])
   setCpStatus(2)}}
 
  function addThree(){
-  if(cpStatus === 1)
+  if(cpStatus === 1 && commandLine.length <= max-1)
  {setTempArr([3])
   setCpStatus(3)}}
+
+function del2(){
+  if (cpStatus !== 1)
+  {setTempArr(tempArr.slice(0, -1))
+  if (tempArr.length === 1){setCpStatus(1)}} else
+  {console.log("not possible")}}
     
-function del(){
-  if(cpStatus !== 1){console.log("not possible")} else{
-  setCommandLine(commandLine.slice(0, -1))
-  setCommands(commands.slice(0, -1))}}
+function del1(){
+  if(cpStatus === 1)
+  {setCommandLine(commandLine.slice(0, -1))
+  setCommands(commands.slice(0, -1))} else   
+  {console.log("not possible")}}
 
 function set(){
   if(tempArr.length > 1){
@@ -223,7 +216,7 @@ return(
 <Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
 </WholeGalaxy>
 </Frame>
-<Cockpit hand={hand} move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
+<Cockpit hand={hand} move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
 <Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} seeds={seeds} thisId={thisId} destination={destination} focusNow={focusNow} />
 <WhichHandFix>
 <WhichHand onClick={changeHand}>LEFT/RIGHT</WhichHand>
