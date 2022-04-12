@@ -23,6 +23,8 @@ const [thisPlanet, setThisPlanet] = useState(initialPosition) // name of current
 const [thisId, setThisId] = useState(initialId) // id of current planet
 const [focusNow, setFocusNow] = useState("Beam further to " + initialFocus) // current focus position
 const [hand, setHand] = useState(true) // layout (console and cockpit right or left side)
+const [xShift, setXShift] = useState(50) // for shifting layout in x direction
+const [yShift, setYShift] = useState(50) // for shifting layout in y direction
 const movingArr = ["ZERO", ...commands.flat(3)] 
 const length = movingArr.length
 const cockpitCount = commands.length // amount of commands in cockpit console (green)
@@ -200,23 +202,39 @@ if(intCount === length){
 
 function changeHand(){
   setHand(!hand)}
+
+  function shiftLeft(){
+    setXShift(xShift+10)
+  }
+  
+  function shiftRight(){
+    setXShift(xShift-10)
+  }
+  
+  function shiftUp(){
+    setYShift(yShift-10)
+  }
+  
+  function shiftDown(){
+    setYShift(yShift+10)
+  }
   
 return(
 <>
 <BackgroundFrame>
 
 <Frame hand={hand}>
-<WholeGalaxy>
+<WholeGalaxy x={xShift} y={yShift}>
 <Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
 </WholeGalaxy>
 <Quad1></Quad1>
 <Quad2></Quad2>
 <Quad3></Quad3>
 <Quad4></Quad4>
-<ArrLeft></ArrLeft>
-<ArrUp></ArrUp>
-<ArrDown></ArrDown>
-<ArrRight></ArrRight>
+<ArrLeft onClick={shiftLeft}></ArrLeft>
+<ArrUp onClick={shiftUp}></ArrUp>
+<ArrDown onClick={shiftDown}></ArrDown>
+<ArrRight onClick={shiftRight}></ArrRight>
 </Frame>
 <Cockpit hand={hand} move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
 <Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
@@ -235,8 +253,6 @@ position:fixed;
 display:flex;
 align-items:center;
 justify-content:center;
-
-
 
 ${(props) => props.hand === true &&
 css`
@@ -290,7 +306,7 @@ right:0;
 border-radius:0 0 5px 0;
 `
 
-const ArrLeft  =styled.div`
+const ArrLeft = styled.div`
 width: 20px; 
 height: 20px; 
 border: 2px solid var(--mint);
@@ -300,7 +316,7 @@ left:0;
 border-radius:5px;
 `
 
-const ArrUp  =styled.div`
+const ArrUp = styled.div`
 width: 20px; 
 height: 20px; 
 border: 2px solid var(--mint);
@@ -310,7 +326,7 @@ top:0;
 border-radius:5px;
 `
 
-const ArrRight  =styled.div`
+const ArrRight = styled.div`
 width: 20px; 
 height: 20px; 
 border: 2px solid var(--mint);
@@ -320,7 +336,7 @@ right:0;
 border-radius:5px;
 `
 
-const ArrDown  =styled.div`
+const ArrDown = styled.div`
 width: 20px; 
 height: 20px; 
 border: 2px solid var(--mint);
@@ -329,7 +345,6 @@ left:50%-10px;
 bottom:0;
 border-radius:5px;
 `
-
 
 const BackgroundFrame = styled.div`
 height:100vh;
@@ -340,10 +355,11 @@ align-items:center;
 justify-content:center;
 `
 const WholeGalaxy = styled.div`
-height:300px;
-width:300px;
-bottom:20px;
-left:50%;
+height:10px;
+width:10px;
+position:absolute;
+bottom:${props => props.y}%;
+left:${props => props.x}%;
 display:flex;
 align-items:center;
 justify-content:center;
