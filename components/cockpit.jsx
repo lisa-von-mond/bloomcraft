@@ -48,8 +48,7 @@ return(
 
 const CockpitFrame = styled.div `
 height:auto;
-width:350px;
-border-radius:20px;
+width:30vw;
 display:flex;
 flex-direction:column;
 justify-content:flex-start;
@@ -60,11 +59,11 @@ top:30px;
 
 ${(props) => props.hand === true &&
     css`
-    right:5vw;`}
+    right:3vw;`}
     
 ${(props) => props.hand === false &&
     css`
-    left:5vw;`}
+    left:3vw;`}
 `
 //
 
@@ -110,7 +109,7 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+background-color:var(--mint);
 cursor:pointer;
 
 ${(props) => props.cockpitCount >= props.maxCount &&
@@ -135,7 +134,7 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-background: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+background-color:var(--mint);
 
 ${(props) => props.cpStatus === 1 &&
     css`
@@ -161,7 +160,7 @@ const CommandLine2 = styled.div `
 height:auto;
 width:100%;
 min-height:100px;
-border-radius:20px;
+border-radius:5px;
 display:flex;
 align-items:space-between;
 justify-content:space-between;
@@ -274,18 +273,18 @@ cursor:default;`}
 const CommandLine1 = styled.div`
 width:100%;
 min-height:200px;
-border-radius:20px;
+border-radius:5px;
 display:flex;
 align-items:space-between;
 justify-content:space-between;
 flex-direction:column;
 padding:10px;
 background-color:black;
-box-shadow: 0px 0px 10px #caf880;
+box-shadow: 0px 0px 10px var(--mint);
 
 ${(props) => props.cpStatus === 1 &&
   css`
-border: 2px solid #caf880;`}
+border: 2px solid var(--mint);`}
 `
 //
 
@@ -317,8 +316,8 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-color:#caf880;
-border: 2px solid #caf880;
+color:var(--mint);
+border: 2px solid var(--mint);;
 animation: cmd 0.3s;
 @keyframes cmd {
     0% {opacity:0;
@@ -364,7 +363,7 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
+background-color:var(--mint);
 cursor:pointer;
 color:black;
 

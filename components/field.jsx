@@ -6,7 +6,7 @@ import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
 import { Console } from "./console";
 import { GlobalCounter } from "./counter";
-import { Starry } from "./starry";
+
 
 export function Field(){
 const [galaxy, setGalaxy] = useState(level) // general layout
@@ -204,11 +204,19 @@ function changeHand(){
 return(
 <>
 <BackgroundFrame>
-<Starry/>
+
 <Frame hand={hand}>
 <WholeGalaxy>
 <Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
 </WholeGalaxy>
+<Quad1></Quad1>
+<Quad2></Quad2>
+<Quad3></Quad3>
+<Quad4></Quad4>
+<ArrLeft></ArrLeft>
+<ArrUp></ArrUp>
+<ArrDown></ArrDown>
+<ArrRight></ArrRight>
 </Frame>
 <Cockpit hand={hand} move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
 <Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
@@ -221,21 +229,108 @@ return(
 )}
 
 const Frame = styled.div`
-height:100vh;
-width:100vh;
+height:94vh;
+width:60vw;
 position:fixed;
 display:flex;
 align-items:center;
 justify-content:center;
 
+
+
 ${(props) => props.hand === true &&
 css`
-right:33vw;`}
+left:3vw;`}
 
 ${(props) => props.hand === false &&
 css`
-left:33vw;`}
+right:3vw;`}
 `
+const Quad1  =styled.div`
+height:20px;
+width:20px;
+border-top:2px solid var(--mint);
+border-left:2px solid var(--mint);
+position: absolute;
+top:0;
+left:0;
+border-radius:5px 0 0 0;
+`
+
+const Quad2  =styled.div`
+height:20px;
+width:20px;
+border-top:2px solid var(--mint);
+border-right:2px solid var(--mint);
+position: absolute;
+top:0;
+right:0;
+border-radius:0 5px 0 0;
+`
+
+const Quad3  =styled.div`
+height:20px;
+width:20px;
+border-bottom:2px solid var(--mint);
+border-left:2px solid var(--mint);
+position: absolute;
+bottom:0;
+left:0;
+border-radius:0 0 0 5px;
+`
+
+const Quad4  =styled.div`
+height:20px;
+width:20px;
+border-bottom:2px solid var(--mint);
+border-right:2px solid var(--mint);
+position: absolute;
+bottom:0;
+right:0;
+border-radius:0 0 5px 0;
+`
+
+const ArrLeft  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+top:50%-10px;
+left:0;
+border-radius:5px;
+`
+
+const ArrUp  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+left:50%-10px;
+top:0;
+border-radius:5px;
+`
+
+const ArrRight  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+top:50%-10px;
+right:0;
+border-radius:5px;
+`
+
+const ArrDown  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+left:50%-10px;
+bottom:0;
+border-radius:5px;
+`
+
+
 const BackgroundFrame = styled.div`
 height:100vh;
 width:100vw;
