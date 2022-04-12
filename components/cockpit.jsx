@@ -1,189 +1,374 @@
 import styled, {css} from "styled-components";
-import { useState } from "react";
 
-export function Cockpit({addUp, addDown, addLeft, addRight, addTwo, addThree, set, del, commandLine, tempArr, move, cockpitCount}){
+export function Cockpit({hand, add, addTwo, cpStatus, addThree, set, del1, del2, commandLine, tempArr, move, cockpitCount, maxCount}){
+
+const tempCount = tempArr.length
+
+function addRight(){add("right")}
+function addLeft(){add("left")}
+function addOut(){add("out")}
+function addIn(){add("in")}
 
 return(
-<CpFix>
-<CockpitFrame>
+<CockpitFrame hand={hand}>
 <Keyboard>
-<Key onClick={addUp}>FAR</Key>
-<Key onClick={addDown}>CLOSE</Key>
-<Key onClick={addLeft}>LEFT</Key>
-<Key onClick={addRight}>RIGHT</Key>
-<Key onClick={addTwo}>2</Key>
-<Key onClick={addThree}>3</Key>
+<Key onClick={addOut} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>out</Key>
+<Key onClick={addIn} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>in</Key>
+<Key onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>left</Key>
+<Key onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>right</Key>
 </Keyboard>
-<CommandLine1>
-{tempArr.map((element, index)=>(<Command2 key={index}>{element}</Command2>))}
-</CommandLine1>
-<CommandLine2>
-{commandLine.map((element, index)=>(<Command key={index}>{element}</Command>))}
+<Keyboard>
+<NumberKey onClick={addTwo} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>2</NumberKey>
+<NumberKey onClick={addThree} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>3</NumberKey>
+</Keyboard>
+<CommandLine2 cpStatus={cpStatus}>
+<CommandLineInner>
+{tempArr.map((element, index)=>(<Command2 key={index} content={element}>{element}</Command2>))}
+</CommandLineInner>
+<LittleKeyContainer>
+<CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount} / 4</CpCounter2>
+<DelKey2 cpStatus={cpStatus} onClick={del2}>del</DelKey2>
+<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
+</LittleKeyContainer>
 </CommandLine2>
-<Keyboard>
-<DelKey onClick={del}>DEL</DelKey>
-<SetKey onClick={set}>SET</SetKey>
-<GoKey onClick={move}>GO</GoKey>
-<CpCounter>{cockpitCount}</CpCounter>
-</Keyboard>
+<CommandLine1 cpStatus={cpStatus}>
+<CommandLineInner>
+{commandLine.map((element, index)=>(<Command1 key={index} cpStatus={cpStatus}>{element}</Command1>))}
+</CommandLineInner>
+<LittleKeyContainer>
+<CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount} / {maxCount}</CpCounter1>
+<DelKey1 cpStatus={cpStatus} onClick={del1}>del</DelKey1>
+<GoKey cpStatus={cpStatus} onClick={move}>GO</GoKey>
+</LittleKeyContainer>
+</CommandLine1>
 </CockpitFrame>
-</CpFix>
 )}
+
+// general styled components
 
 const CockpitFrame = styled.div `
 height:auto;
-width:400px;
-border-radius:20px;
+width:30vw;
 display:flex;
 flex-direction:column;
 justify-content:flex-start;
 align-items:center;
+gap:30px;
+position:fixed;
+top:30px;
+
+${(props) => props.hand === true &&
+    css`
+    right:3vw;`}
+    
+${(props) => props.hand === false &&
+    css`
+    left:3vw;`}
+`
+//
+
+const CommandLineInner = styled.div`
+display:flex;
+flex-wrap:wrap;
+justify-content:flex-start;
+align-items:flex-start;
+align-content:flex-start;
 gap:10px;
 `
+//
+
+const LittleKeyContainer = styled.div`
+display:flex;
+justify-content: flex-end;
+align-items:flex-end;
+height:50px;
+gap:10px;
+`
+
+// keyboard
+
 const Keyboard = styled.div `
 height:auto;
-width:400px;
+width:100%;
 display:flex;
 flex-wrap:wrap;
 align-items: flex-start;
 justify-content:flex-start;
-gap:10px;
+gap:20px;
 padding:10px;
 `
-const CommandLine1 = styled.div `
-height:auto;
-width:400px;
-border:2px solid skyblue;
-border-radius:20px;
-display:flex;
-flex-wrap:wrap;
-min-height:70px;
-justify-content:flex-start;
-align-items:flex-start;
-align-content:flex-start;
-gap:10px;
-padding:10px;
-background-color:black;`
+//
 
-const CommandLine2 = styled.div`
-width:400px;
-height:auto;
-border:2px solid #90EE90;
-min-height:70px;
-border-radius:20px;
+const Key = styled.div`
+height:30px;
+width:50px;
 display:flex;
-flex-wrap:wrap;
-justify-content:flex-start;
-align-items:flex-start;
-align-content:flex-start;
+color:black;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+background-color:var(--mint);
+cursor:pointer;
+
+${(props) => props.cockpitCount >= props.maxCount &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+
+${(props) => props.tempCount >= 4 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+`
+//
+
+const NumberKey = styled.div`
+height:30px;
+width:50px;
+display:flex;
+color:black;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+background-color:var(--mint);
+
+${(props) => props.cpStatus === 1 &&
+    css`
+    cursor:pointer;`}
+
+${(props) => props.cpStatus > 1 &&
+    css`
+    filter:brightness(50%);`}
+
+${(props) => props.cockpitCount >= props.maxCount &&
+      css`
+    filter:brightness(50%);
+    cursor:default;`}
+    
+${(props) => props.tempCount >= 4 &&
+      css`
+    filter:brightness(50%);
+    cursor:default;`}
+`
+// blue command line 
+
+const CommandLine2 = styled.div `
+height:auto;
+width:100%;
+min-height:100px;
+border-radius:5px;
+display:flex;
+align-items:space-between;
+justify-content:space-between;
+flex-direction:column;
 gap:10px;
 padding:10px;
 background-color:black;
-`
-const Key = styled.div`
-height:50px;
-display:flex;
-color:black;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:20px;
-background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
-cursor:pointer;
-`
-const DelKey = styled.div`
-height:50px;
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:20px;
-background-image: linear-gradient(to right, #f78ca0 0%, #f9748f 19%, #fd868c 60%, #fe9a8b 100%);
-cursor:pointer;
-color:black;
-`
+box-shadow: 0px 0px 10px skyblue;
 
-const GoKey = styled.div`
-height:50px;
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:20px;
-background-image: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
-cursor:pointer;
-color:black;
-`
-const SetKey = styled.div`
-height:50px;
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:20px;
-background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
-cursor:pointer;
-color:black;`
+${(props) => props.cpStatus > 1 &&
+    css`
+border: 2px solid skyblue;`}`
 
-const Command = styled.div`
-height:50px;
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:20px;
-color:#90EE90;
-border: 2px solid #90EE90;
-`
+//
 
 const Command2 = styled.div`
-height:50px;
+height:30px;
 display:flex;
 border-radius:50px;
 align-items:center;
 justify-content:center;
 width:auto;
-padding:20px;
+padding:10px;
 color:skyblue;
 border: 2px solid skyblue;
-${(props) => props.key === 1 &&
+
+animation: cmd 0.3s;
+
+@keyframes cmd {
+    0% { opacity:0;
+      transform:scale(1);}
+    80% {transform:scale(1.1);}
+    100% {opacity:1;
+      transform:scale(1);}}
+
+${(props) => props.content > 1 &&
     css`
-    background-color:skyblue;
+    background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
     color:black;
     `}
-
 `
-const CpCounter = styled.div`
-height:50px;
+//
+
+const SetKey = styled.div`
+height:30px;
 display:flex;
 border-radius:50px;
-color:white;
-border:2px solid white;
 align-items:center;
 justify-content:center;
 width:auto;
-padding:20px;
+padding:10px;
+background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
+cursor:pointer;
+color:black;
 
-${(props) => props.limit > 11 &&
-    css`
-    color:hotpink;
-    border:2px solid hotpink;
-    animation: blinker 1s linear infinite;
-    @keyframes blinker { 50% {opacity: 0;}}`}
+${(props) => props.tempCount <= 1 &&
+  css`
+filter:brightness(30%);
+cursor:default;`}
+
+${(props) => props.cpStatus === 1 &&
+  css`
+filter:brightness(30%);
+cursor:default;`}
 `
 
-const CpFix = styled.div`
-position:fixed;
-right:0px;
-top:30px;
-width:450px;
+//
+
+const CpCounter2 = styled.div`
+height:30px;
 display:flex;
-flex-direction:column;
-justify-content:flex-end;
+border-radius:50px;
 color:white;
-font-size: 24px;`
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+
+${(props) => props.tempCount >= 4 &&
+    css`
+    color:hotpink;
+    animation: blinker 1s linear infinite;
+    @keyframes blinker { 50% {opacity: 0;}}`}
+
+${(props) => props.cpStatus === 1 &&
+      css`
+  color:darkgray;`}
+`
+const DelKey2 = styled.div`
+height:30px;
+width:70px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+cursor:pointer;
+color:black;
+background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+
+${(props) => props.cpStatus === 1 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+`
+
+// green command line
+
+const CommandLine1 = styled.div`
+width:100%;
+min-height:200px;
+border-radius:5px;
+display:flex;
+align-items:space-between;
+justify-content:space-between;
+flex-direction:column;
+padding:10px;
+background-color:black;
+box-shadow: 0px 0px 10px var(--mint);
+
+${(props) => props.cpStatus === 1 &&
+  css`
+border: 2px solid var(--mint);`}
+`
+//
+
+const DelKey1 = styled.div`
+height:30px;
+width:70px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+cursor:pointer;
+color:black;
+background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
+
+${(props) => props.cpStatus > 1 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+`
+//
+
+const Command1 = styled.div`
+height:30px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+color:var(--mint);
+border: 2px solid var(--mint);;
+animation: cmd 0.3s;
+@keyframes cmd {
+    0% {opacity:0;
+      transform:scale(1);}
+    80% { transform:scale(1.1);}
+    100% {opacity:1;
+      transform:scale(1);}}
+
+${(props) => props.cpStatus > 1 &&
+    css`
+    border: 2px solid #445232;
+    color:#445232;`}
+`
+//
+
+const CpCounter1 = styled.div`
+height:30px;
+display:flex;
+border-radius:50px;
+color:white;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+
+${(props) => props.cockpitCount >= props.maxCount &&
+    css`
+    color:hotpink;
+    animation: blinker 1s linear infinite;
+    @keyframes blinker { 50% {opacity: 0;}}`}
+
+${(props) => props.cpStatus > 1 &&
+      css`
+  color:darkgray;`}
+`
+//
+
+const GoKey = styled.div`
+height:30px;
+display:flex;
+border-radius:50px;
+align-items:center;
+justify-content:center;
+width:auto;
+padding:10px;
+background-color:var(--mint);
+cursor:pointer;
+color:black;
+
+${(props) => props.cpStatus > 1 &&
+  css`
+filter:brightness(50%);
+cursor:default;`}
+`

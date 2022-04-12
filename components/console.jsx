@@ -1,53 +1,64 @@
 import styled, {css} from "styled-components";
 import {max} from "../levels/testlevel";
 
-export function Console({globalCount, thisPlanet, thisId, seeds, destination}){
+export function Console({hand, thisPlanet, focusNow, thisId, chargeStatus, destination, charge}){
 
-return(<ConsoleFix>
-    <GlobalCounter max={max} count={globalCount}>Count: {globalCount} / {max}</GlobalCounter>
+return(<ConsoleFix hand={hand}>
     <PositionInfo>You are on planet {thisPlanet} {thisId}</PositionInfo>
-    <SeedInfo thereornot={seeds}>SEEDS PICKED UP</SeedInfo>
-    <DestInfo hereornot={destination}>YOU MADE IT!</DestInfo>
+    <PositionInfo>{focusNow}</PositionInfo>
+    <ChargeInfo1 chargeStatus={chargeStatus}>CHARGE PICKED UP</ChargeInfo1>
+    <ChargeInfo2 chargeStatus={chargeStatus}>Charge has to be picked up from {charge}</ChargeInfo2>
+    <DestInfo destination={destination}>YOU MADE IT!</DestInfo>
     </ConsoleFix>)}
 
 const ConsoleFix = styled.div`
 position:fixed;
-right:30px;
 bottom:30px;
-width:400px;
+width:30vw;
 height:auto;
 display:flex;
 flex-direction:column;
 justify-content:flex-end;
 color:white;
-font-size: 18px;
-border:2px solid white;
-border-radius:20px;
-padding:0 10px 0 10px;
+font-size: 16px;
+
+${(props) => props.hand === true &&
+  css`
+  right:3vw;`}
+  
+${(props) => props.hand === false &&
+  css`
+  left:3vw;`}
 `
 
-const SeedInfo = styled.p`
+const ChargeInfo1 = styled.p`
+padding:0;
+margin:0;
 color: #00f700;
-${(props) => props.thereornot === false &&
+${(props) => props.chargeStatus === false &&
+  css`
+display:none`}`
+
+const ChargeInfo2 = styled.p`
+padding:0;
+margin:0;
+color: white;
+${(props) => props.chargeStatus === true &&
   css`
 display:none`}`
 
 const DestInfo = styled.p`
+padding:0;
+margin:0;
 color: skyblue;
-${(props) => props.hereornot === false &&
+${(props) => props.destination === false &&
   css`
 display:none`}`
 
-const GlobalCounter = styled.p`
-color: white;
-${(props) => props.count >= props.max &&
-  css`
-  animation: blinker 1s linear infinite;
-  @keyframes blinker { 50% {opacity: 0;}}
-  color:yellow;`}`
-
 const PositionInfo = styled.p`
-  color: white;`
+  color: white;
+  padding:0;
+  margin:0;`
 
 
 

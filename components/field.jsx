@@ -1,15 +1,16 @@
 import styled, {css} from "styled-components";
-import { useState, useEffect, useRef } from "react";
-import {levelOne} from "../levels/testlevel";
+import { useState, useEffect } from "react";
+import {level, max, initialPosition, initialFocus, initialId, charge, goal} from "../levels/testlevel";
 import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
 import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
 import { Console } from "./console";
-import { Legend } from "./legend";
+import { GlobalCounter } from "./counter";
+
 
 export function Field(){
-const [galaxy, setGalaxy] = useState(levelOne) // general layout
-const [seeds, setSeeds] = useState(false) // is true when seeds picked up
+const [galaxy, setGalaxy] = useState(level) // general layout
+const [chargeStatus, setChargeStatus] = useState(false) // is true when seeds picked up
 const [destination, setDestination] = useState(false) // is true when destination is reached
 const [globalCount, setGlobalCount] = useState(0) // counts glabal amount of movings
 const [intCount, setIntCount] = useState(0) // counts interval and triggers use effect
@@ -17,12 +18,15 @@ const [myIntId, setMyIntId] = useState(0);
 const [commandLine, setCommandLine] = useState([]) // visible Array of commands in line (for cockpit mapping)
 const [commands, setCommands] = useState([]) // invisible Array of commands in line (for moveNow function)
 const [tempArr, setTempArr] = useState([]) // amount of commands in cockpit console (blue)
-const [cpStatus, setCpStatus] = useState(1) 
-const [thisPlanet, setThisPlanet] = useState("new earth") // name and id of current planet
-const [thisId, setThisId] = useState(0) // name and id of current planet
+const [cpStatus, setCpStatus] = useState(1) // factor for command line (1, 2 or 3)
+const [thisPlanet, setThisPlanet] = useState(initialPosition) // name of current planet
+const [thisId, setThisId] = useState(initialId) // id of current planet
+const [focusNow, setFocusNow] = useState("Beam further to " + initialFocus) // current focus position
+const [hand, setHand] = useState(true) // layout (console and cockpit right or left side)
 const movingArr = ["ZERO", ...commands.flat(3)] 
 const length = movingArr.length
 const cockpitCount = commands.length // amount of commands in cockpit console (green)
+const maxCount = max-globalCount
 
 function up(){setGalaxy(hopUpNow(galaxy))}
 function down(){setGalaxy(hopDownNow(galaxy))}
@@ -35,8 +39,11 @@ function hopUpInScope(object){
   const Focus = object.children.find((element) => (element.focus === true))
   setThisPlanet(Focus.name)
   setThisId (Focus.id)
-  if (seeds === true) { if (Focus.goal === true){setDestination(true)}} else { if (Focus.seedpack === true){setSeeds(true)}}
+  if (chargeStatus === true) {if (Focus.goal === true){setDestination(true)}} else { if (Focus.greens === true){setChargeStatus(true)}}
   const NewSubScope = Focus.children.map((element) => (element.flow === 1 ? {...element, focus: true} : element))
+  const nextFocus = (NewSubScope.find((element)=>(element.focus === true)))
+  console.log(nextFocus)
+  if(nextFocus !== undefined){setFocusNow("Beam further out to " + nextFocus.name)}else{setFocusNow("As far out as possible")}
   const newScope = object.children.map((element) => (element.focus === true ? {...element, focus: false, active: true, tracked:true, children: NewSubScope} : element))
   const newObject = {...object, children: newScope, active:false, seeds:false}
   return newObject}
@@ -46,6 +53,8 @@ function turnFocusLeftInScope(objekt){
   const scope = objekt.children
   const Focus = scope.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1
+  const nextFocus = (scope.find((element)=>(element.flow === nextFocusIndex)))
+  setFocusNow("Beam further out to " + nextFocus.name)
   const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
@@ -55,25 +64,28 @@ function turnFocusRightInScope(objekt){
   const scope = objekt.children
   const Focus = scope.find((element)=>(element.focus === true))
   const nextFocusIndex = Focus.flow === 1 ? scope.length : Focus.flow - 1
+  const nextFocus = (scope.find((element)=>(element.flow === nextFocusIndex)))
+  setFocusNow("Beam further out to " + nextFocus.name)
   const scopeA = scope.map ((element)=>(element.focus === true ? {...element, focus:false} : element))
   const scopeB = scopeA.map ((element) => (element.flow === nextFocusIndex ? {...element, focus:true} : element))
   return {...objekt, children:scopeB}}}
 
 function hopDownInScope(object){
   const Current = object.children.find((element) => (element.active === true))
-  setThisPlanet(Current.name)
+  setThisPlanet(object.name)
   setThisId (Current.id)
 
-  if(seeds === true) {if(object.goal === true){setDestination(true)}} else { if (object.seedpack === true){setSeeds(true)}}
-
+  if(chargeStatus === true) {if(object.goal === true){setDestination(true)}} else { if (object.greens === true){setChargeStatus(true)}}
      if (Current.limit === true){
     const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false} : element))
     const newObject = {...object, children: newScope, active:true}
+    setFocusNow("Beam Further out to " + Current.name)
     return newObject
         } else {
     const NewSubScope = Current.children.map((element) => ({...element, focus: false}))
     const newScope = object.children.map((element) => (element === Current? {...element, focus: true, active: false, tracked: false, children: NewSubScope} : element))
     const newObject = {...object, children: newScope, active:true}
+    setFocusNow("Beam Further out to " + Current.name)
     return newObject}}
 
 // moving functions global
@@ -117,42 +129,34 @@ function hopDownNow(y){
 
 // cockpit functions
 
-function addRight(){
-if(cpStatus === 1){
-  setCommandLine([...commandLine, "RIGHT"])
-  setCommands([...commands, "RIGHT"])}
-else {setTempArr([...tempArr, "RIGHT"])}}
-
-function addLeft(){
+function add(direction){
   if(cpStatus === 1){
-    setCommandLine([...commandLine, "LEFT"])
-    setCommands([...commands, "LEFT"])}
-  else {setTempArr([...tempArr, "LEFT"])}}
-  
-function addUp(){
-  if(cpStatus === 1){
-      setCommandLine([...commandLine, "FAR"])
-      setCommands([...commands, "FAR"])}
-  else {setTempArr([...tempArr, "FAR"])}}
-
-function addDown(){
-  if(cpStatus === 1){
-     setCommandLine([...commandLine, "CLOSE"])
-     setCommands([...commands, "CLOSE"])}
-  else {setTempArr([...tempArr, "CLOSE"])}}
+    if(commandLine.length <= maxCount-1){
+    setCommandLine([...commandLine, direction])
+    setCommands([...commands, direction])}}
+  else {if(tempArr.length <= 3){setTempArr([...tempArr, direction])}}}
 
 function addTwo(){
-  if(cpStatus === 1)
+  if(cpStatus === 1 && commandLine.length <= maxCount-1)
  {setTempArr([2])
   setCpStatus(2)}}
 
  function addThree(){
-  if(cpStatus === 1)
+  if(cpStatus === 1 && commandLine.length <= maxCount-1)
  {setTempArr([3])
   setCpStatus(3)}}
-    
-function del(){setCommandLine(commandLine.slice(0, -1))
-  setCommands(commands.slice(0, -1))}
+
+function del1(){
+  if(cpStatus === 1)
+  {setCommandLine(commandLine.slice(0, -1))
+  setCommands(commands.slice(0, -1))} else   
+  {console.log("not possible")}}
+
+function del2(){
+  if (cpStatus !== 1)
+  {setTempArr(tempArr.slice(0, -1))
+  if (tempArr.length === 1){setCpStatus(1)}} else
+  {console.log("not possible")}}
 
 function set(){
   if(tempArr.length > 1){
@@ -172,17 +176,18 @@ function resolve(array){
 
 useEffect(() => {
     const hereNow = movingArr[intCount]
-    if(hereNow === "LEFT"){left()} else {
-      if(hereNow === "RIGHT"){right()} else {
-        if(hereNow === "FAR"){up()} else {
-          if(hereNow === "CLOSE"){down()}}}}}
+    if(hereNow === "left"){left()} else {
+      if(hereNow === "right"){right()} else {
+        if(hereNow === "out"){up()} else {
+          if(hereNow === "in"){down()}}}}}
       
 , [intCount])
 
 const move = () => {
+  if(cpStatus !== 1){console.log("not possible")} else {
   const myInt = setInterval(() => {
     setIntCount(prevCount => prevCount + 1)}, 500)
-    setMyIntId(myInt)}
+    setMyIntId(myInt)}}
 
 if(intCount === length){
   if(myIntId) {
@@ -192,27 +197,171 @@ if(intCount === length){
     setCommandLine([])
     setGlobalCount(prevCount => prevCount + cockpitCount)
     setCommands([])}}
+
+function changeHand(){
+  setHand(!hand)}
   
 return(
 <>
-<FieldFrame>
-<Galaxy galaxy={galaxy} seeds={seeds} destination={destination}/>
-</FieldFrame>
-<Cockpit move={move} addUp={addUp} addDown={addDown} addRight={addRight} addLeft={addLeft} addThree={addThree} addTwo={addTwo} del={del} set={set} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount}/>
-<Console globalCount={globalCount} thisPlanet={thisPlanet} seeds={seeds} thisId={thisId} destination={destination} />
-<Legend />
+<BackgroundFrame>
+
+<Frame hand={hand}>
+<WholeGalaxy>
+<Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
+</WholeGalaxy>
+<Quad1></Quad1>
+<Quad2></Quad2>
+<Quad3></Quad3>
+<Quad4></Quad4>
+<ArrLeft></ArrLeft>
+<ArrUp></ArrUp>
+<ArrDown></ArrDown>
+<ArrRight></ArrRight>
+</Frame>
+<Cockpit hand={hand} move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
+<Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
+<WhichHandFix>
+<WhichHand onClick={changeHand}>LEFT/RIGHT</WhichHand>
+</WhichHandFix>
+</BackgroundFrame>
+<GlobalCounter hand={hand} globalCount={globalCount}/>
 </>
 )}
 
-const FieldFrame = styled.div`
+const Frame = styled.div`
+height:94vh;
+width:60vw;
+position:fixed;
+display:flex;
+align-items:center;
+justify-content:center;
+
+
+
+${(props) => props.hand === true &&
+css`
+left:3vw;`}
+
+${(props) => props.hand === false &&
+css`
+right:3vw;`}
+`
+const Quad1  =styled.div`
+height:20px;
+width:20px;
+border-top:2px solid var(--mint);
+border-left:2px solid var(--mint);
+position: absolute;
+top:0;
+left:0;
+border-radius:5px 0 0 0;
+`
+
+const Quad2  =styled.div`
+height:20px;
+width:20px;
+border-top:2px solid var(--mint);
+border-right:2px solid var(--mint);
+position: absolute;
+top:0;
+right:0;
+border-radius:0 5px 0 0;
+`
+
+const Quad3  =styled.div`
+height:20px;
+width:20px;
+border-bottom:2px solid var(--mint);
+border-left:2px solid var(--mint);
+position: absolute;
+bottom:0;
+left:0;
+border-radius:0 0 0 5px;
+`
+
+const Quad4  =styled.div`
+height:20px;
+width:20px;
+border-bottom:2px solid var(--mint);
+border-right:2px solid var(--mint);
+position: absolute;
+bottom:0;
+right:0;
+border-radius:0 0 5px 0;
+`
+
+const ArrLeft  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+top:50%-10px;
+left:0;
+border-radius:5px;
+`
+
+const ArrUp  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+left:50%-10px;
+top:0;
+border-radius:5px;
+`
+
+const ArrRight  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+top:50%-10px;
+right:0;
+border-radius:5px;
+`
+
+const ArrDown  =styled.div`
+width: 20px; 
+height: 20px; 
+border: 2px solid var(--mint);
+position: absolute;
+left:50%-10px;
+bottom:0;
+border-radius:5px;
+`
+
+
+const BackgroundFrame = styled.div`
 height:100vh;
 width:100vw;
 position:fixed;
 display:flex;
 align-items:center;
 justify-content:center;
-
 `
+const WholeGalaxy = styled.div`
+height:300px;
+width:300px;
+bottom:20px;
+left:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+`
+const WhichHandFix = styled.div`
+position:fixed;
+bottom:10px;
+width:100px;
+display:flex;
+justify-content:space-between
+`
+
+const WhichHand = styled.div`
+color:white;
+cursor:pointer;
+`
+
+
 
 
 
