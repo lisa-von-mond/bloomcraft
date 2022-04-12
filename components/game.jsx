@@ -7,8 +7,8 @@ export function Game () {
   return (
       <>
         <MyMain>
+        <Starry/>
        <Field/>
-       <Starry/>
         </MyMain>
       </>
   )

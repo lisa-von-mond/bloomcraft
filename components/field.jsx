@@ -218,13 +218,16 @@ function changeHand(){
   function shiftDown(){
     setYShift(yShift+10)
   }
+
+  function shiftNow(){
+ console.log("this function will come")
+  }
   
 return(
 <>
 <BackgroundFrame>
-
 <Frame hand={hand}>
-<WholeGalaxy x={xShift} y={yShift}>
+<WholeGalaxy x={xShift} y={yShift} onKeyPress={shiftNow}>
 <Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
 </WholeGalaxy>
 <Quad1></Quad1>

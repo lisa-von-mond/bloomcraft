@@ -12,35 +12,31 @@ function addIn(){add("in")}
 return(
 <CockpitFrame hand={hand}>
 <Keyboard>
-<Key onClick={addOut} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>out</Key>
-<Key onClick={addIn} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>in</Key>
-<Key onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>left</Key>
-<Key onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>right</Key>
+<Key onClick={addOut} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>out</Key>
+<Key onClick={addIn} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>in</Key>
+<Key onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>left</Key>
+<Key onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>right</Key>
 </Keyboard>
 <Keyboard>
 <NumberKey onClick={addTwo} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>2</NumberKey>
 <NumberKey onClick={addThree} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>3</NumberKey>
 </Keyboard>
-<CommandLine2 cpStatus={cpStatus}>
+<CommandLine cpStatus={cpStatus}>
 <CommandLineInner>
-{tempArr.map((element, index)=>(<Command2 key={index} content={element}>{element}</Command2>))}
+{commandLine.map((element, index)=>(<Command key={index} cpStatus={cpStatus}>{element}</Command>))}
+<CommandLineTemp cpStatus={cpStatus}>
+{tempArr.map((element, index)=>(<CommandTemp key={index} content={element}>{element}</CommandTemp>))}
+<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
+</CommandLineTemp>
 </CommandLineInner>
 <LittleKeyContainer>
 <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount} / 4</CpCounter2>
 <DelKey2 cpStatus={cpStatus} onClick={del2}>del</DelKey2>
-<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
-</LittleKeyContainer>
-</CommandLine2>
-<CommandLine1 cpStatus={cpStatus}>
-<CommandLineInner>
-{commandLine.map((element, index)=>(<Command1 key={index} cpStatus={cpStatus}>{element}</Command1>))}
-</CommandLineInner>
-<LittleKeyContainer>
 <CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount} / {maxCount}</CpCounter1>
 <DelKey1 cpStatus={cpStatus} onClick={del1}>del</DelKey1>
 <GoKey cpStatus={cpStatus} onClick={move}>GO</GoKey>
 </LittleKeyContainer>
-</CommandLine1>
+</CommandLine>
 </CockpitFrame>
 )}
 
@@ -121,6 +117,11 @@ ${(props) => props.tempCount >= 4 &&
   css`
 filter:brightness(50%);
 cursor:default;`}
+
+${(props) => props.cpStatus > 1 &&
+  css`
+background-color:var(--sky);`}
+
 `
 //
 
@@ -134,7 +135,7 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-background-color:var(--mint);
+background-color:var(--sky);
 
 ${(props) => props.cpStatus === 1 &&
     css`
@@ -156,27 +157,21 @@ ${(props) => props.tempCount >= 4 &&
 `
 // blue command line 
 
-const CommandLine2 = styled.div `
-height:auto;
-width:100%;
-min-height:100px;
-border-radius:5px;
+const CommandLineTemp = styled.div `
+height:40px;
+border-radius:50px;
 display:flex;
-align-items:space-between;
+align-items:flex-start;
 justify-content:space-between;
-flex-direction:column;
 gap:10px;
-padding:10px;
-background-color:black;
-box-shadow: 0px 0px 10px skyblue;
 
-${(props) => props.cpStatus > 1 &&
+${(props) => props.cpStatus === 1 &&
     css`
-border: 2px solid skyblue;`}`
+display:none;`}`
 
 //
 
-const Command2 = styled.div`
+const CommandTemp = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
@@ -185,7 +180,7 @@ justify-content:center;
 width:auto;
 padding:10px;
 color:skyblue;
-border: 2px solid skyblue;
+border: 2px solid var(--sky);
 
 animation: cmd 0.3s;
 
@@ -198,8 +193,7 @@ animation: cmd 0.3s;
 
 ${(props) => props.content > 1 &&
     css`
-    background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
-    color:black;
+filter:brightness(120%);
     `}
 `
 //
@@ -212,14 +206,22 @@ align-items:center;
 justify-content:center;
 width:auto;
 padding:10px;
-background-image: radial-gradient(circle 248px at center, #16d9e3 0%, #30c7ec 47%, #46aef7 100%);
+background: var(--sky);
 cursor:pointer;
 color:black;
 
+animation: cmd 0.3s;
+
+@keyframes cmd {
+    0% { opacity:0;
+      transform:scale(1);}
+    80% {transform:scale(1.1);}
+    100% {opacity:1;
+      transform:scale(1);}}
+
 ${(props) => props.tempCount <= 1 &&
   css`
-filter:brightness(30%);
-cursor:default;`}
+display:none;`}
 
 ${(props) => props.cpStatus === 1 &&
   css`
@@ -247,7 +249,7 @@ ${(props) => props.tempCount >= 4 &&
 
 ${(props) => props.cpStatus === 1 &&
       css`
-  color:darkgray;`}
+  display:none;`}
 `
 const DelKey2 = styled.div`
 height:30px;
@@ -264,27 +266,22 @@ background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
 
 ${(props) => props.cpStatus === 1 &&
   css`
-filter:brightness(50%);
-cursor:default;`}
+display:none;`}
 `
 
 // green command line
 
-const CommandLine1 = styled.div`
+const CommandLine = styled.div`
 width:100%;
 min-height:200px;
-border-radius:5px;
+border-radius:20px;
 display:flex;
 align-items:space-between;
 justify-content:space-between;
 flex-direction:column;
 padding:10px;
 background-color:black;
-box-shadow: 0px 0px 10px var(--mint);
-
-${(props) => props.cpStatus === 1 &&
-  css`
-border: 2px solid var(--mint);`}
+border: 2px solid var(--mint);
 `
 //
 
@@ -303,12 +300,11 @@ background-image: linear-gradient(to top, #ebbba7 0%, #cfc7f8 100%);
 
 ${(props) => props.cpStatus > 1 &&
   css`
-filter:brightness(50%);
-cursor:default;`}
+display:none;`}
 `
 //
 
-const Command1 = styled.div`
+const Command = styled.div`
 height:30px;
 display:flex;
 border-radius:50px;
@@ -351,7 +347,7 @@ ${(props) => props.cockpitCount >= props.maxCount &&
 
 ${(props) => props.cpStatus > 1 &&
       css`
-  color:darkgray;`}
+  display:none;`}
 `
 //
 
