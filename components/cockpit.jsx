@@ -80,7 +80,6 @@ align-items:flex-end;
 height:50px;
 gap:10px;
 `
-
 // keyboard
 
 const Keyboard = styled.div `
@@ -121,7 +120,6 @@ cursor:default;`}
 ${(props) => props.cpStatus > 1 &&
   css`
 background-color:var(--sky);`}
-
 `
 //
 
@@ -155,7 +153,7 @@ ${(props) => props.tempCount >= 4 &&
     filter:brightness(50%);
     cursor:default;`}
 `
-// blue command line 
+// blue elements
 
 const CommandLineTemp = styled.div `
 height:40px;
@@ -189,7 +187,7 @@ animation: cmd 0.3s;
       transform:scale(1);}
     80% {transform:scale(1.1);}
     100% {opacity:1;
-      transform:scale(1);}}
+      transform:scale(1);}};
 
 ${(props) => props.content > 1 &&
     css`
@@ -210,14 +208,17 @@ background: var(--sky);
 cursor:pointer;
 color:black;
 
-animation: cmd 0.3s;
+animation: cmd 0.3s, blinker 1s linear infinite;
 
 @keyframes cmd {
     0% { opacity:0;
       transform:scale(1);}
     80% {transform:scale(1.1);}
     100% {opacity:1;
-      transform:scale(1);}}
+      transform:scale(1);}};
+
+
+@keyframes blinker { 50% {opacity: 0;}};
 
 ${(props) => props.tempCount <= 1 &&
   css`
@@ -228,7 +229,6 @@ ${(props) => props.cpStatus === 1 &&
 filter:brightness(30%);
 cursor:default;`}
 `
-
 //
 
 const CpCounter2 = styled.div`
@@ -269,7 +269,7 @@ ${(props) => props.cpStatus === 1 &&
 display:none;`}
 `
 
-// green command line
+// command line
 
 const CommandLine = styled.div`
 width:100%;

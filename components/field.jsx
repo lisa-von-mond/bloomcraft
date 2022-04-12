@@ -1,12 +1,11 @@
-import styled, {css} from "styled-components";
+import styled from "styled-components";
 import { useState, useEffect } from "react";
 import {level, max, initialPosition, initialFocus, initialId, charge, goal} from "../levels/testlevel";
 import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
-import { Galaxy } from "./galaxy";
 import { Cockpit } from "./cockpit";
 import { Console } from "./console";
+import { Scape } from "./scape";
 import { GlobalCounter } from "./counter";
-
 
 export function Field(){
 const [galaxy, setGalaxy] = useState(level) // general layout
@@ -23,8 +22,6 @@ const [thisPlanet, setThisPlanet] = useState(initialPosition) // name of current
 const [thisId, setThisId] = useState(initialId) // id of current planet
 const [focusNow, setFocusNow] = useState("Beam further to " + initialFocus) // current focus position
 const [hand, setHand] = useState(true) // layout (console and cockpit right or left side)
-const [xShift, setXShift] = useState(50) // for shifting layout in x direction
-const [yShift, setYShift] = useState(50) // for shifting layout in y direction
 const movingArr = ["ZERO", ...commands.flat(3)] 
 const length = movingArr.length
 const cockpitCount = commands.length // amount of commands in cockpit console (green)
@@ -203,42 +200,10 @@ if(intCount === length){
 function changeHand(){
   setHand(!hand)}
 
-  function shiftLeft(){
-    setXShift(xShift+10)
-  }
-  
-  function shiftRight(){
-    setXShift(xShift-10)
-  }
-  
-  function shiftUp(){
-    setYShift(yShift-10)
-  }
-  
-  function shiftDown(){
-    setYShift(yShift+10)
-  }
-
-  function shiftNow(){
- console.log("this function will come")
-  }
-  
 return(
 <>
 <BackgroundFrame>
-<Frame hand={hand}>
-<WholeGalaxy x={xShift} y={yShift} onKeyPress={shiftNow}>
-<Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
-</WholeGalaxy>
-<Quad1></Quad1>
-<Quad2></Quad2>
-<Quad3></Quad3>
-<Quad4></Quad4>
-<ArrLeft onClick={shiftLeft}></ArrLeft>
-<ArrUp onClick={shiftUp}></ArrUp>
-<ArrDown onClick={shiftDown}></ArrDown>
-<ArrRight onClick={shiftRight}></ArrRight>
-</Frame>
+<Scape galaxy={galaxy} chargeStatus={chargeStatus} destination={destination} hand={hand}/>
 <Cockpit hand={hand} move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
 <Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
 <WhichHandFix>
@@ -249,106 +214,6 @@ return(
 </>
 )}
 
-const Frame = styled.div`
-height:94vh;
-width:60vw;
-position:fixed;
-display:flex;
-align-items:center;
-justify-content:center;
-
-${(props) => props.hand === true &&
-css`
-left:3vw;`}
-
-${(props) => props.hand === false &&
-css`
-right:3vw;`}
-`
-const Quad1  =styled.div`
-height:20px;
-width:20px;
-border-top:2px solid var(--mint);
-border-left:2px solid var(--mint);
-position: absolute;
-top:0;
-left:0;
-border-radius:5px 0 0 0;
-`
-
-const Quad2  =styled.div`
-height:20px;
-width:20px;
-border-top:2px solid var(--mint);
-border-right:2px solid var(--mint);
-position: absolute;
-top:0;
-right:0;
-border-radius:0 5px 0 0;
-`
-
-const Quad3  =styled.div`
-height:20px;
-width:20px;
-border-bottom:2px solid var(--mint);
-border-left:2px solid var(--mint);
-position: absolute;
-bottom:0;
-left:0;
-border-radius:0 0 0 5px;
-`
-
-const Quad4  =styled.div`
-height:20px;
-width:20px;
-border-bottom:2px solid var(--mint);
-border-right:2px solid var(--mint);
-position: absolute;
-bottom:0;
-right:0;
-border-radius:0 0 5px 0;
-`
-
-const ArrLeft = styled.div`
-width: 20px; 
-height: 20px; 
-border: 2px solid var(--mint);
-position: absolute;
-top:50%-10px;
-left:0;
-border-radius:5px;
-`
-
-const ArrUp = styled.div`
-width: 20px; 
-height: 20px; 
-border: 2px solid var(--mint);
-position: absolute;
-left:50%-10px;
-top:0;
-border-radius:5px;
-`
-
-const ArrRight = styled.div`
-width: 20px; 
-height: 20px; 
-border: 2px solid var(--mint);
-position: absolute;
-top:50%-10px;
-right:0;
-border-radius:5px;
-`
-
-const ArrDown = styled.div`
-width: 20px; 
-height: 20px; 
-border: 2px solid var(--mint);
-position: absolute;
-left:50%-10px;
-bottom:0;
-border-radius:5px;
-`
-
 const BackgroundFrame = styled.div`
 height:100vh;
 width:100vw;
@@ -357,16 +222,7 @@ display:flex;
 align-items:center;
 justify-content:center;
 `
-const WholeGalaxy = styled.div`
-height:10px;
-width:10px;
-position:absolute;
-bottom:${props => props.y}%;
-left:${props => props.x}%;
-display:flex;
-align-items:center;
-justify-content:center;
-`
+
 const WhichHandFix = styled.div`
 position:fixed;
 bottom:10px;
