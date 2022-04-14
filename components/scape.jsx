@@ -3,7 +3,7 @@ import { Galaxy } from "./galaxy";
 import { useState } from "react";
 
 
-export function Scape({galaxy, chargeStatus, destination, hand}){
+export function Scape({galaxy, chargeStatus, destination}){
 
 const [xShift, setXShift] = useState(50) // for shifting layout in x direction
 const [yShift, setYShift] = useState(50) // for shifting layout in y direction
@@ -20,7 +20,8 @@ function shiftNow(){console.log("this function will come")}
 
 return(
 
-<Frame hand={hand}>
+<>
+<ScapeInner>
 <WholeGalaxy x={xShift} y={yShift} onKeyPress={shiftNow}>
 <Galaxy galaxy={galaxy} chargeStatus={chargeStatus} destination={destination}/>
 </WholeGalaxy>
@@ -32,27 +33,23 @@ return(
 <ArrUp onClick={shiftUp}></ArrUp>
 <ArrDown onClick={shiftDown}></ArrDown>
 <ArrRight onClick={shiftRight}></ArrRight>
-</Frame>
+</ScapeInner>
+</>
 )
 
 }
 
-const Frame = styled.div`
-height:94vh;
-width:60vw;
-position:fixed;
-display:flex;
-align-items:center;
-justify-content:center;
+const ScapeInner = styled.div`
 
-${(props) => props.hand === true &&
-css`
-left:3vw;`}
-
-${(props) => props.hand === false &&
-css`
-right:3vw;`}
+position:relative;
+min-width:300px;
+min-height:300px;
+max-width:90%;
+max-height:90%;
+aspect-ratio:1;
+}
 `
+
 const WholeGalaxy = styled.div`
 height:10px;
 width:10px;
@@ -62,6 +59,12 @@ left:${props => props.x}%;
 display:flex;
 align-items:center;
 justify-content:center;
+
+@media only screen and (max-width:800px){
+    transform:scale(80%,80%);}
+
+@media only screen and (max-width:600px){
+        transform:scale(70%,70%);}
 `
 // markers
 
@@ -112,7 +115,8 @@ width: 20px;
 height: 20px; 
 border: 2px solid var(--mint);
 position: absolute;
-top:50%-10px;
+transform:translate(0px, -5px);
+top:50%;
 left:0;
 border-radius:5px;
 `
@@ -121,7 +125,8 @@ width: 20px;
 height: 20px; 
 border: 2px solid var(--mint);
 position: absolute;
-left:50%-10px;
+transform:translate(-5px, 0);
+left:50%;
 top:0;
 border-radius:5px;
 `
@@ -130,7 +135,8 @@ width: 20px;
 height: 20px; 
 border: 2px solid var(--mint);
 position: absolute;
-top:50%-10px;
+top:50%;
+transform:translate(0px, -5px);
 right:0;
 border-radius:5px;
 `
@@ -139,7 +145,8 @@ width: 20px;
 height: 20px; 
 border: 2px solid var(--mint);
 position: absolute;
-left:50%-10px;
+transform:translate(-5px, 0);
+left:50%;
 bottom:0;
 border-radius:5px;
 `

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import { useState, useEffect } from "react";
 import {level, max, initialPosition, initialFocus, initialId, charge, goal} from "../levels/testlevel";
 import {track, Beam1, Beam2, Beam3} from "../utils/utility-functions"
@@ -202,41 +202,95 @@ function changeHand(){
 
 return(
 <>
-<BackgroundFrame>
+<BGFrame hand={hand}>
+
+<SCFrame>
 <Scape galaxy={galaxy} chargeStatus={chargeStatus} destination={destination} hand={hand}/>
-<Cockpit hand={hand} move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
-<Console hand={hand} globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
-<WhichHandFix>
-<WhichHand onClick={changeHand}>LEFT/RIGHT</WhichHand>
-</WhichHandFix>
-</BackgroundFrame>
+</SCFrame>
+
+<CPFrame>
+<Cockpit move={move} add={add} addThree={addThree} addTwo={addTwo} del1={del1} del2={del2} set={set} cpStatus={cpStatus} commandLine={commandLine} tempArr={tempArr} cockpitCount={cockpitCount} maxCount={maxCount}/>
+<Console globalCount={globalCount} thisPlanet={thisPlanet} chargeStatus={chargeStatus} thisId={thisId} destination={destination} focusNow={focusNow} charge={charge} goal={goal}/>
+
+</CPFrame>
+
+</BGFrame>
+<NoteFrame hand={hand}>
+<LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
+</NoteFrame>
 <GlobalCounter hand={hand} globalCount={globalCount}/>
 </>
 )}
 
-const BackgroundFrame = styled.div`
-height:100vh;
-width:100vw;
+const BGFrame = styled.div`
+height:100%;
+width:100%;
 position:fixed;
+display:flex;
+align-items:canter;
+justify-content:space-between;
+padding:var(--gap);
+@media only screen and (orientation:landscape){
+
+flex-direction:row;
+${(props) => props.hand === false &&
+    css`
+    flex-direction:row-reverse;`} }
+
+@media only screen and (orientation:portrait){flex-direction:column;}
+`
+const CPFrame = styled.div `
+z-index:100;
+@media only screen and (orientation:landscape){
+width:30%;
+height:100%;}
+
+@media only screen and (orientation:portrait){
+heigth:30%;
+width:100%;}
+
+display:flex;
+justify-content:space-evenly;
+align-items:center;
+flex-direction:column;
+gap:var(--gap);
+
+@media only screen and (orientation:portrait) and (min-width:450px) and (max-width:800px){
+  flex-direction:row;}
+
+`
+const SCFrame = styled.div`
 display:flex;
 align-items:center;
 justify-content:center;
-`
 
-const WhichHandFix = styled.div`
+@media only screen and (orientation:portrait){
+  heigth:70%;
+  width:100%;};
+
+@media only screen and (orientation:landscape){
+  width:70%;
+  height:100%;}
+`
+const NoteFrame = styled.div`
 position:fixed;
-bottom:10px;
-width:100px;
-display:flex;
-justify-content:space-between
-`
+bottom:1rem;
 
-const WhichHand = styled.div`
-color:white;
+${(props) => props.hand === true &&
+  css`
+left:1rem;`} }
+
+${(props) => props.hand === false &&
+  css`
+right:1rem;`} }
+
+`
+const LayoutSwitch = styled.div`
+
+color:var(--mint);
 cursor:pointer;
+border-bottom: 1px solid var(--mint);
+margin:0;
+padding:0;
+@media screen and (max-width:450px){display:none;}
 `
-
-
-
-
-

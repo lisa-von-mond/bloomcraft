@@ -4,8 +4,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  /*font-family: 'Red Hat Mono', monospace;*/
-  font-family: 'Syne Mono', monospace;
+  font-family: 'Red Hat Mono', monospace;
+  /*font-family: 'Syne Mono', monospace;*/
 }
 
 a {
@@ -17,4 +17,17 @@ a {
   box-sizing: border-box;
   --mint: #02ff9e;
   --sky: #8bebe6;
+  --pink: hotpink;
+}
+
+@media screen and (orientation: portrait) {
+  * {
+    --gap: 2vh;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  * {
+    --gap: 2vw;
+  }
 }

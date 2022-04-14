@@ -8,7 +8,7 @@ export function Game () {
       <>
         <MyMain>
         <Starry/>
-       <Field/>
+        <Field/>
         </MyMain>
       </>
   )
