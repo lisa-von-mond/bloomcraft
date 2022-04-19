@@ -1,53 +1,54 @@
 import styled, {css} from "styled-components";
 
-export function Console({thisPlanet, focusNow, thisId, chargeStatus, destination, charge}){
+export function InfoConsole({thisPlanet, focusNow, thisId, chargeStatus, destination, charge}){
 
-return(<CFrame>
+return(<>
+    <ConsoleFrame>
     <PositionInfo>You are on planet {thisPlanet} {thisId}</PositionInfo>
     <PositionInfo>{focusNow}</PositionInfo>
     <ChargeInfo1 chargeStatus={chargeStatus}>CHARGE PICKED UP</ChargeInfo1>
     <ChargeInfo2 chargeStatus={chargeStatus}>Charge has to be picked up from {charge}</ChargeInfo2>
-    <DestInfo destination={destination}>YOU MADE IT!</DestInfo>
-    </CFrame>)}
+    <DestInfo destination={destination}>MISSION COMPLETED</DestInfo>
+    </ConsoleFrame>
+    </>)}
 
-const CFrame = styled.div`
-bordee:2px solid gold;
-@media only screen and (orientation:portrait){
- display:none;}
-@media only screen and (max-height:800px)){
-  display:none;}
-@media only screen and (max-width:600px)){
-    display:none;}
+
+const ConsoleFrame = styled.div`
+border:2px solid var(--puremint);
+border-radius:1rem;
+font-size:0.8rem;
+padding:1rem;
+margin:1rem;
 `
 
 const ChargeInfo1 = styled.p`
-padding:0;
 margin:5px;
-color: #00f700;
+color: var(--puremint);
+display:inherit;
 ${(props) => props.chargeStatus === false &&
   css`
 display:none`}`
 
 const ChargeInfo2 = styled.p`
-padding:0;
 margin:5px;
 color: white;
+display:inherit;
 ${(props) => props.chargeStatus === true &&
   css`
 display:none`}`
 
 const DestInfo = styled.p`
-padding:0;
 margin:5px;
-color: skyblue;
+color: var(--puremint);
+display:inherit;
 ${(props) => props.destination === false &&
   css`
 display:none`}`
 
 const PositionInfo = styled.p`
   color: white;
-  padding:0;
-  margin:5px;`
+  margin:5px;
+  display:inherit;`
 
 
 

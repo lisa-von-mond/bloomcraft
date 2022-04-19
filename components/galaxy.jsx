@@ -17,6 +17,7 @@ return(<>
 {galaxy.map((one)=><MyGalaxy key={one.name} scope={one.scope} chargeStatus={chargeStatus}>
 
 <Planet goal={one.goal}><Image src={planet1} /></Planet>
+
 <LegendId><p>{one.id} {one.name}</p></LegendId>
 <PlanetOverlay><Image src={planetoverlay}/></PlanetOverlay>
 <Greens greens={one.greens} chargeStatus={chargeStatus}><Image src={greenslayer}/></Greens>
@@ -111,6 +112,8 @@ ${(props) => props.focus === true &&
     animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
     @keyframes blinker { 50% {opacity: 0;}}
     @keyframes orbit-rev {from {transform:rotate(0deg)} to {transform:rotate(-360deg)}}`}
+
+
 `
 //
 
@@ -223,3 +226,4 @@ p{color:white;
   padding:0;
   margin:0;
 }`
+
