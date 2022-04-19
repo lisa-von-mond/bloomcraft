@@ -2,11 +2,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## ABOUT
 
-Bloomcraft is a game for children, young teenies and adults who like playing.
+Bloom3000is a game for children, young teenies and adults who like playing.
 As a future space activist, living in an aera, when earth has became uninhabitable because of climate crisis, your task is to preserve intergalactic species and transport seed ressources from planets to others.
 Completing a mission means collecting a package from a certain planet and bring it to a destination planet.
 
-## BASIC GAME INFO (IN PROGRESS)
+## BASIC GAME INFO
 
 ### How the game field is structured:
 
