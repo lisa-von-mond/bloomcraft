@@ -7,6 +7,7 @@ import { Scape } from './scape';
 import { GlobalCounter } from './counter';
 import { GreenAlert } from './greenalert';
 import { RedAlert } from './redalert';
+import { OrangeAlert } from './orangealert';
 
 export function Field({
   level,
@@ -17,6 +18,8 @@ export function Field({
   charge,
   goal,
   reset,
+  thislevel,
+  nextlevel,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -32,6 +35,8 @@ export function Field({
   const [thisId, setThisId] = useState(initialId); // id of current planet
   const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
+  const [systemCrash, setSystemCrash] = useState(false);
+  const [currentLevel, setCurrentLevel] = useState(thislevel);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
   const cockpitCount = commands.length; // amount of commands in cockpit console (green)
@@ -105,6 +110,7 @@ export function Field({
   function turnFocusLeftInScope(objekt) {
     if (objekt.limit === true) {
       console.log('nothing to turn left here');
+      setSystemCrash(true);
     } else {
       const scope = objekt.children;
       const Focus = scope.find(element => element.focus === true);
@@ -124,6 +130,7 @@ export function Field({
   function turnFocusRightInScope(objekt) {
     if (objekt.limit === true) {
       console.log('nothing to turn right here');
+      setSystemCrash(true);
     } else {
       const scope = objekt.children;
       const Focus = scope.find(element => element.focus === true);
@@ -194,6 +201,7 @@ export function Field({
     } else {
       if (track(Base).limit === true) {
         console.log('not possible to hop further here');
+        setSystemCrash(true);
         return y;
       } else {
         if (track(Base).active === true) {
@@ -206,6 +214,7 @@ export function Field({
             return Beam3(hopUpInScope, Base);
           } else {
             console.log('not possible to hop further here');
+            setSystemCrash(true);
             return y;
           }
         }
@@ -220,6 +229,7 @@ export function Field({
     } else {
       if (track(Base).limit === true) {
         console.log('nothing to turn left here');
+        setSystemCrash(true);
         return y;
       } else {
         if (track(Base).active === true) {
@@ -232,6 +242,7 @@ export function Field({
             return Beam3(turnFocusLeftInScope, Base);
           } else {
             console.log('nothing to turn left here');
+            setSystemCrash(true);
             return y;
           }
         }
@@ -246,6 +257,7 @@ export function Field({
     } else {
       if (track(Base).limit === true) {
         console.log('nothing to turn right here');
+        setSystemCrash(true);
         return y;
       } else {
         if (track(Base).active === true) {
@@ -258,6 +270,7 @@ export function Field({
             return Beam3(turnFocusRightInScope, Base);
           } else {
             console.log('nothing to turn right here');
+            setSystemCrash(true);
             return y;
           }
         }
@@ -269,6 +282,7 @@ export function Field({
     let Base = y[0];
     if (Base.active === true) {
       console.log('nothing to go closer here');
+      setSystemCrash(true);
       return y;
     } else {
       if (track(Base).active === true) {
@@ -399,6 +413,10 @@ export function Field({
     setHand(!hand);
   }
 
+  function fixCrash() {
+    setSystemCrash(false);
+  }
+
   return (
     <>
       <BGFrame hand={hand}>
@@ -444,7 +462,12 @@ export function Field({
         <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
       </NoteFrame>
       <GlobalCounter hand={hand} globalCount={globalCount} max={max} />
-      <GreenAlert destination={destination} />
+      <GreenAlert
+        destination={destination}
+        nextlevel={nextlevel}
+        reset={reset}
+      />
+      <OrangeAlert systemCrash={systemCrash} fixCrash={fixCrash} />
       <RedAlert
         globalCount={globalCount}
         max={max}

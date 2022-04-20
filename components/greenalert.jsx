@@ -1,12 +1,17 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
+import Link from 'next/link';
 
-export function GreenAlert({ destination }) {
+export function GreenAlert({ destination, nextlevel, reset }) {
   return (
     <Blur destination={destination}>
       <Window destination={destination}>
         Level completed
-        <MyButton text="next level" color="dark" />
+        <Link href={`/levels/${nextlevel}`}>
+          <a>
+            <MyButton click={reset} text="next level" color="dark" />
+          </a>
+        </Link>
       </Window>
     </Blur>
   );
