@@ -2,6 +2,7 @@ import Head from 'next/head';
 import { Game } from '../../components/game';
 import levelone from '../../levels/testlevel1';
 import leveltwo from '../../levels/testlevel2';
+import levelthree from '../../levels/testlevel3';
 
 export default function Level({ levelData }) {
   return (
@@ -21,6 +22,7 @@ export default function Level({ levelData }) {
 const levels = {
   levelone, // same as levelone:levelone
   leveltwo,
+  levelthree,
 };
 
 export async function getStaticPaths() {

@@ -29,12 +29,20 @@ export function Field({
   const [cpStatus, setCpStatus] = useState(1); // factor for command line (1, 2 or 3)
   const [thisPlanet, setThisPlanet] = useState(initialPosition); // name of current planet
   const [thisId, setThisId] = useState(initialId); // id of current planet
-  const [focusNow, setFocusNow] = useState('Beam further to ' + initialFocus); // current focus position
+  const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
   const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
+
+  function initFocus() {
+    if (initialFocus !== false) {
+      return 'Beam further to ' + initialFocus;
+    } else {
+      return 'As far out as possible';
+    }
+  }
 
   function up() {
     setGalaxy(hopUpNow(galaxy));
@@ -183,17 +191,22 @@ export function Field({
     if (Base.active === true) {
       return Beam1(hopUpInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(hopUpInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('not possible to hop further here');
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(hopUpInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(hopUpInScope, Base);
         } else {
-          console.log('not possible to hop further here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(hopUpInScope, Base);
+          } else {
+            console.log('not possible to hop further here');
+            return y;
+          }
         }
       }
     }
@@ -204,17 +217,22 @@ export function Field({
     if (Base.active === true) {
       return Beam1(turnFocusLeftInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(turnFocusLeftInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('nothing to turn left here');
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(turnFocusLeftInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(turnFocusLeftInScope, Base);
         } else {
-          console.log('nothing to turn left here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(turnFocusLeftInScope, Base);
+          } else {
+            console.log('nothing to turn left here');
+            return y;
+          }
         }
       }
     }
@@ -225,17 +243,22 @@ export function Field({
     if (Base.active === true) {
       return Beam1(turnFocusRightInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(turnFocusRightInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('nothing to turn right here');
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(turnFocusRightInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(turnFocusRightInScope, Base);
         } else {
-          console.log('nothing to turn right here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(turnFocusRightInScope, Base);
+          } else {
+            console.log('nothing to turn right here');
+            return y;
+          }
         }
       }
     }
@@ -455,6 +478,7 @@ const CTRLFrame = styled.div`
   flex-direction: column;
   font-size: 0.8rem;
   gap: 1rem;
+  padding: 2rem;
 
   @media only screen and (orientation: landscape) {
     width: 30%;

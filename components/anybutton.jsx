@@ -11,4 +11,6 @@ const AnyButton = styled.div`
   border-radius: 1rem;
   text-align: center;
   cursor: pointer;
+  background: none;
+  font-size: 1rem;
 `;
