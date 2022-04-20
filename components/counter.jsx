@@ -1,10 +1,9 @@
 import styled, {css} from "styled-components";
-import {max} from "../levels/testlevel";
 
-export function GlobalCounter({hand, globalCount}){
+export function GlobalCounter({hand, globalCount, max}){
 
 return(<CounterFix hand={hand}>
-    <Counter max={max} count={globalCount}>{globalCount} / {max}</Counter>
+    <Counter>{globalCount} / {max}</Counter>
     </CounterFix>)}
 
 const CounterFix = styled.div`
@@ -31,12 +30,6 @@ padding:0;
 margin:0;
 color: white;
 font-size:20px;
-
-${(props) => props.count >= props.max &&
-  css`
-  animation: blinker 1s linear infinite;
-  @keyframes blinker { 50% {opacity: 0;}}
-  color:yellow;`}
 `
 
 

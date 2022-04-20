@@ -1,64 +1,54 @@
 import styled, {css} from "styled-components";
-import {max} from "../levels/testlevel";
 
-export function Console({hand, thisPlanet, focusNow, thisId, chargeStatus, destination, charge}){
+export function InfoConsole({thisPlanet, focusNow, thisId, chargeStatus, destination, charge}){
 
-return(<ConsoleFix hand={hand}>
+return(<>
+    <ConsoleFrame>
     <PositionInfo>You are on planet {thisPlanet} {thisId}</PositionInfo>
     <PositionInfo>{focusNow}</PositionInfo>
     <ChargeInfo1 chargeStatus={chargeStatus}>CHARGE PICKED UP</ChargeInfo1>
     <ChargeInfo2 chargeStatus={chargeStatus}>Charge has to be picked up from {charge}</ChargeInfo2>
-    <DestInfo destination={destination}>YOU MADE IT!</DestInfo>
-    </ConsoleFix>)}
+    <DestInfo destination={destination}>MISSION COMPLETED</DestInfo>
+    </ConsoleFrame>
+    </>)}
 
-const ConsoleFix = styled.div`
-position:fixed;
-bottom:30px;
-width:30vw;
-height:auto;
-display:flex;
-flex-direction:column;
-justify-content:flex-end;
-color:white;
-font-size: 16px;
 
-${(props) => props.hand === true &&
-  css`
-  right:3vw;`}
-  
-${(props) => props.hand === false &&
-  css`
-  left:3vw;`}
+const ConsoleFrame = styled.div`
+border:2px solid var(--puremint);
+border-radius:1rem;
+font-size:0.8rem;
+padding:1rem;
+margin:1rem;
 `
 
 const ChargeInfo1 = styled.p`
-padding:0;
-margin:0;
-color: #00f700;
+margin:5px;
+color: var(--puremint);
+display:inherit;
 ${(props) => props.chargeStatus === false &&
   css`
 display:none`}`
 
 const ChargeInfo2 = styled.p`
-padding:0;
-margin:0;
+margin:5px;
 color: white;
+display:inherit;
 ${(props) => props.chargeStatus === true &&
   css`
 display:none`}`
 
 const DestInfo = styled.p`
-padding:0;
-margin:0;
-color: skyblue;
+margin:5px;
+color: var(--puremint);
+display:inherit;
 ${(props) => props.destination === false &&
   css`
 display:none`}`
 
 const PositionInfo = styled.p`
   color: white;
-  padding:0;
-  margin:0;`
+  margin:5px;
+  display:inherit;`
 
 
 

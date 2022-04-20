@@ -4,8 +4,8 @@ html,
 body {
   padding: 0;
   margin: 0;
-  /*font-family: 'Red Hat Mono', monospace;*/
-  font-family: 'Syne Mono', monospace;
+  font-family: 'Red Hat Mono', monospace;
+  /*font-family: 'Syne Mono', monospace;*/
 }
 
 a {
@@ -15,5 +15,37 @@ a {
 
 * {
   box-sizing: border-box;
-  --mint: #02ff9e;
+  --mint: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+  --sky: radial-gradient(
+    circle 248px at center,
+    #16d9e3 0%,
+    #30c7ec 47%,
+    #46aef7 100%
+  );
+  --neutral: white;
+  --pink: hotpink;
+  --puremint: #02ff9e;
+  --puresky: #8bebe6;
+  --purepink: hotpink;
+  --dark: black;
 }
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes cmd {
+  0% {
+    opacity: 0;
+    transform: scale(1);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+} ;

@@ -1,8 +1,7 @@
-import Head from 'next/head'
-import { Game } from "../components/game";
+import Head from 'next/head';
+import { Intro } from '../components/intro';
 
-export default function App () {
-
+export default function App() {
   return (
     <div>
       <Head>
@@ -11,8 +10,8 @@ export default function App () {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      <Game/>
+        <Intro />
       </main>
     </div>
-  )
+  );
 }
