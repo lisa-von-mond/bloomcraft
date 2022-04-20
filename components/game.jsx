@@ -6,11 +6,15 @@ import { Starry } from './starry';
 export function Game({ levelData }) {
   const [newKey, setNewKey] = useState(1);
 
+  function reset() {
+    setNewKey(newKey + 1);
+  }
+
   return (
     <>
       <MyMain>
         <Starry />
-        <Field {...levelData} key={newKey} />
+        <Field {...levelData} key={newKey} reset={reset} />
       </MyMain>
     </>
   );

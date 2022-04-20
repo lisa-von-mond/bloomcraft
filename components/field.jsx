@@ -16,6 +16,7 @@ export function Field({
   initialId,
   charge,
   goal,
+  reset,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -444,7 +445,12 @@ export function Field({
       </NoteFrame>
       <GlobalCounter hand={hand} globalCount={globalCount} max={max} />
       <GreenAlert destination={destination} />
-      <RedAlert globalCount={globalCount} max={max} destination={destination} />
+      <RedAlert
+        globalCount={globalCount}
+        max={max}
+        destination={destination}
+        reset={reset}
+      />
     </>
   );
 }

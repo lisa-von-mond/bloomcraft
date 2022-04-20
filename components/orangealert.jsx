@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 
-export function RedAlert({ globalCount, max, reset }) {
+export function GreenAlert({ destination }) {
   return (
-    <Blur globalCount={globalCount} max={max}>
-      <Window>
-        Mission failed
-        <MyButton click={reset} text="try again" color="dark" />
+    <Blur destination={destination}>
+      <Window destination={destination}>
+        system error - impossible operation
+        <MyButton text="back" color="warn" />
       </Window>
     </Blur>
   );
@@ -18,9 +18,15 @@ const Window = styled.div`
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
-  background: var(--pink);
+  background: var(--mint);
   height: auto;
   border-radius: 1rem;
+
+  ${props =>
+    props.destination === false &&
+    css`
+      display: none;
+    `}
 `;
 
 const Blur = styled.div`
@@ -33,12 +39,6 @@ const Blur = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
-  ${props =>
-    props.globalCount < props.max &&
-    css`
-      display: none;
-    `}
 
   ${props =>
     props.destination === false &&
