@@ -12,12 +12,7 @@ export function Intro() {
         <Headline>BLOOM3000</Headline>
         <Link href="/levels/levelone">
           <a>
-            <MyButton text="level 1" color="puremint" />
-          </a>
-        </Link>
-        <Link href="/levels/leveltwo">
-          <a>
-            <MyButton text="level 2" color="puremint" />
+            <MyButton text="play" color="puremint" />
           </a>
         </Link>
       </MyMain>

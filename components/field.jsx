@@ -20,6 +20,7 @@ export function Field({
   reset,
   thislevel,
   nextlevel,
+  newKey,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -41,6 +42,10 @@ export function Field({
   const length = movingArr.length;
   const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
+
+  function resetDestination() {
+    setDestination(false);
+  } // maybe this function is not needed
 
   function initFocus() {
     if (initialFocus !== false) {
@@ -466,8 +471,13 @@ export function Field({
         destination={destination}
         nextlevel={nextlevel}
         reset={reset}
+        resetDestination={resetDestination}
       />
-      <OrangeAlert systemCrash={systemCrash} fixCrash={fixCrash} />
+      <OrangeAlert
+        reset={reset}
+        systemCrash={systemCrash}
+        fixCrash={fixCrash}
+      />
       <RedAlert
         globalCount={globalCount}
         max={max}

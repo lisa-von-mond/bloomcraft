@@ -21,6 +21,7 @@ const Window = styled.div`
   background: var(--pink);
   height: auto;
   border-radius: 1rem;
+  animation: popup 0.5s;
 `;
 
 const Blur = styled.div`

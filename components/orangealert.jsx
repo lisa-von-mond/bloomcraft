@@ -1,12 +1,12 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 
-export function OrangeAlert({ systemCrash, fixCrash }) {
+export function OrangeAlert({ systemCrash, fixCrash, reset }) {
   return (
     <Blur systemCrash={systemCrash}>
       <Window systemCrash={systemCrash}>
         system crash<br></br>impossible operation
-        <MyButton text="back" color="dark" click={fixCrash} />
+        <MyButton text="back" color="dark" click={reset} />
       </Window>
     </Blur>
   );
@@ -23,6 +23,7 @@ const Window = styled.div`
   background: var(--warn);
   height: auto;
   border-radius: 1rem;
+  animation: popup 0.5s;
 
   ${props =>
     props.systemCrash === false &&

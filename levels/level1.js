@@ -58,7 +58,7 @@ export default {
           ],
           limit: false,
           angl: 170,
-          dist: 100,
+          dist: 130,
         },
 
         {

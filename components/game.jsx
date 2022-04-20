@@ -14,7 +14,7 @@ export function Game({ levelData }) {
     <>
       <MyMain>
         <Starry />
-        <Field {...levelData} key={newKey} reset={reset} />
+        <Field {...levelData} key={newKey} reset={reset} newKey={newKey} />
       </MyMain>
     </>
   );

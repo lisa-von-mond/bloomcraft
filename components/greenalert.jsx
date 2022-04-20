@@ -2,14 +2,25 @@ import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 import Link from 'next/link';
 
-export function GreenAlert({ destination, nextlevel, reset }) {
+export function GreenAlert({
+  destination,
+  nextlevel,
+  resetDestination,
+  reset,
+}) {
   return (
     <Blur destination={destination}>
       <Window destination={destination}>
         Level completed
-        <Link href={`/levels/${nextlevel}`}>
+        <Link
+          href={{
+            pathname: `/levels/${nextlevel}`,
+            query: { id: `${nextlevel}` },
+          }}
+          passHref
+        >
           <a>
-            <MyButton click={reset} text="next level" color="dark" />
+            <MyButton click={resetDestination} text="next level" color="dark" />
           </a>
         </Link>
       </Window>
@@ -26,6 +37,7 @@ const Window = styled.div`
   background: var(--mint);
   height: auto;
   border-radius: 1rem;
+  animation: popup 0.5s;
 
   ${props =>
     props.destination === false &&
