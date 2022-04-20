@@ -171,6 +171,6 @@ export default {
   initialFocus: 'foo',
   charge: 'lea',
   goal: 'cleo',
-  thislevel: 2,
-  nextlevel: 'levelthree',
+  thisLevel: 2,
+  nextLevel: 'levelthree',
 };

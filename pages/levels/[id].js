@@ -3,8 +3,12 @@ import { Game } from '../../components/game';
 import levelone from '../../levels/level1';
 import leveltwo from '../../levels/level2';
 import levelthree from '../../levels/level3';
+import { useRouter } from 'next/router';
 
 export default function Level({ levelData }) {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <div>
       <Head>
@@ -13,7 +17,7 @@ export default function Level({ levelData }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Game levelData={levelData} />
+        <Game id={id} levelData={levelData} />
       </main>
     </div>
   );

@@ -2,23 +2,12 @@ import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 import Link from 'next/link';
 
-export function GreenAlert({
-  destination,
-  nextlevel,
-  resetDestination,
-  reset,
-}) {
+export function GreenAlert({ destination, nextLevel, resetDestination }) {
   return (
     <Blur destination={destination}>
       <Window destination={destination}>
         Level completed
-        <Link
-          href={{
-            pathname: `/levels/${nextlevel}`,
-            query: { id: `${nextlevel}` },
-          }}
-          passHref
-        >
+        <Link href={`/levels/${nextLevel}`} passHref>
           <a>
             <MyButton click={resetDestination} text="next level" color="dark" />
           </a>

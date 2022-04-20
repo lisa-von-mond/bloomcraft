@@ -325,6 +325,6 @@ export default {
   initialFocus: 'jupiter',
   charge: 'venus',
   goal: 'svea',
-  thislevel: 3,
-  nextlevel: 'levelone',
+  thisLevel: 3,
+  nextLevel: 'levelone',
 };

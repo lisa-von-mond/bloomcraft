@@ -18,9 +18,8 @@ export function Field({
   charge,
   goal,
   reset,
-  thislevel,
-  nextlevel,
-  newKey,
+  thisLevel,
+  nextLevel,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -37,15 +36,10 @@ export function Field({
   const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
   const [systemCrash, setSystemCrash] = useState(false);
-  const [currentLevel, setCurrentLevel] = useState(thislevel);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
   const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
-
-  function resetDestination() {
-    setDestination(false);
-  } // maybe this function is not needed
 
   function initFocus() {
     if (initialFocus !== false) {
@@ -466,18 +460,14 @@ export function Field({
       <NoteFrame hand={hand}>
         <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
       </NoteFrame>
-      <GlobalCounter hand={hand} globalCount={globalCount} max={max} />
-      <GreenAlert
-        destination={destination}
-        nextlevel={nextlevel}
-        reset={reset}
-        resetDestination={resetDestination}
+      <GlobalCounter
+        hand={hand}
+        globalCount={globalCount}
+        max={max}
+        thisLevel={thisLevel}
       />
-      <OrangeAlert
-        reset={reset}
-        systemCrash={systemCrash}
-        fixCrash={fixCrash}
-      />
+      <GreenAlert destination={destination} nextLevel={nextLevel} />
+      <OrangeAlert reset={reset} systemCrash={systemCrash} />
       <RedAlert
         globalCount={globalCount}
         max={max}
@@ -529,6 +519,7 @@ const CTRLFrame = styled.div`
     width: 100%;
   }
 `;
+
 const SCFrame = styled.div`
   display: flex;
   align-items: center;

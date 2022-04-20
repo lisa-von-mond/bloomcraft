@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 
-export function OrangeAlert({ systemCrash, fixCrash, reset }) {
+export function OrangeAlert({ systemCrash, reset }) {
   return (
     <Blur systemCrash={systemCrash}>
       <Window systemCrash={systemCrash}>

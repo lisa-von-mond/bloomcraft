@@ -86,6 +86,6 @@ export default {
   initialFocus: false,
   charge: 'saturn',
   goal: 'nuno',
-  thislevel: 1,
-  nextlevel: 'leveltwo',
+  thisLevel: 1,
+  nextLevel: 'leveltwo',
 };
