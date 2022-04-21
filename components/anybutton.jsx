@@ -17,4 +17,8 @@ const AnyButton = styled.div`
   cursor: pointer;
   background: none;
   font-size: 1rem;
+
+  &: hover {
+    animation: buttonwow 1s;
+  } ;
 `;

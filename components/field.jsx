@@ -40,8 +40,22 @@ export function Field({
   const [systemCrash, setSystemCrash] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
-  const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
+
+  function resolveSparks() {
+    if (commandLine.length > 0) {
+      const resolved = commandLine.map(element =>
+        typeof element === 'string' ? 1 : element.length - 1
+      );
+      const reducer = (accumulator, curr) => accumulator + curr;
+
+      return resolved.reduce(reducer);
+    } else {
+      return 0;
+    }
+  }
+
+  const cockpitCount = resolveSparks() + 1;
 
   function initFocus() {
     if (initialFocus !== false) {
@@ -301,7 +315,7 @@ export function Field({
 
   function add(direction) {
     if (cpStatus === 1) {
-      if (commandLine.length <= maxCount - 1) {
+      if (cockpitCount <= maxCount - 1) {
         setCommandLine([...commandLine, direction]);
         setCommands([...commands, direction]);
       }
@@ -313,14 +327,14 @@ export function Field({
   }
 
   function addTwo() {
-    if (cpStatus === 1 && commandLine.length <= maxCount - 1) {
+    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
       setTempArr([2]);
       setCpStatus(2);
     }
   }
 
   function addThree() {
-    if (cpStatus === 1 && commandLine.length <= maxCount - 1) {
+    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
       setTempArr([3]);
       setCpStatus(3);
     }
@@ -391,10 +405,14 @@ export function Field({
     if (cpStatus !== 1) {
       console.log('not possible');
     } else {
-      const myInt = setInterval(() => {
-        setIntCount(prevCount => prevCount + 1);
-      }, 500);
-      setMyIntId(myInt);
+      if (cockpitCount > maxCount) {
+        console.log('not possible');
+      } else {
+        const myInt = setInterval(() => {
+          setIntCount(prevCount => prevCount + 1);
+        }, 500);
+        setMyIntId(myInt);
+      }
     }
   };
 

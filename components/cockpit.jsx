@@ -29,6 +29,20 @@ export function Cockpit({
     add('in');
   }
 
+  function sparksInfo(x) {
+    if (x <= 1) {
+      return 'waiting for commands';
+    } else {
+      if (x > maxCount) {
+        return 'energy not available';
+      } else {
+        return 'this operation will take ' + x + ' sparks';
+      }
+    }
+  }
+
+  const sparks = sparksInfo(cockpitCount);
+
   return (
     <>
       <CPFrame>
@@ -42,7 +56,6 @@ export function Cockpit({
             <CommandLineTemp cpStatus={cpStatus}>
               {tempArr.map((element, index) => (
                 <CommandTemp key={index} content={element}>
-                  <Dot index={index}>•</Dot>
                   {element}
                 </CommandTemp>
               ))}
@@ -52,16 +65,6 @@ export function Cockpit({
             </SetKey>
           </CommandLineInner>
           <LittleKeyContainer>
-            <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
-              {tempCount} / 4
-            </CpCounter2>
-            <CpCounter1
-              cpStatus={cpStatus}
-              maxCount={maxCount}
-              cockpitCount={cockpitCount}
-            >
-              {cockpitCount} / {maxCount}
-            </CpCounter1>
             <DelKey1
               cpStatus={cpStatus}
               onClick={del1}
@@ -74,6 +77,16 @@ export function Cockpit({
             </DelKey2>
           </LittleKeyContainer>
         </CommandLine>
+        <CpCounter1
+          cpStatus={cpStatus}
+          maxCount={maxCount}
+          cockpitCount={cockpitCount}
+        >
+          {sparks}
+        </CpCounter1>
+        <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
+          {tempCount} / 4
+        </CpCounter2>
         <Keyboard>
           <CommandLineRow>
             <Key
@@ -138,7 +151,13 @@ export function Cockpit({
             >
               3
             </Key>
-            <Key colorvar="pink" cpStatus={cpStatus} onClick={move}>
+            <Key
+              colorvar="pink"
+              cpStatus={cpStatus}
+              onClick={move}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+            >
               GO
             </Key>
           </CommandLineRow>
@@ -252,9 +271,15 @@ ${props =>
       filter: brightness(50%);
       cursor: default;
     `}
-`;
 
-// command line
+  ${props =>
+    props.colorvar === 'pink' &&
+    props.cockpitCount > props.maxCount &&
+    css`
+      filter: brightness(50%);
+      cursor: default;
+    `}
+`;
 
 const CommandLine = styled.div`
   min-height: 10rem;
@@ -318,14 +343,6 @@ const CommandTemp = styled.div`
     props.content > 1 &&
     css`
       filter: brightness(120%);
-    `}
-`;
-
-const Dot = styled.div`
-  ${props =>
-    props.index === 0 &&
-    css`
-      display: none;
     `}
 `;
 

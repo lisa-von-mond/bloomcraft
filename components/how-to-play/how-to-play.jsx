@@ -29,7 +29,6 @@ export function HowToPlay() {
           <BackButtonCntn indexHowTo={indexHowTo}>
             <MyButton click={lastHowTo} text="back" color="puresky" />
           </BackButtonCntn>
-
           <NextButtonCntn indexHowTo={indexHowTo} lengthHowTo={lengthHowTo}>
             <MyButton
               click={nextHowTo}
@@ -56,6 +55,7 @@ const TTFrame = styled.div`
 
 const TextField = styled.div`
   border: 2px solid var(--puresky);
+  box-shadow: 5px 5px 0 0 var(--puresky);
   border-radius: 50px;
   display: flex;
   padding: 50px;
@@ -64,7 +64,7 @@ const TextField = styled.div`
   width: 60%;
   flex-direction: column;
   align-items: center;
-  gap: 5vw;
+  gap: 3vw;
   @media and(orientation:portrait) {
     width: 100%;
   }
@@ -81,6 +81,8 @@ const HeadLine = styled.h2`
   font-size: 2rem;
   font-weight: 400;
   text-transform: uppercase;
+  margin: 0;
+  padding: 0;
 `;
 
 const BackButtonCntn = styled.div`
