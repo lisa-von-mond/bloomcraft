@@ -26,5 +26,4 @@ const MyMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
 `;

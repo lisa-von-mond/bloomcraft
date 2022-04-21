@@ -15,6 +15,11 @@ export function Intro() {
             <MyButton text="play" color="puremint" />
           </a>
         </Link>
+        <Link href="/how-to-play">
+          <a>
+            <MyButton text="instruction" color="puresky" />
+          </a>
+        </Link>
       </MyMain>
     </>
   );
