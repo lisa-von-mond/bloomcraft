@@ -1,7 +1,11 @@
 import styled from 'styled-components';
 
-export function MyButton({ text, color }) {
-  return <AnyButton color={color}>{text}</AnyButton>;
+export function MyButton({ text, color, click }) {
+  return (
+    <AnyButton onClick={click} color={color}>
+      {text}
+    </AnyButton>
+  );
 }
 
 const AnyButton = styled.div`
@@ -11,4 +15,6 @@ const AnyButton = styled.div`
   border-radius: 1rem;
   text-align: center;
   cursor: pointer;
+  background: none;
+  font-size: 1rem;
 `;

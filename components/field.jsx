@@ -7,6 +7,7 @@ import { Scape } from './scape';
 import { GlobalCounter } from './counter';
 import { GreenAlert } from './greenalert';
 import { RedAlert } from './redalert';
+import { OrangeAlert } from './orangealert';
 
 export function Field({
   level,
@@ -16,6 +17,9 @@ export function Field({
   initialId,
   charge,
   goal,
+  reset,
+  thisLevel,
+  nextLevel,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -29,12 +33,21 @@ export function Field({
   const [cpStatus, setCpStatus] = useState(1); // factor for command line (1, 2 or 3)
   const [thisPlanet, setThisPlanet] = useState(initialPosition); // name of current planet
   const [thisId, setThisId] = useState(initialId); // id of current planet
-  const [focusNow, setFocusNow] = useState('Beam further to ' + initialFocus); // current focus position
+  const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
+  const [systemCrash, setSystemCrash] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
   const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
+
+  function initFocus() {
+    if (initialFocus !== false) {
+      return 'Beam further to ' + initialFocus;
+    } else {
+      return 'As far out as possible';
+    }
+  }
 
   function up() {
     setGalaxy(hopUpNow(galaxy));
@@ -95,7 +108,8 @@ export function Field({
 
   function turnFocusLeftInScope(objekt) {
     if (objekt.limit === true) {
-      console.log('nothing to turn left here');
+   
+      setSystemCrash(true);
     } else {
       const scope = objekt.children;
       const Focus = scope.find(element => element.focus === true);
@@ -115,6 +129,7 @@ export function Field({
   function turnFocusRightInScope(objekt) {
     if (objekt.limit === true) {
       console.log('nothing to turn right here');
+      setSystemCrash(true);
     } else {
       const scope = objekt.children;
       const Focus = scope.find(element => element.focus === true);
@@ -183,17 +198,24 @@ export function Field({
     if (Base.active === true) {
       return Beam1(hopUpInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(hopUpInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('not possible to hop further here');
+        setSystemCrash(true);
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(hopUpInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(hopUpInScope, Base);
         } else {
-          console.log('not possible to hop further here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(hopUpInScope, Base);
+          } else {
+            console.log('not possible to hop further here');
+            setSystemCrash(true);
+            return y;
+          }
         }
       }
     }
@@ -204,17 +226,24 @@ export function Field({
     if (Base.active === true) {
       return Beam1(turnFocusLeftInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(turnFocusLeftInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('nothing to turn left here');
+        setSystemCrash(true);
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(turnFocusLeftInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(turnFocusLeftInScope, Base);
         } else {
-          console.log('nothing to turn left here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(turnFocusLeftInScope, Base);
+          } else {
+            console.log('nothing to turn left here');
+            setSystemCrash(true);
+            return y;
+          }
         }
       }
     }
@@ -225,17 +254,24 @@ export function Field({
     if (Base.active === true) {
       return Beam1(turnFocusRightInScope, Base);
     } else {
-      if (track(Base).active === true) {
-        return Beam2(turnFocusRightInScope, Base);
+      if (track(Base).limit === true) {
+        console.log('nothing to turn right here');
+        setSystemCrash(true);
+        return y;
       } else {
-        if (
-          track(track(Base)).active === true &&
-          track(track(Base)).limit !== true
-        ) {
-          return Beam3(turnFocusRightInScope, Base);
+        if (track(Base).active === true) {
+          return Beam2(turnFocusRightInScope, Base);
         } else {
-          console.log('nothing to turn right here');
-          return y;
+          if (
+            track(track(Base)).active === true &&
+            track(track(Base)).limit !== true
+          ) {
+            return Beam3(turnFocusRightInScope, Base);
+          } else {
+            console.log('nothing to turn right here');
+            setSystemCrash(true);
+            return y;
+          }
         }
       }
     }
@@ -245,6 +281,7 @@ export function Field({
     let Base = y[0];
     if (Base.active === true) {
       console.log('nothing to go closer here');
+      setSystemCrash(true);
       return y;
     } else {
       if (track(Base).active === true) {
@@ -375,6 +412,10 @@ export function Field({
     setHand(!hand);
   }
 
+  function fixCrash() {
+    setSystemCrash(false);
+  }
+
   return (
     <>
       <BGFrame hand={hand}>
@@ -419,9 +460,20 @@ export function Field({
       <NoteFrame hand={hand}>
         <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
       </NoteFrame>
-      <GlobalCounter hand={hand} globalCount={globalCount} max={max} />
-      <GreenAlert destination={destination} />
-      <RedAlert globalCount={globalCount} max={max} destination={destination} />
+      <GlobalCounter
+        hand={hand}
+        globalCount={globalCount}
+        max={max}
+        thisLevel={thisLevel}
+      />
+      <GreenAlert destination={destination} nextLevel={nextLevel} />
+      <OrangeAlert reset={reset} systemCrash={systemCrash} />
+      <RedAlert
+        globalCount={globalCount}
+        max={max}
+        destination={destination}
+        reset={reset}
+      />
     </>
   );
 }
@@ -455,6 +507,7 @@ const CTRLFrame = styled.div`
   flex-direction: column;
   font-size: 0.8rem;
   gap: 1rem;
+  padding: 2rem;
 
   @media only screen and (orientation: landscape) {
     width: 30%;
@@ -466,6 +519,7 @@ const CTRLFrame = styled.div`
     width: 100%;
   }
 `;
+
 const SCFrame = styled.div`
   display: flex;
   align-items: center;

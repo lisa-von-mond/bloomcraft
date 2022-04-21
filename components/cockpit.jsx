@@ -1,299 +1,460 @@
-import styled, {css} from "styled-components";
+import styled, { css } from 'styled-components';
 
-export function Cockpit({add, addTwo, cpStatus, addThree, set, del1, del2, commandLine, tempArr, move, cockpitCount, maxCount}){
+export function Cockpit({
+  add,
+  addTwo,
+  cpStatus,
+  addThree,
+  set,
+  del1,
+  del2,
+  commandLine,
+  tempArr,
+  move,
+  cockpitCount,
+  maxCount,
+}) {
+  const tempCount = tempArr.length;
 
-const tempCount = tempArr.length
+  function addRight() {
+    add('right');
+  }
+  function addLeft() {
+    add('left');
+  }
+  function addOut() {
+    add('out');
+  }
+  function addIn() {
+    add('in');
+  }
 
-function addRight(){add("right")}
-function addLeft(){add("left")}
-function addOut(){add("out")}
-function addIn(){add("in")}
-
-return(
-<>
-<CPFrame>
-<CommandLine cpStatus={cpStatus}>
-<CommandLineInner>
-{commandLine.map((element, index)=>(<Command key={index} cpStatus={cpStatus}>{element}</Command>))}
-<CommandLineTemp cpStatus={cpStatus}>
-{tempArr.map((element, index)=>(<CommandTemp key={index} content={element}><Dot index={index}>•</Dot>{element}</CommandTemp>))}
-</CommandLineTemp>
-<SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>set</SetKey>
-</CommandLineInner>
-<LittleKeyContainer>
-<CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>{tempCount} / 4</CpCounter2>
-<CpCounter1 cpStatus={cpStatus} maxCount={maxCount} cockpitCount={cockpitCount}>{cockpitCount} / {maxCount}</CpCounter1>
-<DelKey1 cpStatus={cpStatus} onClick={del1} cockpitCount={cockpitCount}>del</DelKey1>
-<DelKey2 cpStatus={cpStatus} onClick={del2}>del</DelKey2>
-</LittleKeyContainer>
-</CommandLine>
-<Keyboard>
-<ConsoleRow>
-<Key colorvar="mint" onClick={addOut} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>out</Key>
-<Key colorvar="mint" onClick={addIn} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>in</Key>
-<Key colorvar="mint" onClick={addLeft} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>left</Key>
-<Key colorvar="mint" onClick={addRight} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount} cpStatus={cpStatus}>right</Key>
-</ConsoleRow>
-<ConsoleRow>
-<Key colorvar="sky" onClick={addTwo} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>2</Key>
-<Key colorvar="sky" onClick={addThree} cpStatus={cpStatus} tempCount={tempCount} cockpitCount = {cockpitCount} maxCount={maxCount}>3</Key>
-<Key colorvar="pink" cpStatus={cpStatus} onClick={move}>GO</Key>
-</ConsoleRow>
-</Keyboard>
-</CPFrame>
-</>
-)}
+  return (
+    <>
+      <CPFrame>
+        <CommandLine cpStatus={cpStatus}>
+          <CommandLineInner>
+            {commandLine.map((element, index) => (
+              <Command key={index} cpStatus={cpStatus}>
+                {element}
+              </Command>
+            ))}
+            <CommandLineTemp cpStatus={cpStatus}>
+              {tempArr.map((element, index) => (
+                <CommandTemp key={index} content={element}>
+                  <Dot index={index}>•</Dot>
+                  {element}
+                </CommandTemp>
+              ))}
+            </CommandLineTemp>
+            <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>
+              set
+            </SetKey>
+          </CommandLineInner>
+          <LittleKeyContainer>
+            <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
+              {tempCount} / 4
+            </CpCounter2>
+            <CpCounter1
+              cpStatus={cpStatus}
+              maxCount={maxCount}
+              cockpitCount={cockpitCount}
+            >
+              {cockpitCount} / {maxCount}
+            </CpCounter1>
+            <DelKey1
+              cpStatus={cpStatus}
+              onClick={del1}
+              cockpitCount={cockpitCount}
+            >
+              del
+            </DelKey1>
+            <DelKey2 cpStatus={cpStatus} onClick={del2}>
+              del
+            </DelKey2>
+          </LittleKeyContainer>
+        </CommandLine>
+        <Keyboard>
+          <CommandLineRow>
+            <Key
+              colorvar="mint"
+              onClick={addOut}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+              cpStatus={cpStatus}
+            >
+              out
+            </Key>
+            <Key
+              colorvar="mint"
+              onClick={addIn}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+              cpStatus={cpStatus}
+            >
+              in
+            </Key>
+            <Key
+              colorvar="mint"
+              onClick={addLeft}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+              cpStatus={cpStatus}
+            >
+              left
+            </Key>
+            <Key
+              colorvar="mint"
+              onClick={addRight}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+              cpStatus={cpStatus}
+            >
+              right
+            </Key>
+          </CommandLineRow>
+          <CommandLineRow>
+            <Key
+              colorvar="sky"
+              onClick={addTwo}
+              cpStatus={cpStatus}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+            >
+              2
+            </Key>
+            <Key
+              colorvar="sky"
+              onClick={addThree}
+              cpStatus={cpStatus}
+              tempCount={tempCount}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+            >
+              3
+            </Key>
+            <Key colorvar="pink" cpStatus={cpStatus} onClick={move}>
+              GO
+            </Key>
+          </CommandLineRow>
+        </Keyboard>
+      </CPFrame>
+    </>
+  );
+}
 
 // keyboard
 
 const CPFrame = styled.div`
-border-radius:1rem;
-padding:0.5rem;
-gap:1rem;
-display:flex;
-flex-direction:column;
-`
-const Keyboard = styled.div `
-display:flex;
-align-items: center;
-justify-content:center;
-flex-wrap:wrap;
-gap:0.5rem;
-@media only screen and (orientation:portrait){flex-wrap:nowrap;}
-@media only screen and (max-width:370px){flex-wrap:wrap;}`
+  border-radius: 1rem;
+  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+`;
+const Keyboard = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  @media only screen and (orientation: portrait) {
+    flex-wrap: nowrap;
+  }
+  @media only screen and (max-width: 370px) {
+    flex-wrap: wrap;
+  }
+`;
 
-const ConsoleRow = styled.div`
-display:flex;
-gap:0.5rem;
-justify-content:center;
-`
+const CommandLineRow = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+`;
 const Key = styled.div`
-font-size:14px;
-padding:0.5rem;
-min-width:2.3rem;
+  font-size: 14px;
+  padding: 0.5rem;
+  min-width: 2.3rem;
 
-@media only screen and (max-width:900px){
-font-size:12px;}
+  @media only screen and (max-width: 900px) {
+    font-size: 12px;
+  }
 
-@media only screen and (max-width:600px){
-font-size:11px;}
+  @media only screen and (max-width: 600px) {
+    font-size: 11px;
+  }
 
-display:flex;
-color:black;
-border-radius:100px;
-align-items:center;
-text-align:center;
-justify-content:center;
-padding:0.5rem;
-background:var(--${props => props.colorvar});
-cursor:pointer;
+  display: flex;
+  color: black;
+  border-radius: 100px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: var(--${props => props.colorvar});
+  cursor: pointer;
 
-${(props) => props.colorvar === "mint" && props.cockpitCount >= props.maxCount &&
-  css`
-    filter:brightness(50%);
-    cursor:default;`}
-
-${(props) => props.colorvar === "mint" && props.tempCount >= 4 &&
-  css`
-    filter:brightness(50%);
-    cursor:default;`}
-
-${(props) => props.colorvar === "mint" && props.cpStatus > 1 &&
+  ${props =>
+    props.colorvar === 'mint' &&
+    props.cockpitCount >= props.maxCount &&
     css`
-    background-color:var(--sky)`}
+      filter: brightness(50%);
+      cursor: default;
+    `}
 
-${(props) => props.colorvar === "sky" && props.cpStatus > 1 &&
+  ${props =>
+    props.colorvar === 'mint' &&
+    props.tempCount >= 4 &&
     css`
-    filter:brightness(50%);
-    cursor:default;`}
+      filter: brightness(50%);
+      cursor: default;
+    `}
 
-${(props) =>  props.colorvar === "sky" && props.cockpitCount >= props.maxCount &&
-      css`
-    filter:brightness(50%);
-    cursor:default;`}
+${props =>
+    props.colorvar === 'mint' &&
+    props.cpStatus > 1 &&
+    css`
+      background-color: var(--sky);
+    `}
+
+${props =>
+    props.colorvar === 'sky' &&
+    props.cpStatus > 1 &&
+    css`
+      filter: brightness(50%);
+      cursor: default;
+    `}
+
+${props =>
+    props.colorvar === 'sky' &&
+    props.cockpitCount >= props.maxCount &&
+    css`
+      filter: brightness(50%);
+      cursor: default;
+    `}
     
-${(props) => props.colorvar === "sky" && props.tempCount >= 4 &&
-      css`
-    filter:brightness(50%);
-    cursor:default;`}
-
-${(props) => props.colorvar === "pink" && props.cpStatus > 1 &&
+${props =>
+    props.colorvar === 'sky' &&
+    props.tempCount >= 4 &&
     css`
-    filter:brightness(50%);
-    cursor:default;`}
-`
+      filter: brightness(50%);
+      cursor: default;
+    `}
+
+${props =>
+    props.colorvar === 'pink' &&
+    props.cpStatus > 1 &&
+    css`
+      filter: brightness(50%);
+      cursor: default;
+    `}
+`;
 
 // command line
 
 const CommandLine = styled.div`
-min-height:10rem;
-@media only screen and (max-width:450px){min-height:7rem;}
-@media only screen and (orientation:portrait){min-height:7rem;}
-border-radius:1rem;
-display:flex;
-align-items:space-between;
-justify-content:space-between;
-flex-direction:column;
-padding:0.5rem;
-background:black;
-border: 2px solid var(--puremint);
-`
+  min-height: 10rem;
+  @media only screen and (max-width: 450px) {
+    min-height: 7rem;
+  }
+  @media only screen and (orientation: portrait) {
+    min-height: 7rem;
+  }
+  border-radius: 1rem;
+  display: flex;
+  align-items: space-between;
+  justify-content: space-between;
+  flex-direction: column;
+  padding: 0.5rem;
+  background: black;
+  border: 2px solid var(--puremint);
+`;
 const Command = styled.div`
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-min-width:2.3rem;
-padding:0.5rem;
-color:var(--puremint);
-border: 2px solid var(--puremint);;
-animation: cmd 0.3s;
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.3rem;
+  padding: 0.5rem;
+  color: var(--puremint);
+  border: 2px solid var(--puremint);
+  animation: cmd 0.3s;
 
-${(props) => props.cpStatus > 1 &&
+  ${props =>
+    props.cpStatus > 1 &&
     css`
-    border: 2px solid #445232;
-    color:#445232;`}
-`
-const CommandLineTemp = styled.div `
-min-width:40px;
-border-radius:50px;
-display:flex;
-padding:0.5rem;
-align-items:center;
-justify-content:center;
-color:var(--puresky);
-border: 2px solid var(--puresky);
-animation: blinker 1s linear infinite;
+      border: 2px solid #445232;
+      color: #445232;
+    `}
+`;
+const CommandLineTemp = styled.div`
+  min-width: 40px;
+  border-radius: 50px;
+  display: flex;
+  padding: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  color: var(--puresky);
+  border: 2px solid var(--puresky);
+  animation: blinker 1s linear infinite;
 
-${(props) => props.cpStatus === 1 &&
+  ${props =>
+    props.cpStatus === 1 &&
     css`
-display:none;`}`
+      display: none;
+    `}
+`;
 
 const CommandTemp = styled.div`
-animation: cmd 0.3s;
-display:flex;
-flex-direction:row;
+  animation: cmd 0.3s;
+  display: flex;
+  flex-direction: row;
 
-${(props) => props.content > 1 &&
+  ${props =>
+    props.content > 1 &&
     css`
-filter:brightness(120%);
+      filter: brightness(120%);
     `}
-`
+`;
 
 const Dot = styled.div`
-${(props) => props.index === 0 &&
+  ${props =>
+    props.index === 0 &&
     css`
-display:none;`
-}
-`
+      display: none;
+    `}
+`;
 
 const SetKey = styled.div`
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-padding:0.5rem;
-background: var(--sky);
-border:2px solid black;
-cursor:pointer;
-color:black;
-animation: cmd 0.3s;
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: var(--sky);
+  border: 2px solid black;
+  cursor: pointer;
+  color: black;
+  animation: cmd 0.3s;
 
-${(props) => props.tempCount <= 1 &&
-  css`
-display:none;`}
+  ${props =>
+    props.tempCount <= 1 &&
+    css`
+      display: none;
+    `}
 
-${(props) => props.cpStatus === 1 &&
-  css`
-filter:brightness(30%);
-cursor:default;`}
-`
+  ${props =>
+    props.cpStatus === 1 &&
+    css`
+      filter: brightness(30%);
+      cursor: default;
+    `}
+`;
 
 const CpCounter2 = styled.div`
-display:flex;
-border-radius:50px;
-color:white;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:0.5rem;
+  display: flex;
+  border-radius: 50px;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0.5rem;
 
-${(props) => props.tempCount >= 4 &&
+  ${props =>
+    props.tempCount >= 4 &&
     css`
-    color:hotpink;
-    animation: blinker 1s linear infinite;`}
+      color: hotpink;
+      animation: blinker 1s linear infinite;
+    `}
 
-${(props) => props.cpStatus === 1 &&
-      css`
-  display:none;`}
-`
+  ${props =>
+    props.cpStatus === 1 &&
+    css`
+      display: none;
+    `}
+`;
 const DelKey2 = styled.div`
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:0.5rem;
-cursor:pointer;
-background-color:var(--neutral);
-border:2px solid black;
-color:black;
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: var(--neutral);
+  border: 2px solid black;
+  color: black;
 
-${(props) => props.cpStatus === 1 &&
-  css`
-display:none;`}
-`
-const DelKey1 = styled.div`
-display:flex;
-border-radius:50px;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:0.5rem;
-cursor:pointer;
-color:black;
-border:2px solid black;
-background-color:var(--neutral);
-animation: cmd 0.3s;
-
-${(props) => props.cpStatus > 1 &&
-  css`
-display:none;`}
-
-${(props) => props.cockpitCount === 0 &&
-  css`
-display:none;`}
-`
-const CpCounter1 = styled.div`
-height:30px;
-display:flex;
-border-radius:50px;
-color:white;
-align-items:center;
-justify-content:center;
-width:auto;
-padding:0.5rem;
-
-${(props) => props.cockpitCount >= props.maxCount &&
+  ${props =>
+    props.cpStatus === 1 &&
     css`
-    color:hotpink;
-    animation: blinker 1s linear infinite;`}
+      display: none;
+    `}
+`;
+const DelKey1 = styled.div`
+  display: flex;
+  border-radius: 50px;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: black;
+  border: 2px solid black;
+  background-color: var(--neutral);
+  animation: cmd 0.3s;
 
-${(props) => props.cpStatus > 1 &&
-      css`
-  display:none;`}
-`
+  ${props =>
+    props.cpStatus > 1 &&
+    css`
+      display: none;
+    `}
+
+  ${props =>
+    props.cockpitCount === 0 &&
+    css`
+      display: none;
+    `}
+`;
+const CpCounter1 = styled.div`
+  height: 30px;
+  display: flex;
+  border-radius: 50px;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  padding: 0.5rem;
+
+  ${props =>
+    props.cockpitCount >= props.maxCount &&
+    css`
+      color: hotpink;
+      animation: blinker 1s linear infinite;
+    `}
+
+  ${props =>
+    props.cpStatus > 1 &&
+    css`
+      display: none;
+    `}
+`;
 const CommandLineInner = styled.div`
-display:flex;
-flex-wrap:wrap;
-justify-content:flex-start;
-align-items:flex-start;
-align-content:flex-start;
-gap:10px;
-`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  align-content: flex-start;
+  gap: 10px;
+`;
 const LittleKeyContainer = styled.div`
-display:flex;
-justify-content: flex-end;
-align-items:flex-end;
-height:50px;
-gap:10px;`
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 50px;
+  gap: 10px;
+`;

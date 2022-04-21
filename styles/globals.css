@@ -28,6 +28,13 @@ a {
   --puresky: #8bebe6;
   --purepink: hotpink;
   --dark: black;
+  --warn: linear-gradient(
+    to right,
+    #f78ca0 0%,
+    #f9748f 19%,
+    #fd868c 60%,
+    #fe9a8b 100%
+  );
 }
 
 @keyframes blinker {
@@ -40,6 +47,20 @@ a {
   0% {
     opacity: 0;
     transform: scale(1);
+  }
+  80% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes popup {
+  0% {
+    opacity: 0;
+    transform: scale(0);
   }
   80% {
     transform: scale(1.1);

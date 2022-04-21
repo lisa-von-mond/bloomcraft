@@ -3,14 +3,18 @@ import styled, { css } from 'styled-components';
 import { Field } from './field';
 import { Starry } from './starry';
 
-export function Game({ levelData }) {
+export function Game({ levelData, id }) {
   const [newKey, setNewKey] = useState(1);
+
+  function reset() {
+    setNewKey(newKey + 1);
+  }
 
   return (
     <>
       <MyMain>
         <Starry />
-        <Field {...levelData} key={newKey} />
+        <Field {...levelData} key={id + newKey} reset={reset} newKey={newKey} />
       </MyMain>
     </>
   );

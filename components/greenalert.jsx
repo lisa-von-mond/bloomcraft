@@ -1,12 +1,17 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
+import Link from 'next/link';
 
-export function GreenAlert({ destination }) {
+export function GreenAlert({ destination, nextLevel, resetDestination }) {
   return (
     <Blur destination={destination}>
       <Window destination={destination}>
         Level completed
-        <MyButton text="next level" color="dark" />
+        <Link href={`/levels/${nextLevel}`} passHref>
+          <a>
+            <MyButton click={resetDestination} text="next level" color="dark" />
+          </a>
+        </Link>
       </Window>
     </Blur>
   );
@@ -21,6 +26,7 @@ const Window = styled.div`
   background: var(--mint);
   height: auto;
   border-radius: 1rem;
+  animation: popup 0.5s;
 
   ${props =>
     props.destination === false &&
