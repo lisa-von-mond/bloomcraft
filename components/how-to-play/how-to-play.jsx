@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
 import { textHowTo } from '../../utils/text-how-to';
-import { Starry } from '../starry';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);

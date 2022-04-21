@@ -4,7 +4,7 @@ export function GlobalCounter({ hand, globalCount, max, thisLevel }) {
   return (
     <CounterFix hand={hand}>
       <Counter>
-        {globalCount} / {max}
+        {globalCount} / {max} Sparks
       </Counter>
       <Counter>Level {thisLevel}</Counter>
     </CounterFix>
