@@ -165,7 +165,7 @@ export default {
       ],
     },
   ],
-  max: 5,
+  max: 7,
   initialId: 0,
   initialPosition: 'one',
   initialFocus: 'foo',

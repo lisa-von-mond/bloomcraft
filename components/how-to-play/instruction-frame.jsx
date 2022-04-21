@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import { HowToPlay } from './how-to-play';
-import { MyButton } from '../anybutton';
+import { SimpleButton } from '../anybutton';
 
 export function InstrFrame({ instr, instrToggle }) {
   return (
@@ -8,7 +8,12 @@ export function InstrFrame({ instr, instrToggle }) {
       <Blur instr={instr}>
         <HowToPlay />
         <BackToGameButtonCntn>
-          <MyButton text="back to game" color="light" click={instrToggle} />
+          <SimpleButton
+            text="back to game"
+            color="light"
+            fontsize="0.8"
+            click={instrToggle}
+          />
         </BackToGameButtonCntn>
       </Blur>
     </>

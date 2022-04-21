@@ -36,7 +36,7 @@ export function Cockpit({
       if (x > maxCount) {
         return 'energy not available';
       } else {
-        return 'this operation will take ' + x + ' sparks';
+        return 'this operation will take ' + x + ' dashes';
       }
     }
   }
@@ -296,7 +296,8 @@ const CommandLine = styled.div`
   flex-direction: column;
   padding: 0.5rem;
   background: black;
-  border: 2px solid var(--puremint);
+  border: 1.5px solid var(--puremint);
+  box-shadow: 3px 3px 0 0 var(--puremint);
 `;
 const Command = styled.div`
   display: flex;

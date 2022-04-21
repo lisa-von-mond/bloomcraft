@@ -61,6 +61,7 @@ const TextField = styled.div`
   padding: 50px;
   line-height: 30px;
   color: var(--puremint);
+  background: black;
   width: 60%;
   flex-direction: column;
   align-items: center;

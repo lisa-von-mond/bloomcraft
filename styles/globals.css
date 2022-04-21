@@ -15,8 +15,8 @@ a {
 
 * {
   box-sizing: border-box;
-  --darkbg: linear-gradient(to right, #434343 0%, black 100%);
-  --mint: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
+  --darkbg: radial-gradient(circle 248px at center, #434343 0%, black 100%);
+  --othermint: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
   --sky: radial-gradient(
     circle 248px at center,
     #16d9e3 0%,
@@ -26,6 +26,7 @@ a {
   --neutral: white;
   --pink: hotpink;
   --puremint: #02ff9e;
+  --mint: linear-gradient(-225deg, #dfffcd 0%, #90f9c4 48%, #39f3bb 100%);
   --puresky: #8bebe6;
   --purepink: hotpink;
   --dark: black;

@@ -9,6 +9,7 @@ import { GreenAlert } from './greenalert';
 import { RedAlert } from './redalert';
 import { OrangeAlert } from './orangealert';
 import { InstrFrame } from './how-to-play/instruction-frame';
+import { SimpleButton } from './anybutton';
 
 export function Field({
   level,
@@ -21,6 +22,8 @@ export function Field({
   reset,
   thisLevel,
   nextLevel,
+  life,
+  oneLifeLess,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -48,7 +51,6 @@ export function Field({
         typeof element === 'string' ? 1 : element.length - 1
       );
       const reducer = (accumulator, curr) => accumulator + curr;
-
       return resolved.reduce(reducer);
     } else {
       return 0;
@@ -216,6 +218,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('not possible to hop further here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -229,6 +232,7 @@ export function Field({
           } else {
             console.log('not possible to hop further here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -244,6 +248,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('nothing to turn left here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -257,6 +262,7 @@ export function Field({
           } else {
             console.log('nothing to turn left here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -272,6 +278,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('nothing to turn right here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -285,6 +292,7 @@ export function Field({
           } else {
             console.log('nothing to turn right here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -297,6 +305,7 @@ export function Field({
     if (Base.active === true) {
       console.log('nothing to go closer here');
       setSystemCrash(true);
+      oneLifeLess();
       return y;
     } else {
       if (track(Base).active === true) {
@@ -477,14 +486,25 @@ export function Field({
         </CTRLFrame>
       </BGFrame>
       <NoteFrame hand={hand}>
-        <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
-        <InstrClick onClick={instrToggle}>how to play</InstrClick>
+        <SimpleButton
+          click={changeHand}
+          color="puremint"
+          text="switch layout"
+          fontsize="0.6"
+        />
+        <SimpleButton
+          click={instrToggle}
+          color="light"
+          text="how to play"
+          fontsize="0.6"
+        />
       </NoteFrame>
       <GlobalCounter
         hand={hand}
         globalCount={globalCount}
         max={max}
         thisLevel={thisLevel}
+        life={life}
       />
       <GreenAlert destination={destination} nextLevel={nextLevel} />
       <OrangeAlert reset={reset} systemCrash={systemCrash} />
@@ -493,6 +513,7 @@ export function Field({
         max={max}
         destination={destination}
         reset={reset}
+        oneLifeLess={oneLifeLess}
       />
       <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
@@ -523,7 +544,7 @@ const BGFrame = styled.div`
 const CTRLFrame = styled.div`
   z-index: 100;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   font-size: 0.8rem;
@@ -574,37 +595,19 @@ const CSFrame = styled.div`
 
 const NoteFrame = styled.div`
   position: fixed;
-  bottom: 1rem;
+  bottom: 2rem;
   display: flex;
   flex-direction: column;
 
   ${props =>
     props.hand === true &&
     css`
-      left: 1rem;
+      left: 2rem;
     `}
 
   ${props =>
     props.hand === false &&
     css`
-      right: 1rem;
+      right: 2rem;
     `}
-`;
-const LayoutSwitch = styled.p`
-  color: var(--puremint);
-  font-size: 0.7rem;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
-  @media only screen and (orientation: portrait) {
-    display: none;
-  }
-`;
-
-const InstrClick = styled.p`
-  color: var(--light);
-  font-size: 0.7rem;
-  cursor: pointer;
-  margin: 0;
-  padding: 0;
 `;

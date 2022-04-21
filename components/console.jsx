@@ -26,10 +26,11 @@ export function InfoConsole({
 }
 
 const ConsoleFrame = styled.div`
-  border: 2px solid var(--puremint);
   border-radius: 1rem;
   font-size: 0.8rem;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 `;
 
 const ChargeInfo1 = styled.p`
