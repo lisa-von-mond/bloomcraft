@@ -1,16 +1,15 @@
 import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
-import { texthowto } from '../../utils/text-how-to';
+import { textHowTo } from '../../utils/text-how-to';
 import { Starry } from '../starry';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);
-  const lengthHowTo = texthowto.length;
-  const mode = texthowto[indexHowTo].type;
+  const lengthHowTo = textHowTo.length - 1;
 
   function nextHowTo() {
-    if (indexHowTo <= lengthHowTo - 2) {
+    if (indexHowTo < lengthHowTo) {
       setIndexHowTo(indexHowTo + 1);
       console.log(indexHowTo);
     }
@@ -26,22 +25,21 @@ export function HowToPlay() {
     <TTFrame>
       <Starry />
       <TextField>
-        <HeadLine>{texthowto[indexHowTo].headline}</HeadLine>
-        <div>{texthowto[indexHowTo].text}</div>
-        <BothButtons indexHowTo={indexHowTo}>
-          <MyButton
-            click={lastHowTo}
-            text="back"
-            color="puresky"
-            className="back"
-          />
-          <MyButton
-            click={nextHowTo}
-            text="got it"
-            color="puremint"
-            className="forward"
-          />
-        </BothButtons>
+        <HeadLine>{textHowTo[indexHowTo].headline}</HeadLine>
+        <div>{textHowTo[indexHowTo].text}</div>
+        <AllButtons>
+          <BackButtonCntn indexHowTo={indexHowTo}>
+            <MyButton click={lastHowTo} text="back" color="puresky" />
+          </BackButtonCntn>
+
+          <NextButtonCntn indexHowTo={indexHowTo} lengthHowTo={lengthHowTo}>
+            <MyButton
+              click={nextHowTo}
+              text={textHowTo[indexHowTo].buttontext}
+              color="puremint"
+            />
+          </NextButtonCntn>
+        </AllButtons>
       </TextField>
     </TTFrame>
   );
@@ -75,7 +73,7 @@ const TextField = styled.div`
   }
 `;
 
-const BothButtons = styled.div`
+const AllButtons = styled.div`
   display: flex;
   gap: 5vw;
   align-items: center;
@@ -86,4 +84,20 @@ const HeadLine = styled.h2`
   font-size: 2rem;
   font-weight: 400;
   text-transform: uppercase;
+`;
+
+const BackButtonCntn = styled.div`
+  ${props =>
+    props.indexHowTo === 0 &&
+    css`
+      display: none;
+    `}
+`;
+
+const NextButtonCntn = styled.div`
+  ${props =>
+    props.indexHowTo >= props.lengthHowTo &&
+    css`
+      display: none;
+    `}
 `;
