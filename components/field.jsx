@@ -108,7 +108,7 @@ export function Field({
 
   function turnFocusLeftInScope(objekt) {
     if (objekt.limit === true) {
-      console.log('nothing to turn left here');
+   
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
