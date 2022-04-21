@@ -8,6 +8,7 @@ import { GlobalCounter } from './counter';
 import { GreenAlert } from './greenalert';
 import { RedAlert } from './redalert';
 import { OrangeAlert } from './orangealert';
+import { InstrFrame } from './how-to-play/instruction-frame';
 
 export function Field({
   level,
@@ -35,6 +36,7 @@ export function Field({
   const [thisId, setThisId] = useState(initialId); // id of current planet
   const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
+  const [instr, setInstr] = useState(false); // instruction visibility
   const [systemCrash, setSystemCrash] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
@@ -108,7 +110,6 @@ export function Field({
 
   function turnFocusLeftInScope(objekt) {
     if (objekt.limit === true) {
-   
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
@@ -412,8 +413,8 @@ export function Field({
     setHand(!hand);
   }
 
-  function fixCrash() {
-    setSystemCrash(false);
+  function instrToggle() {
+    setInstr(!instr);
   }
 
   return (
@@ -459,6 +460,7 @@ export function Field({
       </BGFrame>
       <NoteFrame hand={hand}>
         <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
+        <InstrClick onClick={instrToggle}>how to play</InstrClick>
       </NoteFrame>
       <GlobalCounter
         hand={hand}
@@ -474,6 +476,7 @@ export function Field({
         destination={destination}
         reset={reset}
       />
+      <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
   );
 }
@@ -552,29 +555,38 @@ const CSFrame = styled.div`
 `;
 
 const NoteFrame = styled.div`
-position:fixed;
-bottom:1rem;
+  position: fixed;
+  bottom: 1rem;
+  display: flex;
+  flex-direction: column;
 
-${props =>
-  props.hand === true &&
-  css`
-    left: 1rem;
-  `} }
+  ${props =>
+    props.hand === true &&
+    css`
+      left: 1rem;
+    `}
 
-${props =>
-  props.hand === false &&
-  css`
-    right: 1rem;
-  `} }
+  ${props =>
+    props.hand === false &&
+    css`
+      right: 1rem;
+    `}
 `;
-const LayoutSwitch = styled.div`
+const LayoutSwitch = styled.p`
   color: var(--puremint);
   font-size: 0.7rem;
   cursor: pointer;
-  border-bottom: 1px solid var(--puremint);
   margin: 0;
   padding: 0;
   @media only screen and (orientation: portrait) {
     display: none;
   }
+`;
+
+const InstrClick = styled.p`
+  color: var(--light);
+  font-size: 0.7rem;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
 `;

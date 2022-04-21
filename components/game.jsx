@@ -26,4 +26,5 @@ const MyMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  background: var(--darkbg);
 `;

@@ -15,6 +15,7 @@ a {
 
 * {
   box-sizing: border-box;
+  --darkbg: linear-gradient(to right, #434343 0%, black 100%);
   --mint: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
   --sky: radial-gradient(
     circle 248px at center,
@@ -28,6 +29,7 @@ a {
   --puresky: #8bebe6;
   --purepink: hotpink;
   --dark: black;
+  --light: white;
   --warn: linear-gradient(
     to right,
     #f78ca0 0%,

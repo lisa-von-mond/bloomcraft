@@ -23,7 +23,6 @@ export function HowToPlay() {
 
   return (
     <TTFrame>
-      <Starry />
       <TextField>
         <HeadLine>{textHowTo[indexHowTo].headline}</HeadLine>
         <div>{textHowTo[indexHowTo].text}</div>
@@ -54,7 +53,6 @@ const TTFrame = styled.div`
   display: flex;
   justify-content: center;
   align-items:center;}
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
 `;
 
 const TextField = styled.div`
