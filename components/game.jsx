@@ -5,6 +5,11 @@ import { Starry } from './starry';
 
 export function Game({ levelData, id }) {
   const [newKey, setNewKey] = useState(1);
+  const [life, setLife] = useState(8);
+
+  function oneLifeLess() {
+    setLife(life - 1);
+  }
 
   function reset() {
     setNewKey(newKey + 1);
@@ -14,7 +19,14 @@ export function Game({ levelData, id }) {
     <>
       <MyMain>
         <Starry />
-        <Field {...levelData} key={id + newKey} reset={reset} newKey={newKey} />
+        <Field
+          {...levelData}
+          key={id + newKey}
+          reset={reset}
+          newKey={newKey}
+          life={life}
+          oneLifeLess={oneLifeLess}
+        />
       </MyMain>
     </>
   );
@@ -26,5 +38,5 @@ const MyMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: linear-gradient(to right, #434343 0%, black 100%);
+  background: var(--darkbg);
 `;

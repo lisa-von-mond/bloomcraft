@@ -20,7 +20,7 @@ export function Cockpit({
     add('right');
   }
   function addLeft() {
-    add('left');
+    add('turn');
   }
   function addOut() {
     add('out');
@@ -29,51 +29,50 @@ export function Cockpit({
     add('in');
   }
 
+  function sparksInfo(x) {
+    if (x <= 1) {
+      return 'waiting for commands';
+    } else {
+      if (x > maxCount) {
+        return 'energy not available';
+      } else {
+        return 'this operation will take ' + x + ' dashes';
+      }
+    }
+  }
+
+  const sparks = sparksInfo(cockpitCount);
+
   return (
     <>
       <CPFrame>
         <CommandLine cpStatus={cpStatus}>
-          <CommandLineInner>
-            {commandLine.map((element, index) => (
-              <Command key={index} cpStatus={cpStatus}>
+          {commandLine.map((element, index) => (
+            <Command key={index} cpStatus={cpStatus}>
+              {element}
+            </Command>
+          ))}
+          <CommandLineTemp cpStatus={cpStatus}>
+            {tempArr.map((element, index) => (
+              <CommandTemp key={index} content={element}>
                 {element}
-              </Command>
+              </CommandTemp>
             ))}
-            <CommandLineTemp cpStatus={cpStatus}>
-              {tempArr.map((element, index) => (
-                <CommandTemp key={index} content={element}>
-                  <Dot index={index}>•</Dot>
-                  {element}
-                </CommandTemp>
-              ))}
-            </CommandLineTemp>
-            <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>
-              set
-            </SetKey>
-          </CommandLineInner>
-          <LittleKeyContainer>
-            <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
-              {tempCount} / 4
-            </CpCounter2>
-            <CpCounter1
-              cpStatus={cpStatus}
-              maxCount={maxCount}
-              cockpitCount={cockpitCount}
-            >
-              {cockpitCount} / {maxCount}
-            </CpCounter1>
-            <DelKey1
-              cpStatus={cpStatus}
-              onClick={del1}
-              cockpitCount={cockpitCount}
-            >
-              del
-            </DelKey1>
-            <DelKey2 cpStatus={cpStatus} onClick={del2}>
-              del
-            </DelKey2>
-          </LittleKeyContainer>
+          </CommandLineTemp>
+          <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>
+            set
+          </SetKey>
         </CommandLine>
+        <CpCounter1
+          cpStatus={cpStatus}
+          maxCount={maxCount}
+          cockpitCount={cockpitCount}
+        >
+          {sparks}
+        </CpCounter1>
+        <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
+          {tempCount} / 4
+        </CpCounter2>
         <Keyboard>
           <CommandLineRow>
             <Key
@@ -104,9 +103,9 @@ export function Cockpit({
               maxCount={maxCount}
               cpStatus={cpStatus}
             >
-              left
+              turn
             </Key>
-            <Key
+            {/* <Key
               colorvar="mint"
               onClick={addRight}
               tempCount={tempCount}
@@ -115,7 +114,19 @@ export function Cockpit({
               cpStatus={cpStatus}
             >
               right
-            </Key>
+            </Key> */}
+            <div>
+              <DelKey1
+                cpStatus={cpStatus}
+                onClick={del1}
+                cockpitCount={cockpitCount}
+              >
+                del
+              </DelKey1>
+              <DelKey2 cpStatus={cpStatus} onClick={del2}>
+                del
+              </DelKey2>
+            </div>
           </CommandLineRow>
           <CommandLineRow>
             <Key
@@ -138,7 +149,13 @@ export function Cockpit({
             >
               3
             </Key>
-            <Key colorvar="pink" cpStatus={cpStatus} onClick={move}>
+            <Key
+              colorvar="pink"
+              cpStatus={cpStatus}
+              onClick={move}
+              cockpitCount={cockpitCount}
+              maxCount={maxCount}
+            >
               GO
             </Key>
           </CommandLineRow>
@@ -178,7 +195,7 @@ const CommandLineRow = styled.div`
 const Key = styled.div`
   font-size: 14px;
   padding: 0.5rem;
-  min-width: 2.3rem;
+  min-width: 2.7rem;
 
   @media only screen and (max-width: 900px) {
     font-size: 12px;
@@ -252,9 +269,15 @@ ${props =>
       filter: brightness(50%);
       cursor: default;
     `}
-`;
 
-// command line
+  ${props =>
+    props.colorvar === 'pink' &&
+    props.cockpitCount > props.maxCount &&
+    css`
+      filter: brightness(50%);
+      cursor: default;
+    `}
+`;
 
 const CommandLine = styled.div`
   min-height: 10rem;
@@ -266,12 +289,15 @@ const CommandLine = styled.div`
   }
   border-radius: 1rem;
   display: flex;
-  align-items: space-between;
-  justify-content: space-between;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
   padding: 0.5rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   background: black;
-  border: 2px solid var(--puremint);
+  border: 1.5px solid var(--puremint);
+  box-shadow: 3px 3px 0 0 var(--puremint);
 `;
 const Command = styled.div`
   display: flex;
@@ -318,14 +344,6 @@ const CommandTemp = styled.div`
     props.content > 1 &&
     css`
       filter: brightness(120%);
-    `}
-`;
-
-const Dot = styled.div`
-  ${props =>
-    props.index === 0 &&
-    css`
-      display: none;
     `}
 `;
 
@@ -442,19 +460,4 @@ const CpCounter1 = styled.div`
     css`
       display: none;
     `}
-`;
-const CommandLineInner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 10px;
-`;
-const LittleKeyContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  height: 50px;
-  gap: 10px;
 `;

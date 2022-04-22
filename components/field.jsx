@@ -8,6 +8,9 @@ import { GlobalCounter } from './counter';
 import { GreenAlert } from './greenalert';
 import { RedAlert } from './redalert';
 import { OrangeAlert } from './orangealert';
+import { InstrFrame } from './how-to-play/instruction-frame';
+import { SimpleButton } from './anybutton';
+import { GreenAlertCharge } from './greenalert_charge';
 
 export function Field({
   level,
@@ -20,6 +23,8 @@ export function Field({
   reset,
   thisLevel,
   nextLevel,
+  life,
+  oneLifeLess,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -35,11 +40,25 @@ export function Field({
   const [thisId, setThisId] = useState(initialId); // id of current planet
   const [focusNow, setFocusNow] = useState(initFocus); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
+  const [instr, setInstr] = useState(false); // instruction visibility
   const [systemCrash, setSystemCrash] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
-  const cockpitCount = commands.length; // amount of commands in cockpit console (green)
   const maxCount = max - globalCount;
+
+  function resolveSparks() {
+    if (commandLine.length > 0) {
+      const resolved = commandLine.map(element =>
+        typeof element === 'string' ? 1 : element.length - 1
+      );
+      const reducer = (accumulator, curr) => accumulator + curr;
+      return resolved.reduce(reducer);
+    } else {
+      return 0;
+    }
+  }
+
+  const cockpitCount = resolveSparks() + 1;
 
   function initFocus() {
     if (initialFocus !== false) {
@@ -108,7 +127,6 @@ export function Field({
 
   function turnFocusLeftInScope(objekt) {
     if (objekt.limit === true) {
-   
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
@@ -201,6 +219,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('not possible to hop further here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -214,6 +233,7 @@ export function Field({
           } else {
             console.log('not possible to hop further here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -229,6 +249,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('nothing to turn left here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -242,6 +263,7 @@ export function Field({
           } else {
             console.log('nothing to turn left here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -257,6 +279,7 @@ export function Field({
       if (track(Base).limit === true) {
         console.log('nothing to turn right here');
         setSystemCrash(true);
+        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
@@ -270,6 +293,7 @@ export function Field({
           } else {
             console.log('nothing to turn right here');
             setSystemCrash(true);
+            oneLifeLess();
             return y;
           }
         }
@@ -282,6 +306,7 @@ export function Field({
     if (Base.active === true) {
       console.log('nothing to go closer here');
       setSystemCrash(true);
+      oneLifeLess();
       return y;
     } else {
       if (track(Base).active === true) {
@@ -300,7 +325,7 @@ export function Field({
 
   function add(direction) {
     if (cpStatus === 1) {
-      if (commandLine.length <= maxCount - 1) {
+      if (cockpitCount <= maxCount - 1) {
         setCommandLine([...commandLine, direction]);
         setCommands([...commands, direction]);
       }
@@ -312,14 +337,14 @@ export function Field({
   }
 
   function addTwo() {
-    if (cpStatus === 1 && commandLine.length <= maxCount - 1) {
+    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
       setTempArr([2]);
       setCpStatus(2);
     }
   }
 
   function addThree() {
-    if (cpStatus === 1 && commandLine.length <= maxCount - 1) {
+    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
       setTempArr([3]);
       setCpStatus(3);
     }
@@ -369,7 +394,7 @@ export function Field({
 
   useEffect(() => {
     const hereNow = movingArr[intCount];
-    if (hereNow === 'left') {
+    if (hereNow === 'turn') {
       left();
     } else {
       if (hereNow === 'right') {
@@ -390,10 +415,14 @@ export function Field({
     if (cpStatus !== 1) {
       console.log('not possible');
     } else {
-      const myInt = setInterval(() => {
-        setIntCount(prevCount => prevCount + 1);
-      }, 500);
-      setMyIntId(myInt);
+      if (cockpitCount > maxCount) {
+        console.log('not possible');
+      } else {
+        const myInt = setInterval(() => {
+          setIntCount(prevCount => prevCount + 1);
+        }, 500);
+        setMyIntId(myInt);
+      }
     }
   };
 
@@ -412,8 +441,8 @@ export function Field({
     setHand(!hand);
   }
 
-  function fixCrash() {
-    setSystemCrash(false);
+  function instrToggle() {
+    setInstr(!instr);
   }
 
   return (
@@ -458,13 +487,25 @@ export function Field({
         </CTRLFrame>
       </BGFrame>
       <NoteFrame hand={hand}>
-        <LayoutSwitch onClick={changeHand}>switch layout</LayoutSwitch>
+        <SimpleButton
+          click={changeHand}
+          color="puremint"
+          text="switch layout"
+          fontsize="0.6"
+        />
+        <SimpleButton
+          click={instrToggle}
+          color="light"
+          text="how to play"
+          fontsize="0.6"
+        />
       </NoteFrame>
       <GlobalCounter
         hand={hand}
         globalCount={globalCount}
         max={max}
         thisLevel={thisLevel}
+        life={life}
       />
       <GreenAlert destination={destination} nextLevel={nextLevel} />
       <OrangeAlert reset={reset} systemCrash={systemCrash} />
@@ -473,7 +514,9 @@ export function Field({
         max={max}
         destination={destination}
         reset={reset}
+        oneLifeLess={oneLifeLess}
       />
+      <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
   );
 }
@@ -502,7 +545,7 @@ const BGFrame = styled.div`
 const CTRLFrame = styled.div`
   z-index: 100;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   flex-direction: column;
   font-size: 0.8rem;
@@ -552,29 +595,20 @@ const CSFrame = styled.div`
 `;
 
 const NoteFrame = styled.div`
-position:fixed;
-bottom:1rem;
+  position: fixed;
+  bottom: 2rem;
+  display: flex;
+  flex-direction: column;
 
-${props =>
-  props.hand === true &&
-  css`
-    left: 1rem;
-  `} }
+  ${props =>
+    props.hand === true &&
+    css`
+      left: 2rem;
+    `}
 
-${props =>
-  props.hand === false &&
-  css`
-    right: 1rem;
-  `} }
-`;
-const LayoutSwitch = styled.div`
-  color: var(--puremint);
-  font-size: 0.7rem;
-  cursor: pointer;
-  border-bottom: 1px solid var(--puremint);
-  margin: 0;
-  padding: 0;
-  @media only screen and (orientation: portrait) {
-    display: none;
-  }
+  ${props =>
+    props.hand === false &&
+    css`
+      right: 2rem;
+    `}
 `;

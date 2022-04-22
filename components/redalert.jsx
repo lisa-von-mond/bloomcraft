@@ -2,11 +2,16 @@ import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 
 export function RedAlert({ globalCount, max, reset }) {
+  function levelFail() {
+    reset();
+    oneLifeLess();
+  }
+
   return (
     <Blur globalCount={globalCount} max={max}>
       <Window>
         Mission failed
-        <MyButton click={reset} text="try again" color="dark" />
+        <MyButton click={levelFail} text="try again" color="dark" />
       </Window>
     </Blur>
   );
