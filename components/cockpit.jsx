@@ -20,7 +20,7 @@ export function Cockpit({
     add('right');
   }
   function addLeft() {
-    add('left');
+    add('turn');
   }
   function addOut() {
     add('out');
@@ -47,35 +47,21 @@ export function Cockpit({
     <>
       <CPFrame>
         <CommandLine cpStatus={cpStatus}>
-          <CommandLineInner>
-            {commandLine.map((element, index) => (
-              <Command key={index} cpStatus={cpStatus}>
+          {commandLine.map((element, index) => (
+            <Command key={index} cpStatus={cpStatus}>
+              {element}
+            </Command>
+          ))}
+          <CommandLineTemp cpStatus={cpStatus}>
+            {tempArr.map((element, index) => (
+              <CommandTemp key={index} content={element}>
                 {element}
-              </Command>
+              </CommandTemp>
             ))}
-            <CommandLineTemp cpStatus={cpStatus}>
-              {tempArr.map((element, index) => (
-                <CommandTemp key={index} content={element}>
-                  {element}
-                </CommandTemp>
-              ))}
-            </CommandLineTemp>
-            <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>
-              set
-            </SetKey>
-          </CommandLineInner>
-          <LittleKeyContainer>
-            <DelKey1
-              cpStatus={cpStatus}
-              onClick={del1}
-              cockpitCount={cockpitCount}
-            >
-              del
-            </DelKey1>
-            <DelKey2 cpStatus={cpStatus} onClick={del2}>
-              del
-            </DelKey2>
-          </LittleKeyContainer>
+          </CommandLineTemp>
+          <SetKey tempCount={tempCount} cpStatus={cpStatus} onClick={set}>
+            set
+          </SetKey>
         </CommandLine>
         <CpCounter1
           cpStatus={cpStatus}
@@ -117,9 +103,9 @@ export function Cockpit({
               maxCount={maxCount}
               cpStatus={cpStatus}
             >
-              left
+              turn
             </Key>
-            <Key
+            {/* <Key
               colorvar="mint"
               onClick={addRight}
               tempCount={tempCount}
@@ -128,7 +114,19 @@ export function Cockpit({
               cpStatus={cpStatus}
             >
               right
-            </Key>
+            </Key> */}
+            <div>
+              <DelKey1
+                cpStatus={cpStatus}
+                onClick={del1}
+                cockpitCount={cockpitCount}
+              >
+                del
+              </DelKey1>
+              <DelKey2 cpStatus={cpStatus} onClick={del2}>
+                del
+              </DelKey2>
+            </div>
           </CommandLineRow>
           <CommandLineRow>
             <Key
@@ -197,7 +195,7 @@ const CommandLineRow = styled.div`
 const Key = styled.div`
   font-size: 14px;
   padding: 0.5rem;
-  min-width: 2.3rem;
+  min-width: 2.7rem;
 
   @media only screen and (max-width: 900px) {
     font-size: 12px;
@@ -291,10 +289,12 @@ const CommandLine = styled.div`
   }
   border-radius: 1rem;
   display: flex;
-  align-items: space-between;
-  justify-content: space-between;
-  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: flex-start;
   padding: 0.5rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
   background: black;
   border: 1.5px solid var(--puremint);
   box-shadow: 3px 3px 0 0 var(--puremint);
@@ -460,19 +460,4 @@ const CpCounter1 = styled.div`
     css`
       display: none;
     `}
-`;
-const CommandLineInner = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  align-items: flex-start;
-  align-content: flex-start;
-  gap: 10px;
-`;
-const LittleKeyContainer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  height: 50px;
-  gap: 10px;
 `;

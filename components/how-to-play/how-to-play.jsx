@@ -10,7 +10,6 @@ export function HowToPlay() {
   function nextHowTo() {
     if (indexHowTo < lengthHowTo) {
       setIndexHowTo(indexHowTo + 1);
-      console.log(indexHowTo);
     }
   }
 

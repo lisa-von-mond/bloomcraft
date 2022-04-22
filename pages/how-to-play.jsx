@@ -1,5 +1,5 @@
 import { HowToPlay } from '../components/how-to-play/how-to-play';
-import { MyButton } from '../components/anybutton';
+import { SimpleButton } from '../components/anybutton';
 import styled, { css } from 'styled-components';
 import Link from 'next/link';
 import { Starry } from '../components/starry';
@@ -13,7 +13,7 @@ export default function Instruction() {
         <PlayButtonCntn>
           <Link href="/levels/levelone">
             <a>
-              <MyButton text="play" color="light" />
+              <SimpleButton text="play" color="light" />
             </a>
           </Link>
         </PlayButtonCntn>

@@ -39,7 +39,7 @@ const CounterFix = styled.div`
   height: auto;
   display: flex;
   flex-direction: column;
-  kustify-content: flex-start;
+  justify-content: flex-start;
   align-items: flex-start;
   color: white;
   font-size: 0.8rem;

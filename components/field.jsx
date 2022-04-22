@@ -10,6 +10,7 @@ import { RedAlert } from './redalert';
 import { OrangeAlert } from './orangealert';
 import { InstrFrame } from './how-to-play/instruction-frame';
 import { SimpleButton } from './anybutton';
+import { GreenAlertCharge } from './greenalert_charge';
 
 export function Field({
   level,
@@ -393,7 +394,7 @@ export function Field({
 
   useEffect(() => {
     const hereNow = movingArr[intCount];
-    if (hereNow === 'left') {
+    if (hereNow === 'turn') {
       left();
     } else {
       if (hereNow === 'right') {
