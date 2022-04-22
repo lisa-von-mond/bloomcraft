@@ -15,22 +15,32 @@ a {
 
 * {
   box-sizing: border-box;
-  --darkbg: radial-gradient(circle 248px at center, #434343 0%, black 100%);
-  --othermint: linear-gradient(to right, #43e97b 0%, #38f9d7 100%);
-  --sky: radial-gradient(
-    circle 248px at center,
-    #16d9e3 0%,
-    #30c7ec 47%,
-    #46aef7 100%
+  --darkbg: radial-gradient(
+    farthest-side at 30% 50%,
+
+    #434343 0%,
+    black 100%
   );
+
+  --darkbgleft: radial-gradient(
+    farthest-side at 70% 50%,
+
+    #434343 0%,
+    black 100%
+  );
+  --sky: linear-gradient(120deg, #d9d2f3 0%, #8680d3 100%);
   --neutral: white;
-  --pink: hotpink;
+  --pink: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
   --puremint: #02ff9e;
-  --mint: linear-gradient(-225deg, #dfffcd 0%, #90f9c4 48%, #39f3bb 100%);
-  --puresky: #8bebe6;
-  --purepink: hotpink;
+  --darkmint: #597c6f;
+  --mint: linear-gradient(-225deg, #39bd6b 0%, #02ff9e 100%);
+  --puresky: #d19eee;
+  --darksky: #7d6791;
+  --purepink: #ff6cc2;
+  --darkpink: #914899;
   --dark: black;
-  --light: white;
+  --light: rgba(255, 255, 255, 0.822);
+  --darklight: rgba(219, 213, 213, 0.534);
   --warn: linear-gradient(
     to right,
     #f78ca0 0%,
@@ -38,6 +48,7 @@ a {
     #fd868c 60%,
     #fe9a8b 100%
   );
+  --layout: #769462;
 }
 
 @keyframes blinker {
@@ -102,4 +113,46 @@ a {
     opacity: 0.8;
     transform: scale(1);
   }
-} ;
+}
+
+@keyframes orbit-rev {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes ufo {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes ufo2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(0, 8px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes type {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 100%;
+  }
+}

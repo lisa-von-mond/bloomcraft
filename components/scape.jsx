@@ -2,9 +2,9 @@ import styled, { css } from 'styled-components';
 import { Galaxy } from './galaxy';
 import { useState } from 'react';
 
-export function Scape({ galaxy, chargeStatus, destination }) {
-  const [xShift, setXShift] = useState(50); // for shifting layout in x direction
-  const [yShift, setYShift] = useState(50); // for shifting layout in y direction
+export function Scape({ galaxy, chargeStatus, destination, view }) {
+  const [xShift, setXShift] = useState(50 + view[0]); // for shifting layout in x direction
+  const [yShift, setYShift] = useState(50 + view[1]); // for shifting layout in y direction
 
   function shiftLeft() {
     setXShift(xShift + 10);
@@ -36,10 +36,10 @@ export function Scape({ galaxy, chargeStatus, destination }) {
             destination={destination}
           />
         </WholeGalaxy>
-        <Quad1></Quad1>
+        {/* <Quad1></Quad1>
         <Quad2></Quad2>
         <Quad3></Quad3>
-        <Quad4></Quad4>
+        <Quad4></Quad4> */}
         <ArrLeft onClick={shiftLeft}></ArrLeft>
         <ArrUp onClick={shiftUp}></ArrUp>
         <ArrDown onClick={shiftDown}></ArrDown>
@@ -51,10 +51,8 @@ export function Scape({ galaxy, chargeStatus, destination }) {
 
 const ScapeInner = styled.div`
 position:relative;
-min-width:300px;
-min-height:300px;
-max-width:90%;
-max-height:90%;
+width:100%;
+height:100%;
 aspect-ratio:1;
 }
 `;
@@ -69,8 +67,8 @@ const WholeGalaxy = styled.div`
   align-items: center;
   justify-content: center;
 
-  @media only screen and (max-width: 800px) {
-    transform: scale(80%, 80%);
+  @media only screen and (max-width: 1000px) {
+    transform: scale(90%, 90%);
   }
 
   @media only screen and (max-width: 600px) {
@@ -82,8 +80,8 @@ const WholeGalaxy = styled.div`
 const Quad1 = styled.div`
   height: 20px;
   width: 20px;
-  border-top: 2px solid var(--puremint);
-  border-left: 2px solid var(--puremint);
+  border-top: 2px solid var(--layout);
+  border-left: 2px solid var(--layout);
   position: absolute;
   top: 0;
   left: 0;
@@ -92,8 +90,8 @@ const Quad1 = styled.div`
 const Quad2 = styled.div`
   height: 20px;
   width: 20px;
-  border-top: 2px solid var(--puremint);
-  border-right: 2px solid var(--puremint);
+  border-top: 2px solid var(--layout);
+  border-right: 2px solid var(--layout);
   position: absolute;
   top: 0;
   right: 0;
@@ -102,8 +100,8 @@ const Quad2 = styled.div`
 const Quad3 = styled.div`
   height: 20px;
   width: 20px;
-  border-bottom: 2px solid var(--puremint);
-  border-left: 2px solid var(--puremint);
+  border-top: 2px solid var(--layout);
+  border-right: 2px solid var(--layout);
   position: absolute;
   bottom: 0;
   left: 0;
@@ -112,8 +110,8 @@ const Quad3 = styled.div`
 const Quad4 = styled.div`
   height: 20px;
   width: 20px;
-  border-bottom: 2px solid var(--puremint);
-  border-right: 2px solid var(--puremint);
+  border-top: 2px solid var(--layout);
+  border-right: 2px solid var(--layout);
   position: absolute;
   bottom: 0;
   right: 0;
@@ -124,7 +122,7 @@ const Quad4 = styled.div`
 const ArrLeft = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid var(--puremint);
+  border: 2px solid var(--layout);
   position: absolute;
   transform: translate(0px, -5px);
   top: 50%;
@@ -134,7 +132,7 @@ const ArrLeft = styled.div`
 const ArrUp = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid var(--puremint);
+  border: 2px solid var(--layout);
   position: absolute;
   transform: translate(-5px, 0);
   left: 50%;
@@ -144,7 +142,7 @@ const ArrUp = styled.div`
 const ArrRight = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid var(--puremint);
+  border: 2px solid var(--layout);
   position: absolute;
   top: 50%;
   transform: translate(0px, -5px);
@@ -154,7 +152,7 @@ const ArrRight = styled.div`
 const ArrDown = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid var(--puremint);
+  border: 2px solid var(--layout);
   position: absolute;
   transform: translate(-5px, 0);
   left: 50%;

@@ -1,22 +1,17 @@
 export const textHowTo = [
   {
-    headline: 'welcome to Bloom3000!',
-    text: 'As a future space activist, living in an aera, when earth has became uninhabitable because of climate crisis, your task is to preserve intergalactic species and transport seed ressources from planets to others. Every level is based on a different galaxy. For completing a level, you need to collact a seed charge from a planet and transport it to the destination planet.',
+    headline: 'How to play',
+    text: 'As a future space activist, living in an aera, when earth has became uninhabitable because of climate crisis, your task is to preserve intergalactic species and transport seed ressources from planets to others. Every level is based on a different galaxy. Your task is collecting a seed charge from a planet and transport it to a destination planet.',
     buttontext: 'got it',
   },
   {
-    headline: 'Galaxy structure',
-    text: 'Your galaxy is structured in scopes. Every galaxy contains of a base planet and subgroups of lower order planets. A lower order planet can only be reached from the corresponding higher order planet and vice versa. All planets have id s to indicate the order. from 1.2 for example you can beam out to 1.2.1, 1.2.2 and so on and beam in to 1 only.',
-    buttontext: 'see examples',
-  },
-  {
-    headline: 'Visual example',
-    text: 'here will be a visual demonstration of how the scope works',
+    headline: 'Game field structure',
+    text: 'Your galaxy is structured in scopes. Every galaxy contains of a base planet and subgroups of lower order planets. A lower order planet can only be reached from the corresponding higher order planet and vice versa. All planets have id s to indicate the order. from 1.2 for example you can beam out to id 1.2.1, 1.2.2 (...) and beam in to id 1.',
     buttontext: 'got it',
   },
   {
-    headline: 'Command line',
-    text: 'You navigate your space ship by four different commands: OUT means navigating one scope away from base. IN means navigating one scope towards base. Since there is more than one possibility to navigate out, there is a target pointer, which has to be in the right position before beaming out. It can be turnes clockwisre or anti-clockwise with help of the commands LEFT or RIGHT. The default position of the tarket pointer is always the first planet in a scope (like 1.2.1 or 3.1).',
+    headline: 'navigation',
+    text: 'You navigate your space ship by three different commands: OUT means navigating one scope away from base. IN means navigating one scope towards base. Since there is more than one possibility to navigate out, there is a target pointer, which has to be in the right position before beaming out. It can be turned by command TURN. The default position of the target pointer is always the first planet in a scope (like 1.2.1 or 3.1).',
     buttontext: 'got it',
   },
   {

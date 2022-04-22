@@ -27,6 +27,8 @@ const Window = styled.div`
   height: auto;
   border-radius: 1rem;
   animation: popup 0.5s;
+  align-items: center;
+  align-content: center;
 
   ${props =>
     props.destination === false &&

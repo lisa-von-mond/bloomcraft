@@ -1,7 +1,7 @@
 export default {
   level: [
     {
-      name: 'one',
+      name: 'devi',
       id: '0',
       scope: 0,
       active: true,
@@ -12,7 +12,7 @@ export default {
       goal: false,
       children: [
         {
-          name: 'foo',
+          name: 'thor',
           id: '1',
           scope: 1,
           active: false,
@@ -21,15 +21,17 @@ export default {
           greens: false,
           goal: false,
           flow: 1,
+          parent: 'devi',
           children: [
             {
-              name: 'zen',
+              name: 'odin',
               id: '1.1',
               scope: 2,
               active: false,
               focus: false,
               tracked: false,
               greens: false,
+              parent: 'thor',
               children: [],
               limit: true,
               goal: false,
@@ -40,7 +42,7 @@ export default {
             },
 
             {
-              name: 'om',
+              name: 'parvati',
               id: '1.2',
               scope: 2,
               active: false,
@@ -48,6 +50,7 @@ export default {
               tracked: false,
               greens: false,
               goal: false,
+              parent: 'thor',
               children: [],
               limit: true,
               flow: 2,
@@ -62,7 +65,7 @@ export default {
         },
 
         {
-          name: 'moa',
+          name: 'shiva',
           id: '2',
           scope: 1,
           active: false,
@@ -71,14 +74,16 @@ export default {
           greens: false,
           goal: false,
           flow: 2,
+          parent: 'devi',
           children: [
             {
-              name: 'lea',
+              name: 'hanuman',
               id: '2.1',
               scope: 2,
               active: false,
               focus: false,
               tracked: false,
+              parent: 'shiva',
               children: [],
               limit: true,
               greens: true,
@@ -90,13 +95,14 @@ export default {
             },
 
             {
-              name: 'luke',
+              name: 'neptun',
               id: '2.3',
               scope: 2,
               active: false,
               focus: false,
               tracked: false,
               greens: false,
+              parent: 'shiva',
               children: [],
               limit: true,
               goal: false,
@@ -112,7 +118,7 @@ export default {
         },
 
         {
-          name: 'obi',
+          name: 'athena',
           id: '3',
           scope: 1,
           active: false,
@@ -121,15 +127,17 @@ export default {
           greens: false,
           goal: false,
           flow: 3,
+          parent: 'devi',
           children: [
             {
-              name: 'lili',
+              name: 'aurora',
               id: '3.1',
               scope: 2,
               active: false,
               focus: false,
               tracked: false,
               greens: false,
+              parent: 'athena',
               children: [],
               limit: true,
               goal: false,
@@ -140,7 +148,7 @@ export default {
             },
 
             {
-              name: 'cleo',
+              name: 'venus',
               id: '3.2',
               scope: 2,
               active: false,
@@ -149,6 +157,7 @@ export default {
               greens: false,
               seeds: false,
               goal: true,
+              parent: 'athena',
               children: [],
               limit: true,
               flow: 2,
@@ -165,12 +174,13 @@ export default {
       ],
     },
   ],
-  max: 7,
+  max: 9,
   initialId: 0,
-  initialPosition: 'one',
-  initialFocus: 'foo',
-  charge: 'lea',
-  goal: 'cleo',
+  initialPosition: 'devi',
+  initialFocus: 'thor',
+  initialParent: false,
+  charge: 'hanuman',
+  goal: 'venus',
   thisLevel: 2,
   nextLevel: 'levelthree',
 };

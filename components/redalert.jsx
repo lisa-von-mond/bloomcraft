@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { MyButton } from './anybutton';
 
-export function RedAlert({ globalCount, max, reset }) {
+export function RedAlert({ globalCount, max, reset, oneLifeLess }) {
   function levelFail() {
     reset();
     oneLifeLess();

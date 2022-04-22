@@ -8,6 +8,8 @@ const Window = styled.div`
   font-sitze: 5rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  align-content: center;
   gap: 1rem;
   padding: 1rem;
   border: 2px solid var(--puremint);

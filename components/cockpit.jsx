@@ -13,12 +13,10 @@ export function Cockpit({
   move,
   cockpitCount,
   maxCount,
+  thisLevel,
 }) {
   const tempCount = tempArr.length;
 
-  function addRight() {
-    add('right');
-  }
   function addLeft() {
     add('turn');
   }
@@ -46,6 +44,7 @@ export function Cockpit({
   return (
     <>
       <CPFrame>
+        <ThisLevelInfo color="puremint">Level {thisLevel}</ThisLevelInfo>
         <CommandLine cpStatus={cpStatus}>
           {commandLine.map((element, index) => (
             <Command key={index} cpStatus={cpStatus}>
@@ -71,12 +70,13 @@ export function Cockpit({
           {sparks}
         </CpCounter1>
         <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
-          {tempCount} / 4
+          {tempCount} / 5
         </CpCounter2>
         <Keyboard>
           <CommandLineRow>
             <Key
               colorvar="mint"
+              darkvar="darkmint"
               onClick={addOut}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
@@ -87,6 +87,7 @@ export function Cockpit({
             </Key>
             <Key
               colorvar="mint"
+              darkvar="darkmint"
               onClick={addIn}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
@@ -97,6 +98,7 @@ export function Cockpit({
             </Key>
             <Key
               colorvar="mint"
+              darkvar="darkmint"
               onClick={addLeft}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
@@ -105,16 +107,6 @@ export function Cockpit({
             >
               turn
             </Key>
-            {/* <Key
-              colorvar="mint"
-              onClick={addRight}
-              tempCount={tempCount}
-              cockpitCount={cockpitCount}
-              maxCount={maxCount}
-              cpStatus={cpStatus}
-            >
-              right
-            </Key> */}
             <div>
               <DelKey1
                 cpStatus={cpStatus}
@@ -131,6 +123,7 @@ export function Cockpit({
           <CommandLineRow>
             <Key
               colorvar="sky"
+              darkvar="darksky"
               onClick={addTwo}
               cpStatus={cpStatus}
               tempCount={tempCount}
@@ -141,6 +134,7 @@ export function Cockpit({
             </Key>
             <Key
               colorvar="sky"
+              darkvar="darksky"
               onClick={addThree}
               cpStatus={cpStatus}
               tempCount={tempCount}
@@ -151,6 +145,7 @@ export function Cockpit({
             </Key>
             <Key
               colorvar="pink"
+              darkvar="darkpink"
               cpStatus={cpStatus}
               onClick={move}
               cockpitCount={cockpitCount}
@@ -172,13 +167,16 @@ const CPFrame = styled.div`
   gap: 1rem;
   display: flex;
   flex-direction: column;
+  align-items: center;
 `;
 const Keyboard = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 0.7rem;
+  font-weight: 600;
+
   @media only screen and (orientation: portrait) {
     flex-wrap: nowrap;
   }
@@ -189,12 +187,11 @@ const Keyboard = styled.div`
 
 const CommandLineRow = styled.div`
   display: flex;
-  gap: 0.5rem;
+  gap: 0.6rem;
   justify-content: center;
 `;
 const Key = styled.div`
   font-size: 14px;
-  padding: 0.5rem;
   min-width: 2.7rem;
 
   @media only screen and (max-width: 900px) {
@@ -213,7 +210,13 @@ const Key = styled.div`
   justify-content: center;
   padding: 0.5rem;
   background: var(--${props => props.colorvar});
+  box-shadow: 3px 3px var(--${props => props.darkvar});
   cursor: pointer;
+
+  &:active {
+    transform: scale(90%);
+    filter: brightness(150%);
+  }
 
   ${props =>
     props.colorvar === 'mint' &&
@@ -225,7 +228,7 @@ const Key = styled.div`
 
   ${props =>
     props.colorvar === 'mint' &&
-    props.tempCount >= 4 &&
+    props.tempCount >= 5 &&
     css`
       filter: brightness(50%);
       cursor: default;
@@ -256,7 +259,7 @@ ${props =>
     
 ${props =>
     props.colorvar === 'sky' &&
-    props.tempCount >= 4 &&
+    props.tempCount >= 5 &&
     css`
       filter: brightness(50%);
       cursor: default;
@@ -287,12 +290,13 @@ const CommandLine = styled.div`
   @media only screen and (orientation: portrait) {
     min-height: 7rem;
   }
-  border-radius: 1rem;
+  border-radius: 2rem;
   display: flex;
+  width: 100%;
   align-items: flex-start;
   justify-content: flex-start;
   align-content: flex-start;
-  padding: 0.5rem;
+  padding: 0.8rem;
   gap: 0.5rem;
   flex-wrap: wrap;
   background: black;
@@ -354,47 +358,23 @@ const SetKey = styled.div`
   justify-content: center;
   padding: 0.5rem;
   background: var(--sky);
-  border: 2px solid black;
+  box-shadow: 3px 3px var(--darksky);
   cursor: pointer;
   color: black;
   animation: cmd 0.3s;
+
+  &:active {
+    transform: scale(90%);
+    filter: brightness(150%);
+  }
 
   ${props =>
     props.tempCount <= 1 &&
     css`
       display: none;
     `}
-
-  ${props =>
-    props.cpStatus === 1 &&
-    css`
-      filter: brightness(30%);
-      cursor: default;
-    `}
 `;
 
-const CpCounter2 = styled.div`
-  display: flex;
-  border-radius: 50px;
-  color: white;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  padding: 0.5rem;
-
-  ${props =>
-    props.tempCount >= 4 &&
-    css`
-      color: hotpink;
-      animation: blinker 1s linear infinite;
-    `}
-
-  ${props =>
-    props.cpStatus === 1 &&
-    css`
-      display: none;
-    `}
-`;
 const DelKey2 = styled.div`
   display: flex;
   border-radius: 50px;
@@ -402,10 +382,16 @@ const DelKey2 = styled.div`
   justify-content: center;
   width: auto;
   padding: 0.5rem;
+  font-size: 14px;
   cursor: pointer;
-  background-color: var(--neutral);
-  border: 2px solid black;
+  background-color: var(--light);
   color: black;
+  box-shadow: 3px 3px var(--darklight);
+
+  &:active {
+    transform: scale(90%);
+    filter: brightness(150%);
+  }
 
   ${props =>
     props.cpStatus === 1 &&
@@ -420,11 +406,16 @@ const DelKey1 = styled.div`
   justify-content: center;
   width: auto;
   padding: 0.5rem;
+  font-size: 14px;
   cursor: pointer;
   color: black;
-  border: 2px solid black;
-  background-color: var(--neutral);
-  animation: cmd 0.3s;
+  background-color: var(--light);
+  box-shadow: 3px 3px var(--darklight);
+
+  &:active {
+    transform: scale(90%);
+    filter: brightness(150%);
+  }
 
   ${props =>
     props.cpStatus > 1 &&
@@ -439,14 +430,13 @@ const DelKey1 = styled.div`
     `}
 `;
 const CpCounter1 = styled.div`
-  height: 30px;
   display: flex;
-  border-radius: 50px;
   color: white;
   align-items: center;
   justify-content: center;
   width: auto;
-  padding: 0.5rem;
+  animation: type 1s;
+  color: var(--puremint);
 
   ${props =>
     props.cockpitCount >= props.maxCount &&
@@ -460,4 +450,35 @@ const CpCounter1 = styled.div`
     css`
       display: none;
     `}
+`;
+
+const CpCounter2 = styled.div`
+  display: flex;
+  color: white;
+  align-items: center;
+  justify-content: center;
+  width: auto;
+  animation: type 1s;
+  color: var(--puresky);
+
+  ${props =>
+    props.tempCount >= 5 &&
+    css`
+      color: hotpink;
+      animation: blinker 1s linear infinite;
+    `}
+
+  ${props =>
+    props.cpStatus === 1 &&
+    css`
+      display: none;
+    `}
+`;
+
+const ThisLevelInfo = styled.div`
+  color: var(--puremint);
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 1.3rem;
+  border-bottom: 2px solid var(--puremint);
 `;

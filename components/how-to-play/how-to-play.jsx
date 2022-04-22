@@ -44,12 +44,13 @@ export function HowToPlay() {
 const TTFrame = styled.div`
   width: 100vw;
   height: 100vh;
-  position:fixed;
-  top:0;
-  left:0;
+  position: fixed;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: center;
-  align-items:center;}
+  align-items: center;
+  font-size: 0.8rem;
 `;
 
 const TextField = styled.div`
@@ -64,7 +65,7 @@ const TextField = styled.div`
   width: 60%;
   flex-direction: column;
   align-items: center;
-  gap: 3vw;
+  gap: 2.4vw;
   @media and(orientation:portrait) {
     width: 100%;
   }
@@ -78,7 +79,7 @@ const AllButtons = styled.div`
 
 const HeadLine = styled.h2`
   color: var(--purepink);
-  font-size: 2rem;
+  font-size: 1.4rem;
   font-weight: 400;
   text-transform: uppercase;
   margin: 0;

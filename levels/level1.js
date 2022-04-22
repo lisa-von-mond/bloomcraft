@@ -1,7 +1,7 @@
 export default {
   level: [
     {
-      name: 'mars',
+      name: 'alderaan',
       id: '0',
       scope: 0,
       active: false,
@@ -12,7 +12,7 @@ export default {
       goal: false,
       children: [
         {
-          name: 'saturn',
+          name: 'endor',
           id: '1',
           scope: 1,
           active: false,
@@ -23,14 +23,15 @@ export default {
           limit: true,
           flow: 1,
           children: [],
+          parent: 'alderaan',
           angl: 50,
           dist: 200,
           ring: 0,
         },
 
         {
-          name: 'neptun',
-          id: '2',
+          name: 'tatooine',
+          id: '3',
           scope: 1,
           active: true,
           focus: false,
@@ -39,6 +40,7 @@ export default {
           goal: false,
           flow: 3,
           children: [],
+          parent: 'alderaan',
           limit: true,
           angl: 290,
           dist: 130,
@@ -46,8 +48,8 @@ export default {
         },
 
         {
-          name: 'jupiter',
-          id: '3',
+          name: 'jakku',
+          id: '2',
           scope: 1,
           active: false,
           focus: false,
@@ -57,13 +59,14 @@ export default {
           flow: 2,
           children: [
             {
-              name: 'nuno',
+              name: 'naboo',
               id: '2.1',
               scope: 2,
               active: false,
               focus: false,
               tracked: false,
               children: [],
+              parent: 'jakku',
               limit: true,
               greens: false,
               goal: true,
@@ -73,6 +76,7 @@ export default {
               ring: 0,
             },
           ],
+          parent: 'alderaan',
           limit: false,
           angl: 170,
           dist: 130,
@@ -82,10 +86,11 @@ export default {
   ],
   max: 8,
   initialId: 3,
-  initialPosition: 'neptun',
+  initialPosition: 'tatooine',
   initialFocus: false,
-  charge: 'saturn',
-  goal: 'nuno',
+  initialParent: 'alderaan',
+  charge: 'endor',
+  goal: 'naboo',
   thisLevel: 1,
   nextLevel: 'leveltwo',
 };
