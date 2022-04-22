@@ -323,6 +323,7 @@ export default {
   initialPosition: 'new earth',
   initialId: 0,
   initialFocus: 'jupiter',
+  initialParent: false,
   charge: 'venus',
   goal: 'svea',
   thisLevel: 3,

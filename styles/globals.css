@@ -115,6 +115,15 @@ a {
   }
 }
 
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes orbit-rev {
   from {
     transform: rotate(0deg);
@@ -154,5 +163,14 @@ a {
 
   to {
     opacity: 100%;
+  }
+}
+
+@keyframes greens {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
   }
 }

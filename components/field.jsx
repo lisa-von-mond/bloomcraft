@@ -46,9 +46,8 @@ export function Field({
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
   const maxCount = max - globalCount;
-  const [view, setView] = useState([0, 0]);
 
-  function resolveSparks() {
+  function resolveDashes() {
     if (commandLine.length > 0) {
       const resolved = commandLine.map(element =>
         typeof element === 'string' ? 1 : element.length - 1
@@ -60,7 +59,7 @@ export function Field({
     }
   }
 
-  const cockpitCount = resolveSparks() + 1;
+  const cockpitCount = resolveDashes() + 1;
 
   function initFocus() {
     if (initialFocus !== false) {
@@ -84,11 +83,8 @@ export function Field({
   function down() {
     setGalaxy(hopDownNow(galaxy));
   }
-  function right() {
-    setGalaxy(turnFocusRightNow(galaxy));
-  }
-  function left() {
-    setGalaxy(turnFocusLeftNow(galaxy));
+  function turn() {
+    setGalaxy(turnFocusNow(galaxy));
   }
 
   // moving functions scope
@@ -96,10 +92,11 @@ export function Field({
   function hopUpInScope(object) {
     const Focus = object.children.find(element => element.focus === true);
     setThisPlanet(Focus.name);
-    setThisId(Focus.id);
+    setThisId(focus.id);
+
     setParentNow('### beam in to ' + object.name);
     if (chargeStatus === true) {
-      if (Focus.goal === true) {
+      if (Focus.name === goal) {
         setDestination(true);
       }
     } else {
@@ -107,8 +104,8 @@ export function Field({
         setChargeStatus(true);
       }
     }
-    const NewSubScope = Focus.children.map(element =>
-      element.flow === 1 ? { ...element, focus: true } : element
+    const NewSubScope = Focus.children.map((element, index) =>
+      index === 0 ? { ...element, focus: true } : element
     );
     const nextFocus = NewSubScope.find(element => element.focus === true);
     if (nextFocus !== undefined) {
@@ -136,33 +133,13 @@ export function Field({
     return newObject;
   }
 
-  function turnFocusLeftInScope(objekt) {
+  function turnFocusInScope(objekt) {
     if (objekt.limit === true) {
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
       const Focus = scope.find(element => element.focus === true);
       const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1;
-      const nextFocus = scope.find(element => element.flow === nextFocusIndex);
-      setFocusNow('### beam out to ' + nextFocus.name);
-      const scopeA = scope.map(element =>
-        element.focus === true ? { ...element, focus: false } : element
-      );
-      const scopeB = scopeA.map(element =>
-        element.flow === nextFocusIndex ? { ...element, focus: true } : element
-      );
-      return { ...objekt, children: scopeB };
-    }
-  }
-
-  function turnFocusRightInScope(objekt) {
-    if (objekt.limit === true) {
-      null;
-      setSystemCrash(true);
-    } else {
-      const scope = objekt.children;
-      const Focus = scope.find(element => element.focus === true);
-      const nextFocusIndex = Focus.flow === 1 ? scope.length : Focus.flow - 1;
       const nextFocus = scope.find(element => element.flow === nextFocusIndex);
       setFocusNow('### beam out to ' + nextFocus.name);
       const scopeA = scope.map(element =>
@@ -186,7 +163,7 @@ export function Field({
     }
 
     if (chargeStatus === true) {
-      if (object.goal === true) {
+      if (object.name === goal) {
         setDestination(true);
       }
     } else {
@@ -255,10 +232,10 @@ export function Field({
     }
   }
 
-  function turnFocusLeftNow(y) {
+  function turnFocusNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(turnFocusLeftInScope, Base);
+      return Beam1(turnFocusInScope, Base);
     } else {
       if (track(Base).limit === true) {
         setSystemCrash(true);
@@ -266,41 +243,13 @@ export function Field({
         return y;
       } else {
         if (track(Base).active === true) {
-          return Beam2(turnFocusLeftInScope, Base);
+          return Beam2(turnFocusInScope, Base);
         } else {
           if (
             track(track(Base)).active === true &&
             track(track(Base)).limit !== true
           ) {
-            return Beam3(turnFocusLeftInScope, Base);
-          } else {
-            setSystemCrash(true);
-            oneLifeLess();
-            return y;
-          }
-        }
-      }
-    }
-  }
-
-  function turnFocusRightNow(y) {
-    let Base = y[0];
-    if (Base.active === true) {
-      return Beam1(turnFocusRightInScope, Base);
-    } else {
-      if (track(Base).limit === true) {
-        setSystemCrash(true);
-        oneLifeLess();
-        return y;
-      } else {
-        if (track(Base).active === true) {
-          return Beam2(turnFocusRightInScope, Base);
-        } else {
-          if (
-            track(track(Base)).active === true &&
-            track(track(Base)).limit !== true
-          ) {
-            return Beam3(turnFocusRightInScope, Base);
+            return Beam3(turnFocusInScope, Base);
           } else {
             setSystemCrash(true);
             oneLifeLess();
@@ -404,17 +353,13 @@ export function Field({
   useEffect(() => {
     const hereNow = movingArr[intCount];
     if (hereNow === 'turn') {
-      left();
+      turn();
     } else {
-      if (hereNow === 'right') {
-        right();
+      if (hereNow === 'out') {
+        up();
       } else {
-        if (hereNow === 'out') {
-          up();
-        } else {
-          if (hereNow === 'in') {
-            down();
-          }
+        if (hereNow === 'in') {
+          down();
         }
       }
     }
@@ -463,7 +408,8 @@ export function Field({
             chargeStatus={chargeStatus}
             destination={destination}
             hand={hand}
-            view={view}
+            charge={charge}
+            goal={goal}
           />
         </SCFrame>
 
@@ -610,6 +556,10 @@ const NoteFrame = styled.div`
   bottom: 2rem;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 
   ${props =>
     props.hand === true &&

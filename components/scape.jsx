@@ -2,9 +2,9 @@ import styled, { css } from 'styled-components';
 import { Galaxy } from './galaxy';
 import { useState } from 'react';
 
-export function Scape({ galaxy, chargeStatus, destination, view }) {
-  const [xShift, setXShift] = useState(50 + view[0]); // for shifting layout in x direction
-  const [yShift, setYShift] = useState(50 + view[1]); // for shifting layout in y direction
+export function Scape({ galaxy, chargeStatus, destination, charge, goal }) {
+  const [xShift, setXShift] = useState(50); // for shifting layout in x direction
+  const [yShift, setYShift] = useState(50); // for shifting layout in y direction
 
   function shiftLeft() {
     setXShift(xShift + 10);
@@ -34,12 +34,10 @@ export function Scape({ galaxy, chargeStatus, destination, view }) {
             galaxy={galaxy}
             chargeStatus={chargeStatus}
             destination={destination}
+            charge={charge}
+            goal={goal}
           />
         </WholeGalaxy>
-        {/* <Quad1></Quad1>
-        <Quad2></Quad2>
-        <Quad3></Quad3>
-        <Quad4></Quad4> */}
         <ArrLeft onClick={shiftLeft}></ArrLeft>
         <ArrUp onClick={shiftUp}></ArrUp>
         <ArrDown onClick={shiftDown}></ArrDown>
@@ -50,11 +48,10 @@ export function Scape({ galaxy, chargeStatus, destination, view }) {
 }
 
 const ScapeInner = styled.div`
-position:relative;
-width:100%;
-height:100%;
-aspect-ratio:1;
-}
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
 `;
 
 const WholeGalaxy = styled.div`
@@ -75,49 +72,6 @@ const WholeGalaxy = styled.div`
     transform: scale(70%, 70%);
   }
 `;
-// markers
-
-const Quad1 = styled.div`
-  height: 20px;
-  width: 20px;
-  border-top: 2px solid var(--layout);
-  border-left: 2px solid var(--layout);
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-radius: 5px 0 0 0;
-`;
-const Quad2 = styled.div`
-  height: 20px;
-  width: 20px;
-  border-top: 2px solid var(--layout);
-  border-right: 2px solid var(--layout);
-  position: absolute;
-  top: 0;
-  right: 0;
-  border-radius: 0 5px 0 0;
-`;
-const Quad3 = styled.div`
-  height: 20px;
-  width: 20px;
-  border-top: 2px solid var(--layout);
-  border-right: 2px solid var(--layout);
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-radius: 0 0 0 5px;
-`;
-const Quad4 = styled.div`
-  height: 20px;
-  width: 20px;
-  border-top: 2px solid var(--layout);
-  border-right: 2px solid var(--layout);
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  border-radius: 0 0 5px 0;
-`;
-// navigation squares
 
 const ArrLeft = styled.div`
   width: 20px;

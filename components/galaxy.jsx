@@ -10,19 +10,18 @@ import planet2 from '../public/images/planets/planet2.svg';
 import planet3 from '../public/images/planets/planet3.svg';
 import planet4 from '../public/images/planets/planet4.svg';
 
-export function Galaxy({ galaxy, chargeStatus }) {
+export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
   return (
     <>
       {galaxy.map(one => (
-        <MyGalaxy key={one.name} scope={one.scope} chargeStatus={chargeStatus}>
-          <Planet goal={one.goal}>
+        <MyGalaxy key={one.name} scope="0" chargeStatus={chargeStatus}>
+          <Planet name={one.name} goal={goal}>
             <Image src={planet1} />
           </Planet>
-
           <PlanetOverlay>
             <Image src={planetoverlay} />
           </PlanetOverlay>
-          <Greens greens={one.greens} chargeStatus={chargeStatus}>
+          <Greens name={one.name} greens={charge} chargeStatus={chargeStatus}>
             <Image src={greenslayer} />
           </Greens>
           <LegendId>
@@ -42,18 +41,22 @@ export function Galaxy({ galaxy, chargeStatus }) {
             {one.children.map(two => (
               <MyGalaxy
                 key={two.name}
-                scope={two.scope}
+                scope="1"
                 distx={angleToCooX(two.angl, two.dist)}
                 disty={angleToCooY(two.angl, two.dist)}
                 chargeStatus={chargeStatus}
               >
-                <Planet goal={two.goal} focus={two.focus}>
+                <Planet name={two.name} goal={goal} focus={two.focus}>
                   <Image src={planet2} />
                 </Planet>
                 <PlanetOverlay focus={two.focus}>
                   <Image src={planetoverlay} />
                 </PlanetOverlay>
-                <Greens greens={two.greens} chargeStatus={chargeStatus}>
+                <Greens
+                  name={two.name}
+                  greens={charge}
+                  chargeStatus={chargeStatus}
+                >
                   <Image src={greenslayer} />
                 </Greens>
                 <LegendId>
@@ -77,20 +80,23 @@ export function Galaxy({ galaxy, chargeStatus }) {
                   {two.children.map(three => (
                     <MyGalaxy
                       key={three.name}
-                      scope={three.scope}
+                      scope="2"
                       distx={angleToCooX(three.angl, three.dist)}
                       disty={angleToCooY(three.angl, three.dist)}
                       chargeStatus={chargeStatus}
                     >
-                      <Planet goal={three.goal} focus={three.focus}>
-                        {' '}
+                      <Planet name={three.name} goal={goal} focus={three.focus}>
                         <Image src={planet3} className="planetimage" />
                       </Planet>
 
                       <PlanetOverlay focus={three.focus}>
                         <Image src={planetoverlay} />
                       </PlanetOverlay>
-                      <Greens greens={three.greens} chargeStatus={chargeStatus}>
+                      <Greens
+                        name={three.name}
+                        greens={charge}
+                        chargeStatus={chargeStatus}
+                      >
                         <Image src={greenslayer} />
                       </Greens>
                       <LegendId>
@@ -114,13 +120,16 @@ export function Galaxy({ galaxy, chargeStatus }) {
                         {three.children.map(four => (
                           <MyGalaxy
                             key={four.name}
-                            scope={four.scope}
+                            scope="3"
                             distx={angleToCooX(four.angl, four.dist)}
                             disty={angleToCooY(four.angl, four.dist)}
                             chargeStatus={chargeStatus}
                           >
-                            <Planet goal={four.goal} focus={four.focus}>
-                              {' '}
+                            <Planet
+                              name={four.name}
+                              goal={goal}
+                              focus={four.focus}
+                            >
                               <Image src={planet4} className="planetimage" />
                             </Planet>
 
@@ -128,7 +137,8 @@ export function Galaxy({ galaxy, chargeStatus }) {
                               <Image src={planetoverlay} />
                             </PlanetOverlay>
                             <Greens
-                              greens={four.greens}
+                              name={four.name}
+                              greens={charge}
                               chargeStatus={chargeStatus}
                             >
                               <Image src={greenslayer} />
@@ -183,45 +193,36 @@ const MyGalaxy = styled.div`
   }
 
   ${props =>
-    props.scope === 0 &&
+    props.scope === '0' &&
     css`
       height: 100px;
       width: 100px;
       animation: orbit 600s linear infinite;
       transform-origin: ${props => props.distx}*-1px;
       ${props => props.disty}*-1px;
-      @keyframes orbit {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(360deg);
-        }
-      }
     `}
 
   ${props =>
-    props.scope === 1 &&
+    props.scope === '1' &&
     css`
       height: 80px;
       width: 80px;
     `}
   
 ${props =>
-    props.scope === 2 &&
+    props.scope === '2' &&
     css`
       height: 60px;
       width: 60px;
     `}
   
 ${props =>
-    props.scope === 3 &&
+    props.scope === '3' &&
     css`
       height: 50px;
       width: 50px;
     `}
 `;
-//
 
 const Planet = styled.div`
   position: absolute;
@@ -229,7 +230,7 @@ const Planet = styled.div`
   }
 
   ${props =>
-    props.goal === true &&
+    props.goal === props.name &&
     css`
       filter: grayscale(100%) brightness(50%);
     `}
@@ -238,15 +239,8 @@ const Planet = styled.div`
     props.focus === true &&
     css`
       animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
-      @keyframes blinker {
-        50% {
-          opacity: 0;
-        }
-      }
-      }
     `}
 `;
-//
 
 const PlanetRing = styled.div`
   position: absolute;
@@ -272,16 +266,9 @@ const PlanetRing = styled.div`
 ${props =>
   props.focus === true &&
   css`
-      animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
-      @keyframes blinker {
-        50% {
-          opacity: 0;
-        }
-      }
-      }
-    `}
+    animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
+  `}
 `;
-//
 
 const Ufo = styled.div`
   position: absolute;
@@ -306,7 +293,6 @@ const Ufo = styled.div`
       filter: hue-rotate(200deg);
     `}
 `;
-//
 
 const UfoInner = styled.div`
   ${props =>
@@ -320,24 +306,14 @@ const UfoWobble = styled.div`
   animation: ufo2 2s infinite ease;
 `;
 
-//
-
 const Greens = styled.div`
   position: absolute;
   height: 60%;
   width: 60%;
   animation: greens 6s linear infinite;
-  @keyframes greens {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(-360deg);
-    }
-  }
 
   ${props =>
-    props.greens === false &&
+    props.greens !== props.name &&
     css`
       display: none;
     `}
@@ -355,32 +331,11 @@ const PlanetOverlay = styled.div`
   animation: orbit-rev 600s linear infinite;
   transform-origin: ${props => props.distx}*-1px;
   ${props => props.disty}*-1px;
-  @keyframes orbit-rev {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(-360deg);
-    }
-  }
 
   ${props =>
     props.focus === true &&
     css`
       animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
-      @keyframes blinker {
-        50% {
-          opacity: 0;
-        }
-      }
-      @keyframes orbit-rev {
-        from {
-          transform: rotate(0deg);
-        }
-        to {
-          transform: rotate(-360deg);
-        }
-      }
     `}
 `;
 //

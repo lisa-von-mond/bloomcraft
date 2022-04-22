@@ -76,4 +76,8 @@ const Dot = styled.div`
 
 const CounterInfo = styled.div`
   color: var(--${props => props.color});
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `;
