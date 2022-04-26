@@ -1,18 +1,18 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Starry } from './starry';
-import { MyButton } from './anybutton';
+import { Starry } from '../starry';
+import { MyButton } from '../anybutton';
 import Link from 'next/link';
 
-export function OutroPlayAgain() {
+export function Outro() {
   return (
     <>
       <MyMain>
         <Starry />
-        <Headline>Sorry, you lost your trace</Headline>
+        <Headline>Congrats, future space activist!</Headline>
         <Link href="/levels/levelone">
           <a>
-            <MyButton text="try again" color="puremint" />
+            <MyButton text="play again" color="puremint" />
           </a>
         </Link>
       </MyMain>

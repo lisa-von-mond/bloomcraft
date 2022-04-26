@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Intro } from '../components/intro';
+import { Intro } from '../components/intro-outro/intro';
 
 export default function App() {
   return (

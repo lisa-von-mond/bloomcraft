@@ -27,7 +27,6 @@ export function GlobalCounter({ hand, remCount, life }) {
         {lifeDots.map((element, index) => (
           <Dot color="mint" key={'green' + index}></Dot>
         ))}
-        {life}
       </DotContainer>
     </CounterFix>
   );

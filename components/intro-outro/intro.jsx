@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styled, { css } from 'styled-components';
-import { Starry } from './starry';
-import { MyButton } from './anybutton';
+import { Starry } from '../starry';
+import { MyButton } from '../anybutton';
 import Link from 'next/link';
 
 export function Intro() {

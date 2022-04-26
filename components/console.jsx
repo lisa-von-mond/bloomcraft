@@ -9,10 +9,12 @@ export function InfoConsole({
   charge,
   parentNow,
   goal,
+  galaxyName,
 }) {
   return (
     <>
       <ConsoleFrame>
+        <GalaxyInfo>### reached {galaxyName}</GalaxyInfo>
         <PositionInfo>
           ### you are on {thisPlanet} {thisId}
         </PositionInfo>
@@ -89,6 +91,13 @@ const PositionInfo = styled.p`
 
 const GoalInfo = styled.p`
   color: var(--puremint);
+  display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
+`;
+
+const GalaxyInfo = styled.p`
+  color: var(--puresky);
   display: inherit;
   margin: 0.2rem;
   animation: type 2s;

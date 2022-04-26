@@ -27,6 +27,7 @@ export function Field({
   nextLevel,
   life,
   setLife,
+  galaxyName,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -438,6 +439,7 @@ export function Field({
               parentNow={parentNow}
               charge={charge}
               goal={goal}
+              galaxyName={galaxyName}
             />
           </CSFrame>
         </CTRLFrame>

@@ -328,4 +328,6 @@ export default {
   goal: 'svea',
   thisLevel: 3,
   nextLevel: false,
+  atronautName: '',
+  galaxyName: "lunee's galaxy",
 };

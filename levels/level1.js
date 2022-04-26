@@ -105,5 +105,5 @@ export default {
   thisLevel: 1,
   nextLevel: 'leveltwo',
   atronautName: '',
-  galaxyName: '',
+  galaxyName: 'abstract galaxy',
 };
