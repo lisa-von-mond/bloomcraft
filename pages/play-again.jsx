@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { OutroPlayAgain } from '../components/outro-play-again';
+import { OutroPlayAgain } from '../components/intro-outro/outro-play-again';
 
 export default function App() {
   return (

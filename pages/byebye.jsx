@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Outro } from '../components/outro';
+import { Outro } from '../components/intro-outro/outro';
 
 export default function App() {
   return (
