@@ -22,7 +22,7 @@ a {
     black 100%
   );
 
-  --darkbgleft: radial-gradient(
+  --darkbgrev: radial-gradient(
     farthest-side at 70% 50%,
 
     #434343 0%,
@@ -34,6 +34,7 @@ a {
   --puremint: #02ff9e;
   --darkmint: #597c6f;
   --mint: linear-gradient(-225deg, #39bd6b 0%, #02ff9e 100%);
+  --lemon: linear-gradient(120deg, #d4fc79 0%, #96e6a1 100%);
   --puresky: #d19eee;
   --darksky: #7d6791;
   --purepink: #ff6cc2;
@@ -105,12 +106,12 @@ a {
     opacity: 1;
     transform: scale(1);
   }
-  80% {
+  70% {
     opacity: 0.6;
     transform: scale(1.2);
   }
   100% {
-    opacity: 0.8;
+    opacity: 1;
     transform: scale(1);
   }
 }

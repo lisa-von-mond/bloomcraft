@@ -5,11 +5,13 @@ import { Cockpit } from './cockpit';
 import { InfoConsole } from './console';
 import { Scape } from './scape';
 import { GlobalCounter } from './counter';
-import { GreenAlert } from './greenalert';
-import { RedAlert } from './redalert';
-import { OrangeAlert } from './orangealert';
+import { GreenAlert } from './alerts/greenalert';
+import { RedAlert } from './alerts/redalert';
+import { OrangeAlert } from './alerts/orangealert';
+import { DarkAlert } from './alerts/darkalert';
 import { InstrFrame } from './how-to-play/instruction-frame';
 import { SimpleButton } from './anybutton';
+import { Starry } from './starry';
 
 export function Field({
   level,
@@ -24,7 +26,7 @@ export function Field({
   thisLevel,
   nextLevel,
   life,
-  oneLifeLess,
+  setLife,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -43,9 +45,15 @@ export function Field({
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
   const [instr, setInstr] = useState(false); // instruction visibility
   const [systemCrash, setSystemCrash] = useState(false);
+  const [fail, setFail] = useState(false);
+  const [totalFail, setTotalFail] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
-  const maxCount = max - globalCount;
+  const remCount = max - globalCount;
+
+  function oneLifeLess() {
+    setLife(life - 1);
+  }
 
   function resolveDashes() {
     if (commandLine.length > 0) {
@@ -77,19 +85,19 @@ export function Field({
     }
   }
 
-  function up() {
-    setGalaxy(hopUpNow(galaxy));
+  function oneOut() {
+    setGalaxy(hopOutNow(galaxy));
   }
-  function down() {
-    setGalaxy(hopDownNow(galaxy));
+  function oneIn() {
+    setGalaxy(hopInNow(galaxy));
   }
-  function turn() {
+  function oneTurn() {
     setGalaxy(turnFocusNow(galaxy));
   }
 
   // moving functions scope
 
-  function hopUpInScope(object) {
+  function hopOutScope(object) {
     const Focus = object.children.find(element => element.focus === true);
     setThisPlanet(Focus.name);
     setThisId(focus.id);
@@ -100,7 +108,7 @@ export function Field({
         setDestination(true);
       }
     } else {
-      if (Focus.greens === true) {
+      if (Focus.name === charge) {
         setChargeStatus(true);
       }
     }
@@ -133,26 +141,30 @@ export function Field({
     return newObject;
   }
 
-  function turnFocusInScope(objekt) {
+  function turnFocusScope(objekt) {
     if (objekt.limit === true) {
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
-      const Focus = scope.find(element => element.focus === true);
-      const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1;
-      const nextFocus = scope.find(element => element.flow === nextFocusIndex);
+      const FocusIndex = scope.indexOf(
+        scope.find(element => element.focus === true)
+      );
+      console.log(FocusIndex);
+      const nextFocusIndex =
+        FocusIndex === scope.length - 1 ? 0 : FocusIndex + 1;
+      const nextFocus = scope[nextFocusIndex];
       setFocusNow('### beam out to ' + nextFocus.name);
       const scopeA = scope.map(element =>
         element.focus === true ? { ...element, focus: false } : element
       );
-      const scopeB = scopeA.map(element =>
-        element.flow === nextFocusIndex ? { ...element, focus: true } : element
+      const scopeB = scopeA.map((element, index) =>
+        index === nextFocusIndex ? { ...element, focus: true } : element
       );
       return { ...objekt, children: scopeB };
     }
   }
 
-  function hopDownInScope(object) {
+  function hopInScope(object) {
     const Current = object.children.find(element => element.active === true);
     setThisPlanet(object.name);
     setThisId(object.id);
@@ -204,27 +216,25 @@ export function Field({
 
   // moving functions global
 
-  function hopUpNow(y) {
+  function hopOutNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(hopUpInScope, Base);
+      return Beam1(hopOutScope, Base);
     } else {
       if (track(Base).limit === true) {
         setSystemCrash(true);
-        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
-          return Beam2(hopUpInScope, Base);
+          return Beam2(hopOutScope, Base);
         } else {
           if (
             track(track(Base)).active === true &&
             track(track(Base)).limit !== true
           ) {
-            return Beam3(hopUpInScope, Base);
+            return Beam3(hopOutScope, Base);
           } else {
             setSystemCrash(true);
-            oneLifeLess();
             return y;
           }
         }
@@ -235,24 +245,22 @@ export function Field({
   function turnFocusNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(turnFocusInScope, Base);
+      return Beam1(turnFocusScope, Base);
     } else {
       if (track(Base).limit === true) {
         setSystemCrash(true);
-        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
-          return Beam2(turnFocusInScope, Base);
+          return Beam2(turnFocusScope, Base);
         } else {
           if (
             track(track(Base)).active === true &&
             track(track(Base)).limit !== true
           ) {
-            return Beam3(turnFocusInScope, Base);
+            return Beam3(turnFocusScope, Base);
           } else {
             setSystemCrash(true);
-            oneLifeLess();
             return y;
           }
         }
@@ -260,20 +268,19 @@ export function Field({
     }
   }
 
-  function hopDownNow(y) {
+  function hopInNow(y) {
     let Base = y[0];
     if (Base.active === true) {
       setSystemCrash(true);
-      oneLifeLess();
       return y;
     } else {
       if (track(Base).active === true) {
-        return Beam1(hopDownInScope, Base);
+        return Beam1(hopInScope, Base);
       } else {
         if (track(track(Base)).active === true) {
-          return Beam2(hopDownInScope, Base);
+          return Beam2(hopInScope, Base);
         } else {
-          return Beam3(hopDownInScope, Base);
+          return Beam3(hopInScope, Base);
         }
       }
     }
@@ -283,7 +290,7 @@ export function Field({
 
   function add(direction) {
     if (cpStatus === 1) {
-      if (cockpitCount <= maxCount - 1) {
+      if (cockpitCount < remCount) {
         setCommandLine([...commandLine, direction]);
         setCommands([...commands, direction]);
       }
@@ -294,37 +301,22 @@ export function Field({
     }
   }
 
-  function addTwo() {
-    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
-      setTempArr([2]);
-      setCpStatus(2);
+  function addNumber(number) {
+    if (cpStatus === 1 && cockpitCount < remCount) {
+      setTempArr([number]);
+      setCpStatus(number);
     }
   }
 
-  function addThree() {
-    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
-      setTempArr([3]);
-      setCpStatus(3);
-    }
-  }
-
-  function del1() {
+  function del() {
     if (cpStatus === 1) {
       setCommandLine(commandLine.slice(0, -1));
       setCommands(commands.slice(0, -1));
     } else {
-      console.log('not possible');
-    }
-  }
-
-  function del2() {
-    if (cpStatus !== 1) {
       setTempArr(tempArr.slice(0, -1));
       if (tempArr.length === 1) {
         setCpStatus(1);
       }
-    } else {
-      console.log('not possible');
     }
   }
 
@@ -353,13 +345,13 @@ export function Field({
   useEffect(() => {
     const hereNow = movingArr[intCount];
     if (hereNow === 'turn') {
-      turn();
+      oneTurn();
     } else {
       if (hereNow === 'out') {
-        up();
+        oneOut();
       } else {
         if (hereNow === 'in') {
-          down();
+          oneIn();
         }
       }
     }
@@ -369,7 +361,7 @@ export function Field({
     if (cpStatus !== 1) {
       null;
     } else {
-      if (cockpitCount > maxCount) {
+      if (cockpitCount > remCount) {
         null;
       } else {
         const myInt = setInterval(() => {
@@ -380,13 +372,20 @@ export function Field({
     }
   };
 
-  if (intCount === length) {
+  if (intCount === length || systemCrash === true) {
     if (myIntId) {
       clearInterval(myIntId);
       setMyIntId(0);
       setIntCount(0);
       setCommandLine([]);
-      setGlobalCount(prevCount => prevCount + cockpitCount);
+      setGlobalCount(prev => prev + cockpitCount);
+      if (
+        systemCrash === false &&
+        cockpitCount > remCount - 2 &&
+        destination === false
+      ) {
+        setFail(true);
+      }
       setCommands([]);
     }
   }
@@ -402,6 +401,7 @@ export function Field({
   return (
     <>
       <BGFrame hand={hand}>
+        <Starry />
         <SCFrame>
           <Scape
             galaxy={galaxy}
@@ -416,17 +416,15 @@ export function Field({
         <CTRLFrame>
           <Cockpit
             move={move}
+            addNumber={addNumber}
             add={add}
-            addThree={addThree}
-            addTwo={addTwo}
-            del1={del1}
-            del2={del2}
+            del={del}
             set={set}
             cpStatus={cpStatus}
             commandLine={commandLine}
             tempArr={tempArr}
             cockpitCount={cockpitCount}
-            maxCount={maxCount}
+            remCount={remCount}
             thisLevel={thisLevel}
           />
           <CSFrame>
@@ -458,21 +456,35 @@ export function Field({
           fontsize="0.6"
         />
       </NoteFrame>
-      <GlobalCounter
-        hand={hand}
-        globalCount={globalCount}
-        max={max}
+      <GlobalCounter hand={hand} remCount={remCount} life={life} />
+      <GreenAlert
+        destination={destination}
+        nextLevel={nextLevel}
+        remCount={remCount}
+        setLife={setLife}
         life={life}
       />
-      <GreenAlert destination={destination} nextLevel={nextLevel} />
-      <OrangeAlert reset={reset} systemCrash={systemCrash} />
+      <OrangeAlert
+        reset={reset}
+        systemCrash={systemCrash}
+        setSystemCrash={setSystemCrash}
+        oneLifeLess={oneLifeLess}
+        setTotalFail={setTotalFail}
+        life={life}
+      />
       <RedAlert
         globalCount={globalCount}
         max={max}
         destination={destination}
         reset={reset}
         oneLifeLess={oneLifeLess}
+        fail={fail}
+        life={life}
+        setFail={setFail}
+        remCount={remCount}
+        setTotalFail={setTotalFail}
       />
+      <DarkAlert totalFail={totalFail} />
       <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
   );
@@ -487,12 +499,14 @@ const BGFrame = styled.div`
   justify-content: space-between;
   padding: 2rem;
   gap: 2rem;
+  background: var(--darkbg);
   @media only screen and (orientation: landscape) {
     flex-direction: row;
     ${props =>
       props.hand === false &&
       css`
         flex-direction: row-reverse;
+        background: var(--darkbgrev);
       `}
   }
 
@@ -500,6 +514,7 @@ const BGFrame = styled.div`
     flex-direction: column;
   }
 `;
+
 const CTRLFrame = styled.div`
   z-index: 100;
   display: flex;

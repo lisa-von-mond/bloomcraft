@@ -2,18 +2,16 @@ import styled, { css } from 'styled-components';
 
 export function Cockpit({
   add,
-  addTwo,
   cpStatus,
-  addThree,
+  addNumber,
   set,
-  del1,
-  del2,
+  del,
   commandLine,
   tempArr,
   move,
   cockpitCount,
-  maxCount,
   thisLevel,
+  remCount,
 }) {
   const tempCount = tempArr.length;
 
@@ -27,11 +25,18 @@ export function Cockpit({
     add('in');
   }
 
+  function addThree() {
+    addNumber(3);
+  }
+  function addTwo() {
+    addNumber(2);
+  }
+
   function sparksInfo(x) {
     if (x <= 1) {
       return 'waiting for commands';
     } else {
-      if (x > maxCount) {
+      if (x > remCount) {
         return 'energy not available';
       } else {
         return 'this operation will take ' + x + ' dashes';
@@ -62,16 +67,16 @@ export function Cockpit({
             set
           </SetKey>
         </CommandLine>
-        <CpCounter1
+        <DashCounter
           cpStatus={cpStatus}
-          maxCount={maxCount}
+          remCount={remCount}
           cockpitCount={cockpitCount}
         >
           {sparks}
-        </CpCounter1>
-        <CpCounter2 cpStatus={cpStatus} tempCount={tempCount}>
+        </DashCounter>
+        <TempCounter cpStatus={cpStatus} tempCount={tempCount}>
           {tempCount} / 5
-        </CpCounter2>
+        </TempCounter>
         <Keyboard>
           <CommandLineRow>
             <Key
@@ -80,7 +85,7 @@ export function Cockpit({
               onClick={addOut}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
               cpStatus={cpStatus}
             >
               out
@@ -91,7 +96,7 @@ export function Cockpit({
               onClick={addIn}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
               cpStatus={cpStatus}
             >
               in
@@ -102,22 +107,19 @@ export function Cockpit({
               onClick={addLeft}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
               cpStatus={cpStatus}
             >
               turn
             </Key>
             <div>
-              <DelKey1
+              <DelKey
                 cpStatus={cpStatus}
-                onClick={del1}
+                onClick={del}
                 cockpitCount={cockpitCount}
               >
                 del
-              </DelKey1>
-              <DelKey2 cpStatus={cpStatus} onClick={del2}>
-                del
-              </DelKey2>
+              </DelKey>
             </div>
           </CommandLineRow>
           <CommandLineRow>
@@ -128,7 +130,7 @@ export function Cockpit({
               cpStatus={cpStatus}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
             >
               2
             </Key>
@@ -139,20 +141,20 @@ export function Cockpit({
               cpStatus={cpStatus}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
             >
               3
             </Key>
-            <Key
+            <GoKey
               colorvar="pink"
               darkvar="darkpink"
               cpStatus={cpStatus}
               onClick={move}
               cockpitCount={cockpitCount}
-              maxCount={maxCount}
+              remCount={remCount}
             >
               GO
-            </Key>
+            </GoKey>
           </CommandLineRow>
         </Keyboard>
       </CPFrame>
@@ -212,7 +214,9 @@ const Key = styled.div`
   background: var(--${props => props.colorvar});
   box-shadow: 3px 3px var(--${props => props.darkvar});
   cursor: pointer;
-
+  &:hover {
+    animation: buttonwow 0.5s;
+  }
   &:active {
     transform: scale(90%);
     filter: brightness(150%);
@@ -220,10 +224,15 @@ const Key = styled.div`
 
   ${props =>
     props.colorvar === 'mint' &&
-    props.cockpitCount >= props.maxCount &&
+    props.cockpitCount >= props.remCount &&
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        filter: brightness(50%);
+      }
     `}
 
   ${props =>
@@ -232,6 +241,12 @@ const Key = styled.div`
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
     `}
 
 ${props =>
@@ -247,38 +262,103 @@ ${props =>
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
     `}
 
 ${props =>
-    props.colorvar === 'sky' &&
-    props.cockpitCount >= props.maxCount &&
+    props.cockpitCount >= props.remCount &&
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
     `}
-    
+
+
 ${props =>
     props.colorvar === 'sky' &&
     props.tempCount >= 5 &&
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
+    `}
+`;
+
+const GoKey = styled.div`
+  font-size: 14px;
+  min-width: 2.7rem;
+
+  @media only screen and (max-width: 900px) {
+    font-size: 12px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 11px;
+  }
+
+  display: flex;
+  color: black;
+  border-radius: 100px;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: var(--${props => props.colorvar});
+  box-shadow: 3px 3px var(--${props => props.darkvar});
+  cursor: pointer;
+
+  ${props =>
+    props.cpStatus === 1 &&
+    props.cockpitCount <= props.remCount &&
+    css`
+      &:hover {
+        animation: buttonwow 0.5s;
+      }
+      &:active {
+        transform: scale(90%);
+        filter: brightness(150%);
+      }
     `}
 
-${props =>
-    props.colorvar === 'pink' &&
+  ${props =>
     props.cpStatus > 1 &&
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
     `}
 
   ${props =>
-    props.colorvar === 'pink' &&
-    props.cockpitCount > props.maxCount &&
+    props.cockpitCount > props.remCount &&
     css`
       filter: brightness(50%);
       cursor: default;
+      &:hover,
+      &:active {
+        transform: none;
+        animation: none;
+        filter: brightness(50%);
+      }
     `}
 `;
 
@@ -375,31 +455,7 @@ const SetKey = styled.div`
     `}
 `;
 
-const DelKey2 = styled.div`
-  display: flex;
-  border-radius: 50px;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  padding: 0.5rem;
-  font-size: 14px;
-  cursor: pointer;
-  background-color: var(--light);
-  color: black;
-  box-shadow: 3px 3px var(--darklight);
-
-  &:active {
-    transform: scale(90%);
-    filter: brightness(150%);
-  }
-
-  ${props =>
-    props.cpStatus === 1 &&
-    css`
-      display: none;
-    `}
-`;
-const DelKey1 = styled.div`
+const DelKey = styled.div`
   display: flex;
   border-radius: 50px;
   align-items: center;
@@ -416,20 +472,19 @@ const DelKey1 = styled.div`
     transform: scale(90%);
     filter: brightness(150%);
   }
-
-  ${props =>
-    props.cpStatus > 1 &&
-    css`
-      display: none;
-    `}
+  &:hover {
+    animation: buttonwow 0.5s;
+  }
 
   ${props =>
     props.cockpitCount === 0 &&
     css`
-      display: none;
+      transform: none;
+      filter: none;
     `}
 `;
-const CpCounter1 = styled.div`
+
+const DashCounter = styled.div`
   display: flex;
   color: white;
   align-items: center;
@@ -439,9 +494,15 @@ const CpCounter1 = styled.div`
   color: var(--puremint);
 
   ${props =>
-    props.cockpitCount >= props.maxCount &&
+    props.cockpitCount > props.remCount &&
     css`
-      color: hotpink;
+      color: var(--purepink);
+      animation: blinker 1s linear infinite;
+    `}
+
+  ${props =>
+    props.cockpitCount === props.remCount &&
+    css`
       animation: blinker 1s linear infinite;
     `}
 
@@ -452,7 +513,7 @@ const CpCounter1 = styled.div`
     `}
 `;
 
-const CpCounter2 = styled.div`
+const TempCounter = styled.div`
   display: flex;
   color: white;
   align-items: center;
@@ -464,7 +525,7 @@ const CpCounter2 = styled.div`
   ${props =>
     props.tempCount >= 5 &&
     css`
-      color: hotpink;
+      color: var(--purepink);
       animation: blinker 1s linear infinite;
     `}
 

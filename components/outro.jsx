@@ -4,20 +4,15 @@ import { Starry } from './starry';
 import { MyButton } from './anybutton';
 import Link from 'next/link';
 
-export function Intro() {
+export function Outro() {
   return (
     <>
       <MyMain>
         <Starry />
-        <Headline>lush:3000</Headline>
+        <Headline>Congrats, future space activist!</Headline>
         <Link href="/levels/levelone">
           <a>
-            <MyButton text="play" color="puremint" />
-          </a>
-        </Link>
-        <Link href="/how-to-play">
-          <a>
-            <MyButton text="instruction" color="puresky" />
+            <MyButton text="play again" color="puremint" />
           </a>
         </Link>
       </MyMain>

@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export function GlobalCounter({ hand, globalCount, max, life }) {
+export function GlobalCounter({ hand, remCount, life }) {
   function visualCount(number) {
     if (number === 0) {
       return [0];
@@ -11,7 +11,7 @@ export function GlobalCounter({ hand, globalCount, max, life }) {
     }
   }
 
-  const counterDots = visualCount(max - globalCount);
+  const counterDots = visualCount(remCount);
   const lifeDots = visualCount(life);
 
   return (
@@ -27,6 +27,7 @@ export function GlobalCounter({ hand, globalCount, max, life }) {
         {lifeDots.map((element, index) => (
           <Dot color="mint" key={'green' + index}></Dot>
         ))}
+        {life}
       </DotContainer>
     </CounterFix>
   );
@@ -65,6 +66,9 @@ const DotContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.6rem;
+  background-color: black;
+  padding: 0.3rem;
+  border-radius: 50px;
 `;
 
 const Dot = styled.div`

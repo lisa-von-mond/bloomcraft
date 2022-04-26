@@ -38,10 +38,18 @@ export function Scape({ galaxy, chargeStatus, destination, charge, goal }) {
             goal={goal}
           />
         </WholeGalaxy>
-        <ArrLeft onClick={shiftLeft}></ArrLeft>
-        <ArrUp onClick={shiftUp}></ArrUp>
-        <ArrDown onClick={shiftDown}></ArrDown>
-        <ArrRight onClick={shiftRight}></ArrRight>
+        <SquareLeft>
+          <ArrLeft onClick={shiftLeft}></ArrLeft>
+        </SquareLeft>
+        <SquareUp>
+          <ArrUp onClick={shiftUp}></ArrUp>
+        </SquareUp>
+        <SquareDown>
+          <ArrDown onClick={shiftDown}></ArrDown>
+        </SquareDown>
+        <SquareRight>
+          <ArrRight onClick={shiftRight}></ArrRight>
+        </SquareRight>
       </ScapeInner>
     </>
   );
@@ -73,43 +81,84 @@ const WholeGalaxy = styled.div`
   }
 `;
 
-const ArrLeft = styled.div`
-  width: 20px;
-  height: 20px;
+const SquareLeft = styled.div`
+  width: 25px;
+  height: 25px;
   border: 2px solid var(--layout);
   position: absolute;
   transform: translate(0px, -5px);
   top: 50%;
   left: 0;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
-const ArrUp = styled.div`
-  width: 20px;
-  height: 20px;
+const SquareUp = styled.div`
+  width: 25px;
+  height: 25px;
   border: 2px solid var(--layout);
   position: absolute;
   transform: translate(-5px, 0);
   left: 50%;
   top: 0;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
-const ArrRight = styled.div`
-  width: 20px;
-  height: 20px;
+const SquareRight = styled.div`
+  width: 25px;
+  height: 25px;
   border: 2px solid var(--layout);
   position: absolute;
   top: 50%;
   transform: translate(0px, -5px);
   right: 0;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
-const ArrDown = styled.div`
-  width: 20px;
-  height: 20px;
+const SquareDown = styled.div`
+  width: 25px;
+  height: 25px;
   border: 2px solid var(--layout);
   position: absolute;
   transform: translate(-5px, 0);
   left: 50%;
   bottom: 0;
   border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const ArrLeft = styled.div`
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid var(--layout);
+  border-bottom: 2px solid var(--layout);
+  transform: rotate(45deg);
+`;
+const ArrUp = styled.div`
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--layout);
+  border-left: 2px solid var(--layout);
+  transform: rotate(45deg);
+`;
+const ArrRight = styled.div`
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--layout);
+  border-top: 2px solid var(--layout);
+  transform: rotate(45deg);
+`;
+const ArrDown = styled.div`
+  width: 10px;
+  height: 10px;
+  border-bottom: 2px solid var(--layout);
+  border-right: 2px solid var(--layout);
+  transform: rotate(45deg);
 `;

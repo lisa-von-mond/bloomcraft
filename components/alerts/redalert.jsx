@@ -1,23 +1,37 @@
 import styled, { css } from 'styled-components';
-import { MyButton } from './anybutton';
+import { MyButton } from '../anybutton';
+import Link from 'next/link';
 
-export function RedAlert({ globalCount, max, reset, oneLifeLess }) {
-  function levelFail() {
-    reset();
-    oneLifeLess();
+export function RedAlert({
+  fail,
+  setFail,
+  reset,
+  oneLifeLess,
+  life,
+  setTotalFail,
+}) {
+  function levelFailOk() {
+    if (life > 1) {
+      reset();
+      oneLifeLess();
+      setFail(false);
+    } else {
+      setFail(false);
+      setTotalFail(true);
+    }
   }
 
   return (
-    <Blur globalCount={globalCount} max={max}>
-      <Window>
+    <Blur fail={fail}>
+      <RedPopUp life={life}>
         Mission failed
-        <MyButton click={levelFail} text="try again" color="dark" />
-      </Window>
+        <MyButton click={levelFailOk} text="try again" color="dark" />
+      </RedPopUp>
     </Blur>
   );
 }
 
-const Window = styled.div`
+const RedPopUp = styled.div`
   font-sitze: 5rem;
   display: flex;
   flex-direction: column;
@@ -41,13 +55,7 @@ const Blur = styled.div`
   justify-content: center;
 
   ${props =>
-    props.globalCount < props.max &&
-    css`
-      display: none;
-    `}
-
-  ${props =>
-    props.destination === false &&
+    props.fail === false &&
     css`
       display: none;
     `}
