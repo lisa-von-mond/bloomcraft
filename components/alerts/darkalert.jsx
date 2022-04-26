@@ -1,35 +1,35 @@
 import styled, { css } from 'styled-components';
-import { MyButton } from './anybutton';
+import { MyButton } from '../anybutton';
+import Link from 'next/link';
 
-export function OrangeAlert({ systemCrash, reset }) {
+export function DarkAlert({ totalFail }) {
   return (
-    <Blur systemCrash={systemCrash}>
-      <Window systemCrash={systemCrash}>
-        system crash<br></br>impossible operation
-        <MyButton text="back" color="dark" click={reset} />
-      </Window>
+    <Blur totalFail={totalFail}>
+      <DarkPopUp>
+        All lives gone
+        <Link href={`/play-again`} passHref>
+          <a>
+            <MyButton text="ok" color="light" />
+          </a>
+        </Link>
+      </DarkPopUp>
     </Blur>
   );
 }
 
-const Window = styled.div`
+const DarkPopUp = styled.div`
   font-sitze: 5rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
   text-align: center;
+  align-items: center;
   gap: 1rem;
   padding: 1rem;
-  background: var(--warn);
+  background: var(--darkbg);
+  color: var(--light);
   height: auto;
   border-radius: 1rem;
   animation: popup 0.5s;
-
-  ${props =>
-    props.systemCrash === false &&
-    css`
-      display: none;
-    `}
 `;
 
 const Blur = styled.div`
@@ -44,7 +44,7 @@ const Blur = styled.div`
   justify-content: center;
 
   ${props =>
-    props.systemCrash === false &&
+    props.totalFail === false &&
     css`
       display: none;
     `}

@@ -5,12 +5,13 @@ import { Cockpit } from './cockpit';
 import { InfoConsole } from './console';
 import { Scape } from './scape';
 import { GlobalCounter } from './counter';
-import { GreenAlert } from './greenalert';
-import { RedAlert } from './redalert';
-import { OrangeAlert } from './orangealert';
+import { GreenAlert } from './alerts/greenalert';
+import { RedAlert } from './alerts/redalert';
+import { OrangeAlert } from './alerts/orangealert';
+import { DarkAlert } from './alerts/darkalert';
 import { InstrFrame } from './how-to-play/instruction-frame';
 import { SimpleButton } from './anybutton';
-import { GreenAlertCharge } from './greenalert_charge';
+import { Starry } from './starry';
 
 export function Field({
   level,
@@ -18,13 +19,15 @@ export function Field({
   initialPosition,
   initialFocus,
   initialId,
+  initialParent,
   charge,
   goal,
   reset,
   thisLevel,
   nextLevel,
   life,
-  oneLifeLess,
+  setLife,
+  galaxyName,
 }) {
   const [galaxy, setGalaxy] = useState(level); // general layout
   const [chargeStatus, setChargeStatus] = useState(false); // is true when seeds picked up
@@ -39,14 +42,21 @@ export function Field({
   const [thisPlanet, setThisPlanet] = useState(initialPosition); // name of current planet
   const [thisId, setThisId] = useState(initialId); // id of current planet
   const [focusNow, setFocusNow] = useState(initFocus); // current focus position
+  const [parentNow, setParentNow] = useState(initParent); // current focus position
   const [hand, setHand] = useState(true); // layout (console and cockpit right or left side)
   const [instr, setInstr] = useState(false); // instruction visibility
   const [systemCrash, setSystemCrash] = useState(false);
+  const [fail, setFail] = useState(false);
+  const [totalFail, setTotalFail] = useState(false);
   const movingArr = ['ZERO', ...commands.flat(3)];
   const length = movingArr.length;
-  const maxCount = max - globalCount;
+  const remCount = max - globalCount;
 
-  function resolveSparks() {
+  function oneLifeLess() {
+    setLife(life - 1);
+  }
+
+  function resolveDashes() {
     if (commandLine.length > 0) {
       const resolved = commandLine.map(element =>
         typeof element === 'string' ? 1 : element.length - 1
@@ -58,52 +68,59 @@ export function Field({
     }
   }
 
-  const cockpitCount = resolveSparks() + 1;
+  const cockpitCount = resolveDashes() + 1;
 
   function initFocus() {
     if (initialFocus !== false) {
-      return 'Beam further to ' + initialFocus;
+      return '### beam out to ' + initialFocus;
     } else {
-      return 'As far out as possible';
+      return '! As far out as possible';
     }
   }
 
-  function up() {
-    setGalaxy(hopUpNow(galaxy));
+  function initParent() {
+    if (initialParent !== false) {
+      return '### beam in to ' + initialParent;
+    } else {
+      return '❤ welcome to base';
+    }
   }
-  function down() {
-    setGalaxy(hopDownNow(galaxy));
+
+  function oneOut() {
+    setGalaxy(hopOutNow(galaxy));
   }
-  function right() {
-    setGalaxy(turnFocusRightNow(galaxy));
+  function oneIn() {
+    setGalaxy(hopInNow(galaxy));
   }
-  function left() {
-    setGalaxy(turnFocusLeftNow(galaxy));
+  function oneTurn() {
+    setGalaxy(turnFocusNow(galaxy));
   }
 
   // moving functions scope
 
-  function hopUpInScope(object) {
+  function hopOutScope(object) {
     const Focus = object.children.find(element => element.focus === true);
     setThisPlanet(Focus.name);
-    setThisId(Focus.id);
+    setThisId(focus.id);
+
+    setParentNow('### beam in to ' + object.name);
     if (chargeStatus === true) {
-      if (Focus.goal === true) {
+      if (Focus.name === goal) {
         setDestination(true);
       }
     } else {
-      if (Focus.greens === true) {
+      if (Focus.name === charge) {
         setChargeStatus(true);
       }
     }
-    const NewSubScope = Focus.children.map(element =>
-      element.flow === 1 ? { ...element, focus: true } : element
+    const NewSubScope = Focus.children.map((element, index) =>
+      index === 0 ? { ...element, focus: true } : element
     );
     const nextFocus = NewSubScope.find(element => element.focus === true);
     if (nextFocus !== undefined) {
-      setFocusNow('Beam further out to ' + nextFocus.name);
+      setFocusNow('### beam out to ' + nextFocus.name);
     } else {
-      setFocusNow('As far out as possible');
+      setFocusNow('! as far out as possible');
     }
     const newScope = object.children.map(element =>
       element.focus === true
@@ -125,52 +142,41 @@ export function Field({
     return newObject;
   }
 
-  function turnFocusLeftInScope(objekt) {
+  function turnFocusScope(objekt) {
     if (objekt.limit === true) {
       setSystemCrash(true);
     } else {
       const scope = objekt.children;
-      const Focus = scope.find(element => element.focus === true);
-      const nextFocusIndex = Focus.flow === scope.length ? 1 : Focus.flow + 1;
-      const nextFocus = scope.find(element => element.flow === nextFocusIndex);
-      setFocusNow('Beam further out to ' + nextFocus.name);
+      const FocusIndex = scope.indexOf(
+        scope.find(element => element.focus === true)
+      );
+      console.log(FocusIndex);
+      const nextFocusIndex =
+        FocusIndex === scope.length - 1 ? 0 : FocusIndex + 1;
+      const nextFocus = scope[nextFocusIndex];
+      setFocusNow('### beam out to ' + nextFocus.name);
       const scopeA = scope.map(element =>
         element.focus === true ? { ...element, focus: false } : element
       );
-      const scopeB = scopeA.map(element =>
-        element.flow === nextFocusIndex ? { ...element, focus: true } : element
+      const scopeB = scopeA.map((element, index) =>
+        index === nextFocusIndex ? { ...element, focus: true } : element
       );
       return { ...objekt, children: scopeB };
     }
   }
 
-  function turnFocusRightInScope(objekt) {
-    if (objekt.limit === true) {
-      console.log('nothing to turn right here');
-      setSystemCrash(true);
-    } else {
-      const scope = objekt.children;
-      const Focus = scope.find(element => element.focus === true);
-      const nextFocusIndex = Focus.flow === 1 ? scope.length : Focus.flow - 1;
-      const nextFocus = scope.find(element => element.flow === nextFocusIndex);
-      setFocusNow('Beam further out to ' + nextFocus.name);
-      const scopeA = scope.map(element =>
-        element.focus === true ? { ...element, focus: false } : element
-      );
-      const scopeB = scopeA.map(element =>
-        element.flow === nextFocusIndex ? { ...element, focus: true } : element
-      );
-      return { ...objekt, children: scopeB };
-    }
-  }
-
-  function hopDownInScope(object) {
+  function hopInScope(object) {
     const Current = object.children.find(element => element.active === true);
     setThisPlanet(object.name);
-    setThisId(Current.id);
+    setThisId(object.id);
+    if (object.id === '0') {
+      setParentNow('❤ welcome to base');
+    } else {
+      setParentNow('### beam in to ' + object.parent);
+    }
 
     if (chargeStatus === true) {
-      if (object.goal === true) {
+      if (object.name === goal) {
         setDestination(true);
       }
     } else {
@@ -185,7 +191,7 @@ export function Field({
           : element
       );
       const newObject = { ...object, children: newScope, active: true };
-      setFocusNow('Beam Further out to ' + Current.name);
+      setFocusNow('### beam out to ' + Current.name);
       return newObject;
     } else {
       const NewSubScope = Current.children.map(element => ({
@@ -204,36 +210,32 @@ export function Field({
           : element
       );
       const newObject = { ...object, children: newScope, active: true };
-      setFocusNow('Beam Further out to ' + Current.name);
+      setFocusNow('### beam out to ' + Current.name);
       return newObject;
     }
   }
 
   // moving functions global
 
-  function hopUpNow(y) {
+  function hopOutNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(hopUpInScope, Base);
+      return Beam1(hopOutScope, Base);
     } else {
       if (track(Base).limit === true) {
-        console.log('not possible to hop further here');
         setSystemCrash(true);
-        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
-          return Beam2(hopUpInScope, Base);
+          return Beam2(hopOutScope, Base);
         } else {
           if (
             track(track(Base)).active === true &&
             track(track(Base)).limit !== true
           ) {
-            return Beam3(hopUpInScope, Base);
+            return Beam3(hopOutScope, Base);
           } else {
-            console.log('not possible to hop further here');
             setSystemCrash(true);
-            oneLifeLess();
             return y;
           }
         }
@@ -241,29 +243,25 @@ export function Field({
     }
   }
 
-  function turnFocusLeftNow(y) {
+  function turnFocusNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(turnFocusLeftInScope, Base);
+      return Beam1(turnFocusScope, Base);
     } else {
       if (track(Base).limit === true) {
-        console.log('nothing to turn left here');
         setSystemCrash(true);
-        oneLifeLess();
         return y;
       } else {
         if (track(Base).active === true) {
-          return Beam2(turnFocusLeftInScope, Base);
+          return Beam2(turnFocusScope, Base);
         } else {
           if (
             track(track(Base)).active === true &&
             track(track(Base)).limit !== true
           ) {
-            return Beam3(turnFocusLeftInScope, Base);
+            return Beam3(turnFocusScope, Base);
           } else {
-            console.log('nothing to turn left here');
             setSystemCrash(true);
-            oneLifeLess();
             return y;
           }
         }
@@ -271,51 +269,19 @@ export function Field({
     }
   }
 
-  function turnFocusRightNow(y) {
+  function hopInNow(y) {
     let Base = y[0];
     if (Base.active === true) {
-      return Beam1(turnFocusRightInScope, Base);
-    } else {
-      if (track(Base).limit === true) {
-        console.log('nothing to turn right here');
-        setSystemCrash(true);
-        oneLifeLess();
-        return y;
-      } else {
-        if (track(Base).active === true) {
-          return Beam2(turnFocusRightInScope, Base);
-        } else {
-          if (
-            track(track(Base)).active === true &&
-            track(track(Base)).limit !== true
-          ) {
-            return Beam3(turnFocusRightInScope, Base);
-          } else {
-            console.log('nothing to turn right here');
-            setSystemCrash(true);
-            oneLifeLess();
-            return y;
-          }
-        }
-      }
-    }
-  }
-
-  function hopDownNow(y) {
-    let Base = y[0];
-    if (Base.active === true) {
-      console.log('nothing to go closer here');
       setSystemCrash(true);
-      oneLifeLess();
       return y;
     } else {
       if (track(Base).active === true) {
-        return Beam1(hopDownInScope, Base);
+        return Beam1(hopInScope, Base);
       } else {
         if (track(track(Base)).active === true) {
-          return Beam2(hopDownInScope, Base);
+          return Beam2(hopInScope, Base);
         } else {
-          return Beam3(hopDownInScope, Base);
+          return Beam3(hopInScope, Base);
         }
       }
     }
@@ -325,48 +291,33 @@ export function Field({
 
   function add(direction) {
     if (cpStatus === 1) {
-      if (cockpitCount <= maxCount - 1) {
+      if (cockpitCount < remCount) {
         setCommandLine([...commandLine, direction]);
         setCommands([...commands, direction]);
       }
     } else {
-      if (tempArr.length <= 3) {
+      if (tempArr.length <= 4) {
         setTempArr([...tempArr, direction]);
       }
     }
   }
 
-  function addTwo() {
-    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
-      setTempArr([2]);
-      setCpStatus(2);
+  function addNumber(number) {
+    if (cpStatus === 1 && cockpitCount < remCount) {
+      setTempArr([number]);
+      setCpStatus(number);
     }
   }
 
-  function addThree() {
-    if (cpStatus === 1 && cockpitCount <= maxCount - 1) {
-      setTempArr([3]);
-      setCpStatus(3);
-    }
-  }
-
-  function del1() {
+  function del() {
     if (cpStatus === 1) {
       setCommandLine(commandLine.slice(0, -1));
       setCommands(commands.slice(0, -1));
     } else {
-      console.log('not possible');
-    }
-  }
-
-  function del2() {
-    if (cpStatus !== 1) {
       setTempArr(tempArr.slice(0, -1));
       if (tempArr.length === 1) {
         setCpStatus(1);
       }
-    } else {
-      console.log('not possible');
     }
   }
 
@@ -395,17 +346,13 @@ export function Field({
   useEffect(() => {
     const hereNow = movingArr[intCount];
     if (hereNow === 'turn') {
-      left();
+      oneTurn();
     } else {
-      if (hereNow === 'right') {
-        right();
+      if (hereNow === 'out') {
+        oneOut();
       } else {
-        if (hereNow === 'out') {
-          up();
-        } else {
-          if (hereNow === 'in') {
-            down();
-          }
+        if (hereNow === 'in') {
+          oneIn();
         }
       }
     }
@@ -413,10 +360,10 @@ export function Field({
 
   const move = () => {
     if (cpStatus !== 1) {
-      console.log('not possible');
+      null;
     } else {
-      if (cockpitCount > maxCount) {
-        console.log('not possible');
+      if (cockpitCount > remCount) {
+        null;
       } else {
         const myInt = setInterval(() => {
           setIntCount(prevCount => prevCount + 1);
@@ -426,13 +373,20 @@ export function Field({
     }
   };
 
-  if (intCount === length) {
+  if (intCount === length || systemCrash === true) {
     if (myIntId) {
       clearInterval(myIntId);
       setMyIntId(0);
       setIntCount(0);
       setCommandLine([]);
-      setGlobalCount(prevCount => prevCount + cockpitCount);
+      setGlobalCount(prev => prev + cockpitCount);
+      if (
+        systemCrash === false &&
+        cockpitCount > remCount - 2 &&
+        destination === false
+      ) {
+        setFail(true);
+      }
       setCommands([]);
     }
   }
@@ -448,29 +402,31 @@ export function Field({
   return (
     <>
       <BGFrame hand={hand}>
+        <Starry />
         <SCFrame>
           <Scape
             galaxy={galaxy}
             chargeStatus={chargeStatus}
             destination={destination}
             hand={hand}
+            charge={charge}
+            goal={goal}
           />
         </SCFrame>
 
         <CTRLFrame>
           <Cockpit
             move={move}
+            addNumber={addNumber}
             add={add}
-            addThree={addThree}
-            addTwo={addTwo}
-            del1={del1}
-            del2={del2}
+            del={del}
             set={set}
             cpStatus={cpStatus}
             commandLine={commandLine}
             tempArr={tempArr}
             cockpitCount={cockpitCount}
-            maxCount={maxCount}
+            remCount={remCount}
+            thisLevel={thisLevel}
           />
           <CSFrame>
             <InfoConsole
@@ -480,8 +436,10 @@ export function Field({
               thisId={thisId}
               destination={destination}
               focusNow={focusNow}
+              parentNow={parentNow}
               charge={charge}
               goal={goal}
+              galaxyName={galaxyName}
             />
           </CSFrame>
         </CTRLFrame>
@@ -489,33 +447,46 @@ export function Field({
       <NoteFrame hand={hand}>
         <SimpleButton
           click={changeHand}
-          color="puremint"
+          color="layout"
           text="switch layout"
           fontsize="0.6"
         />
         <SimpleButton
           click={instrToggle}
-          color="light"
+          color="layout"
           text="how to play"
           fontsize="0.6"
         />
       </NoteFrame>
-      <GlobalCounter
-        hand={hand}
-        globalCount={globalCount}
-        max={max}
-        thisLevel={thisLevel}
+      <GlobalCounter hand={hand} remCount={remCount} life={life} />
+      <GreenAlert
+        destination={destination}
+        nextLevel={nextLevel}
+        remCount={remCount}
+        setLife={setLife}
         life={life}
       />
-      <GreenAlert destination={destination} nextLevel={nextLevel} />
-      <OrangeAlert reset={reset} systemCrash={systemCrash} />
+      <OrangeAlert
+        reset={reset}
+        systemCrash={systemCrash}
+        setSystemCrash={setSystemCrash}
+        oneLifeLess={oneLifeLess}
+        setTotalFail={setTotalFail}
+        life={life}
+      />
       <RedAlert
         globalCount={globalCount}
         max={max}
         destination={destination}
         reset={reset}
         oneLifeLess={oneLifeLess}
+        fail={fail}
+        life={life}
+        setFail={setFail}
+        remCount={remCount}
+        setTotalFail={setTotalFail}
       />
+      <DarkAlert totalFail={totalFail} />
       <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
   );
@@ -528,13 +499,16 @@ const BGFrame = styled.div`
   display: flex;
   align-items: canter;
   justify-content: space-between;
-  padding: var(--gap);
+  padding: 2rem;
+  gap: 2rem;
+  background: var(--darkbg);
   @media only screen and (orientation: landscape) {
     flex-direction: row;
     ${props =>
       props.hand === false &&
       css`
         flex-direction: row-reverse;
+        background: var(--darkbgrev);
       `}
   }
 
@@ -542,6 +516,7 @@ const BGFrame = styled.div`
     flex-direction: column;
   }
 `;
+
 const CTRLFrame = styled.div`
   z-index: 100;
   display: flex;
@@ -550,7 +525,6 @@ const CTRLFrame = styled.div`
   flex-direction: column;
   font-size: 0.8rem;
   gap: 1rem;
-  padding: 2rem;
 
   @media only screen and (orientation: landscape) {
     width: 30%;
@@ -599,6 +573,10 @@ const NoteFrame = styled.div`
   bottom: 2rem;
   display: flex;
   flex-direction: column;
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 
   ${props =>
     props.hand === true &&

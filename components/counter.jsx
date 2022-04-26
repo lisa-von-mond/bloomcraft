@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-export function GlobalCounter({ hand, globalCount, max, thisLevel, life }) {
+export function GlobalCounter({ hand, remCount, life }) {
   function visualCount(number) {
     if (number === 0) {
       return [0];
@@ -11,22 +11,21 @@ export function GlobalCounter({ hand, globalCount, max, thisLevel, life }) {
     }
   }
 
-  const counterDots = visualCount(max - globalCount);
+  const counterDots = visualCount(remCount);
   const lifeDots = visualCount(life);
 
   return (
     <CounterFix hand={hand}>
-      <LevelInfo color="puremint">Level {thisLevel}</LevelInfo>
-      <LevelInfo color="purepink">Dashes left:</LevelInfo>
+      <CounterInfo color="purepink">dashes left:</CounterInfo>
       <DotContainer>
         {counterDots.map((element, index) => (
           <Dot color="pink" key={'pink' + index}></Dot>
         ))}
       </DotContainer>
-      <LevelInfo color="puresky">Lives left:</LevelInfo>
+      <CounterInfo color="puremint">lives left:</CounterInfo>
       <DotContainer>
         {lifeDots.map((element, index) => (
-          <Dot color="sky" key={'green' + index}></Dot>
+          <Dot color="mint" key={'green' + index}></Dot>
         ))}
       </DotContainer>
     </CounterFix>
@@ -44,9 +43,9 @@ const CounterFix = styled.div`
   color: white;
   font-size: 0.8rem;
   gap: 0.8rem;
-  background: black;
   border-radius: 1rem;
-  padding: 0.8rem;
+  padding: 0;
+  font-weight: 600;
 
   ${props =>
     props.hand === true &&
@@ -62,15 +61,13 @@ const CounterFix = styled.div`
     `}
 `;
 
-const LevelInfo = styled.div`
-  color: var(--${props => props.color});
-  text-transform: uppercase;
-`;
-
 const DotContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.6rem;
+  background-color: black;
+  padding: 0.3rem;
+  border-radius: 50px;
 `;
 
 const Dot = styled.div`
@@ -78,4 +75,12 @@ const Dot = styled.div`
   width: 0.8rem;
   border-radius: 50%;
   background: var(--${props => props.color});
+`;
+
+const CounterInfo = styled.div`
+  color: var(--${props => props.color});
+
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
 `;

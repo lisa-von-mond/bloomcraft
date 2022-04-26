@@ -7,18 +7,25 @@ export function InfoConsole({
   chargeStatus,
   destination,
   charge,
+  parentNow,
+  goal,
+  galaxyName,
 }) {
   return (
     <>
       <ConsoleFrame>
+        <GalaxyInfo>### reached {galaxyName}</GalaxyInfo>
         <PositionInfo>
-          You are on planet {thisPlanet} {thisId}
+          ### you are on {thisPlanet} {thisId}
         </PositionInfo>
-        <PositionInfo>{focusNow}</PositionInfo>
+        <PositionInfoBase parentNow={parentNow}>{parentNow}</PositionInfoBase>
+        <PositionInfo focusNow={focusNow}>{focusNow}</PositionInfo>
+
         <ChargeInfo1 chargeStatus={chargeStatus}>CHARGE PICKED UP</ChargeInfo1>
         <ChargeInfo2 chargeStatus={chargeStatus}>
-          Charge has to be picked up from {charge}
+          ### charge has to be picked up from {charge}
         </ChargeInfo2>
+        <GoalInfo destination={destination}>### your goal is {goal}</GoalInfo>
         <DestInfo destination={destination}>MISSION COMPLETED</DestInfo>
       </ConsoleFrame>
     </>
@@ -26,17 +33,16 @@ export function InfoConsole({
 }
 
 const ConsoleFrame = styled.div`
-  border-radius: 1rem;
   font-size: 0.8rem;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
 `;
 
 const ChargeInfo1 = styled.p`
-  margin: 5px;
-  color: var(--puremint);
+  color: var(--purepink);
   display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
   ${props =>
     props.chargeStatus === false &&
     css`
@@ -45,9 +51,10 @@ const ChargeInfo1 = styled.p`
 `;
 
 const ChargeInfo2 = styled.p`
-  margin: 5px;
-  color: white;
+  color: var(--puremint);
   display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
   ${props =>
     props.chargeStatus === true &&
     css`
@@ -56,9 +63,11 @@ const ChargeInfo2 = styled.p`
 `;
 
 const DestInfo = styled.p`
-  margin: 5px;
   color: var(--puremint);
   display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
+
   ${props =>
     props.destination === false &&
     css`
@@ -66,8 +75,30 @@ const DestInfo = styled.p`
     `}
 `;
 
-const PositionInfo = styled.p`
-  color: white;
-  margin: 5px;
+const PositionInfoBase = styled.p`
+  color: var(--puremint);
   display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
+`;
+
+const PositionInfo = styled.p`
+  color: var(--puremint);
+  display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
+`;
+
+const GoalInfo = styled.p`
+  color: var(--puremint);
+  display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
+`;
+
+const GalaxyInfo = styled.p`
+  color: var(--puresky);
+  display: inherit;
+  margin: 0.2rem;
+  animation: type 2s;
 `;
