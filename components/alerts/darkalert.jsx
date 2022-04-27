@@ -2,7 +2,11 @@ import styled, { css } from 'styled-components';
 import { MyButton } from '../anybutton';
 import Link from 'next/link';
 
-export function DarkAlert({ totalFail }) {
+export function DarkAlert({ totalFail, life }) {
+  function getLivesBack() {
+    setLife(5);
+  }
+
   return (
     <Blur totalFail={totalFail}>
       <DarkPopUp>

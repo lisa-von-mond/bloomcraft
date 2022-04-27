@@ -11,42 +11,31 @@ export function GreenAlert({
 }) {
   function moreLivesWow() {
     {
-      console.log(life);
       setLife(life + remCount);
     }
   }
 
   return (
     <Blur destination={destination}>
-      <Window nextLevel={nextLevel} remCount={remCount}>
-        Level completed
-        <Link href={`/levels/${nextLevel}`} passHref>
+      <GreenPopUp nextLevel={nextLevel} remCount={remCount}>
+        Level completed<br></br>
+        <LifeInfo nextLevel={nextLevel} remCount={remCount}>
+          got {remCount} more {remCount > 1 ? 'lives' : 'life'}
+        </LifeInfo>
+        <Link
+          href={nextLevel !== false ? `/levels/${nextLevel}` : '/byebye'}
+          passHref
+        >
           <a>
-            <MyButton text="next level" color="dark" />
+            <MyButton click={moreLivesWow} text="next level" color="dark" />
           </a>
         </Link>
-      </Window>
-      <WindowMoreLives nextLevel={nextLevel} remCount={remCount}>
-        Level completed<br></br>* * * {remCount} lives extra * * *
-        <Link href={`/levels/${nextLevel}`} passHref>
-          <a>
-            <MyButton click={moreLivesWow} text="ok cool" color="dark" />
-          </a>
-        </Link>
-      </WindowMoreLives>
-      <WindowFinal nextLevel={nextLevel} life={life}>
-        Level completed
-        <Link href={`/byebye`} passHref>
-          <a>
-            <MyButton text="yeah!" color="dark" />
-          </a>
-        </Link>
-      </WindowFinal>
+      </GreenPopUp>
     </Blur>
   );
 }
 
-const Window = styled.div`
+const GreenPopUp = styled.div`
   font-sitze: 5rem;
   display: flex;
   flex-direction: column;
@@ -55,42 +44,15 @@ const Window = styled.div`
   background: var(--mint);
   height: auto;
   border-radius: 1rem;
-  animation: popup 0.5s;
+  animation: popup 1s;
   align-items: center;
   align-content: center;
   text-align: center;
-
-  ${props =>
-    props.nextLevel === false &&
-    css`
-      display: none;
-    `}
 
   ${props =>
     props.remCount > 0 &&
     css`
-      display: none;
-    `}
-`;
-
-const WindowMoreLives = styled.div`
-  font-sitze: 5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--lemon);
-  height: auto;
-  border-radius: 1rem;
-  animation: popup 0.5s;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-
-  ${props =>
-    props.remCount === 0 &&
-    css`
-      display: none;
+      background: var(--lemon);
     `}
 
   ${props =>
@@ -100,28 +62,15 @@ const WindowMoreLives = styled.div`
     `}
 `;
 
-const WindowFinal = styled.div`
-  font-sitze: 5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  background: var(--mint);
-  height: auto;
-  border-radius: 1rem;
-  animation: popup 0.5s;
-  align-items: center;
-  align-content: center;
-  text-align: center;
-
+const LifeInfo = styled.div`
   ${props =>
-    props.destination === false &&
+    props.nextLevel === false &&
     css`
       display: none;
     `}
 
   ${props =>
-    props.nextLevel !== false &&
+    props.remCount === 0 &&
     css`
       display: none;
     `}
