@@ -10,7 +10,7 @@ export function Outro() {
       <MyMain>
         <Starry />
         <Headline>Congrats, future space activist!</Headline>
-        <Link href="/index">
+        <Link href="/">
           <a>
             <MyButton text="back to start" color="puremint" />
           </a>

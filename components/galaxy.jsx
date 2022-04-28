@@ -16,7 +16,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
       {galaxy.map(one => (
         <MyGalaxy key={one.name} scope="0" chargeStatus={chargeStatus}>
           <Planet name={one.name} goal={goal}>
-            <Image src={planet1} />
+            <Image src={planet1} alt="planet" />
           </Planet>
           <PlanetOverlay>
             <Image src={planetoverlay} />
@@ -47,7 +47,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                 chargeStatus={chargeStatus}
               >
                 <Planet name={two.name} goal={goal} focus={two.focus}>
-                  <Image src={planet2} />
+                  <Image src={planet2} alt="planet" />
                 </Planet>
                 <PlanetOverlay focus={two.focus}>
                   <Image src={planetoverlay} />
@@ -86,7 +86,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                       chargeStatus={chargeStatus}
                     >
                       <Planet name={three.name} goal={goal} focus={three.focus}>
-                        <Image src={planet3} className="planetimage" />
+                        <Image src={planet3} alt="planet" />
                       </Planet>
 
                       <PlanetOverlay focus={three.focus}>
@@ -130,7 +130,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                               goal={goal}
                               focus={four.focus}
                             >
-                              <Image src={planet4} className="planetimage" />
+                              <Image src={planet4} alt="planet" />
                             </Planet>
 
                             <PlanetOverlay focus={four.focus}>

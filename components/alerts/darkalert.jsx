@@ -2,9 +2,9 @@ import styled, { css } from 'styled-components';
 import { MyButton } from '../anybutton';
 import Link from 'next/link';
 
-export function DarkAlert({ totalFail, life }) {
+export function DarkAlert({ totalFail, setLife }) {
   function getLivesBack() {
-    setLife(5);
+    setLife(3);
   }
 
   return (
@@ -13,7 +13,7 @@ export function DarkAlert({ totalFail, life }) {
         All lives gone
         <Link href={`/play-again`} passHref>
           <a>
-            <MyButton text="ok" color="light" />
+            <MyButton click={getLivesBack} text="ok" color="light" />
           </a>
         </Link>
       </DarkPopUp>

@@ -5,7 +5,7 @@ import { Field } from './field';
 export function Game({ levelData, id }) {
   const [newKey, setNewKey] = useState(1);
 
-  const [life, setLife] = useState(5);
+  const [life, setLife] = useState(3);
 
   useEffect(() => {
     if (sessionStorage.getItem('life')) {

@@ -11,7 +11,11 @@ export function GreenAlert({
 }) {
   function moreLivesWow() {
     {
-      setLife(life + remCount);
+      if (nextLevel === false) {
+        setLife(3);
+      } else {
+        setLife(life + remCount);
+      }
     }
   }
 
@@ -27,7 +31,11 @@ export function GreenAlert({
           passHref
         >
           <a>
-            <MyButton click={moreLivesWow} text="next level" color="dark" />
+            <MyButton
+              click={moreLivesWow}
+              text={nextLevel === false ? 'yeah!' : 'next level'}
+              color="dark"
+            />
           </a>
         </Link>
       </GreenPopUp>
@@ -53,12 +61,6 @@ const GreenPopUp = styled.div`
     props.remCount > 0 &&
     css`
       background: var(--lemon);
-    `}
-
-  ${props =>
-    props.nextLevel === false &&
-    css`
-      display: none;
     `}
 `;
 

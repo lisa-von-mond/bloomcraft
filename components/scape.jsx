@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import { Galaxy } from './galaxy';
 import { useState } from 'react';
+import { unstable_createPortal } from 'react-dom';
 
 export function Scape({ galaxy, chargeStatus, destination, charge, goal }) {
   const [xShift, setXShift] = useState(50); // for shifting layout in x direction
@@ -38,18 +39,18 @@ export function Scape({ galaxy, chargeStatus, destination, charge, goal }) {
             goal={goal}
           />
         </WholeGalaxy>
-        <SquareLeft>
-          <ArrLeft onClick={shiftLeft}></ArrLeft>
-        </SquareLeft>
-        <SquareUp>
-          <ArrUp onClick={shiftUp}></ArrUp>
-        </SquareUp>
-        <SquareDown>
-          <ArrDown onClick={shiftDown}></ArrDown>
-        </SquareDown>
-        <SquareRight>
-          <ArrRight onClick={shiftRight}></ArrRight>
-        </SquareRight>
+        <Square type="left" onClick={shiftLeft}>
+          <Arr></Arr>
+        </Square>
+        <Square type="up" onClick={shiftUp}>
+          <Arr></Arr>
+        </Square>
+        <Square type="down" onClick={shiftDown}>
+          <Arr></Arr>
+        </Square>
+        <Square type="right" onClick={shiftRight}>
+          <Arr></Arr>
+        </Square>
       </ScapeInner>
     </>
   );
@@ -81,84 +82,54 @@ const WholeGalaxy = styled.div`
   }
 `;
 
-const SquareLeft = styled.div`
+const Square = styled.div`
   width: 25px;
   height: 25px;
   border: 2px solid var(--layout);
   position: absolute;
-  transform: translate(0px, -5px);
-  top: 50%;
-  left: 0;
   border-radius: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
-`;
-const SquareUp = styled.div`
-  width: 25px;
-  height: 25px;
-  border: 2px solid var(--layout);
-  position: absolute;
-  transform: translate(-5px, 0);
-  left: 50%;
-  top: 0;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const SquareRight = styled.div`
-  width: 25px;
-  height: 25px;
-  border: 2px solid var(--layout);
-  position: absolute;
-  top: 50%;
-  transform: translate(0px, -5px);
-  right: 0;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-const SquareDown = styled.div`
-  width: 25px;
-  height: 25px;
-  border: 2px solid var(--layout);
-  position: absolute;
-  transform: translate(-5px, 0);
-  left: 50%;
-  bottom: 0;
-  border-radius: 5px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  cursor: pointer;
+
+  ${props =>
+    props.type === 'left' &&
+    css`
+      transform: translate(0px, -5px);
+      top: 50%;
+      left: 0;
+    `}
+
+  ${props =>
+    props.type === 'up' &&
+    css`
+      transform: translate(-5px, 0) rotate(90deg);
+      left: 50%;
+      top: 0;
+    `}
+
+      ${props =>
+    props.type === 'right' &&
+    css`
+      top: 50%;
+      transform: translate(0px, -5px) rotate(180deg);
+      right: 0;
+    `}
+
+        ${props =>
+    props.type === 'down' &&
+    css`
+      transform: translate(-5px, 0) rotate(-90deg);
+      left: 50%;
+      bottom: 0;
+    `}
 `;
 
-const ArrLeft = styled.div`
+const Arr = styled.div`
   width: 10px;
   height: 10px;
   border-left: 2px solid var(--layout);
   border-bottom: 2px solid var(--layout);
-  transform: rotate(45deg);
-`;
-const ArrUp = styled.div`
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid var(--layout);
-  border-left: 2px solid var(--layout);
-  transform: rotate(45deg);
-`;
-const ArrRight = styled.div`
-  width: 10px;
-  height: 10px;
-  border-right: 2px solid var(--layout);
-  border-top: 2px solid var(--layout);
-  transform: rotate(45deg);
-`;
-const ArrDown = styled.div`
-  width: 10px;
-  height: 10px;
-  border-bottom: 2px solid var(--layout);
-  border-right: 2px solid var(--layout);
   transform: rotate(45deg);
 `;

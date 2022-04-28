@@ -10,14 +10,19 @@ export function Intro() {
       <MyMain>
         <Starry />
         <Headline>lush:3000</Headline>
-        <Link href="/levels/levelone">
-          <a>
-            <MyButton text="play" color="puremint" />
-          </a>
-        </Link>
         <Link href="/how-to-play">
           <a>
-            <MyButton text="instruction" color="puresky" />
+            <MyButton text="play the first time" color="puremint" />
+          </a>
+        </Link>
+        <Link href="/levels/levelone">
+          <a>
+            <MyButton text="play again" color="purelemon" />
+          </a>
+        </Link>
+        <Link href="/about">
+          <a>
+            <MyButton text="about / contribute" color="purepink" />
           </a>
         </Link>
       </MyMain>
@@ -39,7 +44,4 @@ const MyMain = styled.div`
 const Headline = styled.div`
   color: white;
   font-size: 3rem;
-  :&hover  {
-    color: blue;
-  }
 `;

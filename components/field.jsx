@@ -486,7 +486,7 @@ export function Field({
         remCount={remCount}
         setTotalFail={setTotalFail}
       />
-      <DarkAlert totalFail={totalFail} life={life} />
+      <DarkAlert totalFail={totalFail} life={life} setLife={setLife} />
       <InstrFrame instr={instr} instrToggle={instrToggle} />
     </>
   );
