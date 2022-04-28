@@ -1,37 +1,46 @@
 import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
-import { textHowTo } from '../../utils/text-how-to';
+import { textAbout } from '../../utils/text-about';
+import Link from 'next/link';
 
-export function HowToPlay() {
-  const [indexHowTo, setIndexHowTo] = useState(0);
-  const lengthHowTo = textHowTo.length - 1;
+export function AboutThisGame() {
+  const [indexAbout, setIndexAbout] = useState(0);
+  const lengthAbout = textAbout.length - 1;
 
-  function nextHowTo() {
-    if (indexHowTo < lengthHowTo) {
-      setIndexHowTo(indexHowTo + 1);
+  function nextAbout() {
+    if (indexAbout < lengthAbout) {
+      setIndexAbout(indexAbout + 1);
     }
   }
 
-  function lastHowTo() {
-    if (indexHowTo > 0) {
-      setIndexHowTo(indexHowTo - 1);
+  function lastAbout() {
+    if (indexAbout > 0) {
+      setIndexAbout(indexAbout - 1);
     }
   }
 
   return (
     <TTFrame>
       <TextField>
-        <HeadLine>{textHowTo[indexHowTo].headline}</HeadLine>
-        {textHowTo[indexHowTo].text}
+        <HeadLine>{textAbout[indexAbout].headline}</HeadLine>
+        {textAbout[indexAbout].text}
         <AllButtons>
-          <BackButtonCntn indexHowTo={indexHowTo}>
-            <MyButton click={lastHowTo} text="back" color="puresky" />
+          <BackButtonCntn indexAbout={indexAbout}>
+            <MyButton click={lastAbout} text="back" color="puresky" />
           </BackButtonCntn>
-          <NextButtonCntn indexHowTo={indexHowTo} lengthHowTo={lengthHowTo}>
+          <LinkButtonCntn indexAbout={indexAbout} lengthAbout={lengthAbout}>
+            <a href={`${textAbout[indexAbout].url}`} target="blank">
+              <MyButton
+                text={textAbout[indexAbout].linktext}
+                color="purelemon"
+              />
+            </a>
+          </LinkButtonCntn>
+          <NextButtonCntn indexAbout={indexAbout} lengthAbout={lengthAbout}>
             <MyButton
-              click={nextHowTo}
-              text={textHowTo[indexHowTo].buttontext}
+              click={nextAbout}
+              text={textAbout[indexAbout].buttontext}
               color="puremint"
             />
           </NextButtonCntn>
@@ -78,7 +87,7 @@ const AllButtons = styled.div`
 `;
 
 const HeadLine = styled.h2`
-  color: var(--purepink);
+  color: var(--purelemon);
   font-size: 1.4rem;
   font-weight: 400;
   text-transform: uppercase;
@@ -88,7 +97,7 @@ const HeadLine = styled.h2`
 
 const BackButtonCntn = styled.div`
   ${props =>
-    props.indexHowTo === 0 &&
+    props.indexAbout === 0 &&
     css`
       display: none;
     `}
@@ -96,8 +105,10 @@ const BackButtonCntn = styled.div`
 
 const NextButtonCntn = styled.div`
   ${props =>
-    props.indexHowTo >= props.lengthHowTo &&
+    props.indexAbout >= props.lengthAbout &&
     css`
       display: none;
     `}
 `;
+
+const LinkButtonCntn = styled.div``;

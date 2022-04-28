@@ -192,6 +192,7 @@ const CommandLineRow = styled.div`
   gap: 0.6rem;
   justify-content: center;
 `;
+
 const Key = styled.div`
   font-size: 14px;
   min-width: 2.7rem;
@@ -224,19 +225,6 @@ const Key = styled.div`
 
   ${props =>
     props.colorvar === 'mint' &&
-    props.cockpitCount >= props.remCount &&
-    css`
-      filter: brightness(50%);
-      cursor: default;
-      &:hover,
-      &:active {
-        transform: none;
-        filter: brightness(50%);
-      }
-    `}
-
-  ${props =>
-    props.colorvar === 'mint' &&
     props.tempCount >= 5 &&
     css`
       filter: brightness(50%);
@@ -249,11 +237,12 @@ const Key = styled.div`
       }
     `}
 
-${props =>
+  ${props =>
     props.colorvar === 'mint' &&
     props.cpStatus > 1 &&
     css`
-      background-color: var(--sky);
+      background: var(--sky);
+      box-shadow: 3px 3px var(--darksky);
     `}
 
 ${props =>
@@ -282,7 +271,6 @@ ${props =>
         filter: brightness(50%);
       }
     `}
-
 
 ${props =>
     props.colorvar === 'sky' &&

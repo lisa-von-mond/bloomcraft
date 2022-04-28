@@ -10,9 +10,9 @@ export function Outro() {
       <MyMain>
         <Starry />
         <Headline>Congrats, future space activist!</Headline>
-        <Link href="/levels/levelone">
+        <Link href="/">
           <a>
-            <MyButton text="play again" color="puremint" />
+            <MyButton text="back to start" color="puremint" />
           </a>
         </Link>
       </MyMain>

@@ -16,7 +16,7 @@ export function GlobalCounter({ hand, remCount, life }) {
 
   return (
     <CounterFix hand={hand}>
-      <CounterInfo color="purepink">dashes left:</CounterInfo>
+      <CounterInfo color="purepink">energy left:</CounterInfo>
       <DotContainer>
         {counterDots.map((element, index) => (
           <Dot color="pink" key={'pink' + index}></Dot>
@@ -64,16 +64,19 @@ const CounterFix = styled.div`
 const DotContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 0.6rem;
-  background-color: black;
+  jutify-content: flex-start;
+  flex-wrap: wrap;
+  align-items: flex-start;
   padding: 0.3rem;
   border-radius: 50px;
+  max-width: 12rem;
 `;
 
 const Dot = styled.div`
-  height: 0.8rem;
-  width: 0.8rem;
+  height: 1.4rem;
+  width: 1.4rem;
   border-radius: 50%;
+  border: 0.3rem solid black;
   background: var(--${props => props.color});
 `;
 

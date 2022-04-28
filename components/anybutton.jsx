@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export function MyButton({ text, color, click }) {
   return (
-    <AnyButton onClick={click} color={color}>
+    <AnyButton onClick={click} color={color} text={text}>
       {text}
     </AnyButton>
   );
@@ -30,7 +30,13 @@ const AnyButton = styled.button`
 
   &: hover {
     animation: buttonwow 1s;
-  } ;
+  }
+
+  ${props =>
+    props.text === null &&
+    css`
+      display: none;
+    `}
 `;
 
 const NotAButton = styled.button`

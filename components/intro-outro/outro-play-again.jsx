@@ -10,7 +10,7 @@ export function OutroPlayAgain() {
       <MyMain>
         <Starry />
         <Headline>Sorry, you lost your trace</Headline>
-        <Link href="/levels/levelone">
+        <Link href="/">
           <a>
             <MyButton text="try again" color="puremint" />
           </a>
