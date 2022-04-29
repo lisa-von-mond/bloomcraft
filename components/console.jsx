@@ -23,7 +23,7 @@ export function InfoConsole({
 
         <ChargeInfo1 chargeStatus={chargeStatus}>CHARGE PICKED UP</ChargeInfo1>
         <ChargeInfo2 chargeStatus={chargeStatus}>
-          ### charge has to be picked up from {charge}
+          ### pick up charge from {charge}
         </ChargeInfo2>
         <GoalInfo destination={destination}>### your goal is {goal}</GoalInfo>
         <DestInfo destination={destination}>MISSION COMPLETED</DestInfo>

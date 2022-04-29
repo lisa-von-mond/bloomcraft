@@ -1,8 +1,15 @@
 export const textHowTo = [
   {
     page: 1,
-    headline: 'How to play',
+    headline: 'Welcome to lush:3000',
     text: 'As a future space activist, living in an aera, when earth has became uninhabitable because of climate crisis, you preserve intergalactic species and transport seed ressources from planets to others. Every level is based on a different galaxy. Your task is collecting a seed charge from a planet and transport it to a destination planet.',
+    buttontext: 'got it',
+  },
+  {
+    page: 1,
+    headline: 'Key Elements',
+    illu: 'ChargeAndGoal',
+    text: '',
     buttontext: 'got it',
   },
   {

@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
 import { textHowTo } from '../../utils/text-how-to';
+import { ChargeAndGoal } from './charge-and-goal';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);
@@ -24,6 +25,9 @@ export function HowToPlay() {
       <TextField>
         <HeadLine>{textHowTo[indexHowTo].headline}</HeadLine>
         {textHowTo[indexHowTo].text}
+        <Illu1 illu={textHowTo[indexHowTo].illu}>
+          <ChargeAndGoal />
+        </Illu1>
         <AllButtons>
           <BackButtonCntn indexHowTo={indexHowTo}>
             <MyButton click={lastHowTo} text="back" color="puresky" />
@@ -97,6 +101,15 @@ const BackButtonCntn = styled.div`
 const NextButtonCntn = styled.div`
   ${props =>
     props.indexHowTo >= props.lengthHowTo &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu1 = styled.div`
+  display: flex;
+  ${props =>
+    props.illu !== 'ChargeAndGoal' &&
     css`
       display: none;
     `}

@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export function Cockpit({
   add,
@@ -52,9 +53,11 @@ export function Cockpit({
         <ThisLevelInfo color="puremint">Level {thisLevel}</ThisLevelInfo>
         <CommandLine cpStatus={cpStatus}>
           {commandLine.map((element, index) => (
-            <Command key={index} cpStatus={cpStatus}>
-              {element}
-            </Command>
+            <AnimatePresence>
+              <Command key={index} cpStatus={cpStatus}>
+                {element}
+              </Command>
+            </AnimatePresence>
           ))}
           <CommandLineTemp cpStatus={cpStatus}>
             {tempArr.map((element, index) => (
@@ -380,7 +383,7 @@ const Command = styled.div`
   padding: 0.5rem;
   color: var(--puremint);
   border: 2px solid var(--puremint);
-  animation: cmd 0.3s;
+  animation: cmd 0.6s;
 
   ${props =>
     props.cpStatus > 1 &&
@@ -531,3 +534,5 @@ const ThisLevelInfo = styled.div`
   font-size: 1.3rem;
   border-bottom: 2px solid var(--puremint);
 `;
+
+//*animation: cmd 0.3s;
