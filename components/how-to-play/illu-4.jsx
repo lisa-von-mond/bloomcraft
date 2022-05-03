@@ -1,20 +1,28 @@
 import styled, { css } from 'styled-components';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
 
-export function Cockpit({
-  add,
-  cpStatus,
-  addNumber,
-  set,
-  del,
-  commandLine,
-  tempArr,
-  move,
-  cockpitCount,
-  thisLevel,
-  remCount,
-}) {
-  const tempCount = tempArr.length;
+export function IlluFour() {
+  const [commandArray, setCommandArray] = useState([]);
+  const [tempArray, setTempArray] = useState([]);
+  const [cpStatus, setCpStatus] = useState(1);
+  const tempCount = tempArray.length;
+  const cockpitCount = commandArray.length;
+
+  function add(direction) {
+    if (cpStatus === 1) {
+      cockpitCount <= 8 ? setCommandArray([...commandArray, direction]) : null;
+    } else {
+      tempCount <= 4 ? setTempArray([...tempArray, direction]) : null;
+    }
+  }
+
+  function addNumber(number) {
+    if (cpStatus === 1) {
+      cockpitCount <= 8 ? setTempArray([...tempArray, number]) : null;
+    } else {
+      null;
+    }
+  }
 
   function addLeft() {
     add('turn');
@@ -28,39 +36,53 @@ export function Cockpit({
 
   function addThree() {
     addNumber(3);
+    setCpStatus(3);
   }
   function addTwo() {
     addNumber(2);
+    setCpStatus(2);
   }
 
-  function sparksInfo(x) {
-    if (x <= 1) {
-      return 'waiting for commands';
+  function set() {
+    if (tempArray.length > 1) {
+      setCommandArray([...commandArray, tempArray]);
+      setTempArray([]);
+      setCpStatus(1);
     } else {
-      if (x > remCount) {
-        return 'energy not available';
-      } else {
-        return 'this operation will take ' + x + ' energy units';
+      null;
+    }
+  }
+
+  function del() {
+    if (cpStatus === 1) {
+      setCommandArray(commandArray.slice(0, -1));
+    } else {
+      setTempArray(tempArray.slice(0, -1));
+      if (tempCount === 1) {
+        setCpStatus(1);
       }
     }
   }
 
-  const sparks = sparksInfo(cockpitCount);
+  function clear() {
+    if (cpStatus === 1) {
+      setCommandArray([]);
+    } else {
+      null;
+    }
+  }
 
   return (
     <>
       <CPFrame>
-        <ThisLevelInfo color="puremint">Level {thisLevel}</ThisLevelInfo>
         <CommandLine cpStatus={cpStatus}>
-          {commandLine.map((element, index) => (
-            <AnimatePresence>
-              <Command key={index} cpStatus={cpStatus}>
-                {element}
-              </Command>
-            </AnimatePresence>
+          {commandArray.map((element, index) => (
+            <Command key={index} cpStatus={cpStatus}>
+              {element}
+            </Command>
           ))}
           <CommandLineTemp cpStatus={cpStatus}>
-            {tempArr.map((element, index) => (
+            {tempArray.map((element, index) => (
               <CommandTemp key={index} content={element}>
                 {element}
               </CommandTemp>
@@ -70,25 +92,14 @@ export function Cockpit({
             set
           </SetKey>
         </CommandLine>
-        <DashCounter
-          cpStatus={cpStatus}
-          remCount={remCount}
-          cockpitCount={cockpitCount}
-        >
-          {sparks}
-        </DashCounter>
-        <TempCounter cpStatus={cpStatus} tempCount={tempCount}>
-          {tempCount} / 5
-        </TempCounter>
         <Keyboard>
-          <CommandLineRow>
+          <KeyRow>
             <Key
               colorvar="mint"
               darkvar="darkmint"
               onClick={addOut}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              remCount={remCount}
               cpStatus={cpStatus}
             >
               out
@@ -99,7 +110,6 @@ export function Cockpit({
               onClick={addIn}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              remCount={remCount}
               cpStatus={cpStatus}
             >
               in
@@ -110,7 +120,6 @@ export function Cockpit({
               onClick={addLeft}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              remCount={remCount}
               cpStatus={cpStatus}
             >
               turn
@@ -124,8 +133,8 @@ export function Cockpit({
                 del
               </DelKey>
             </div>
-          </CommandLineRow>
-          <CommandLineRow>
+          </KeyRow>
+          <KeyRow>
             <Key
               colorvar="sky"
               darkvar="darksky"
@@ -133,7 +142,6 @@ export function Cockpit({
               cpStatus={cpStatus}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              remCount={remCount}
             >
               2
             </Key>
@@ -144,7 +152,6 @@ export function Cockpit({
               cpStatus={cpStatus}
               tempCount={tempCount}
               cockpitCount={cockpitCount}
-              remCount={remCount}
             >
               3
             </Key>
@@ -152,20 +159,17 @@ export function Cockpit({
               colorvar="pink"
               darkvar="darkpink"
               cpStatus={cpStatus}
-              onClick={move}
               cockpitCount={cockpitCount}
-              remCount={remCount}
+              onClick={clear}
             >
               GO
             </GoKey>
-          </CommandLineRow>
+          </KeyRow>
         </Keyboard>
       </CPFrame>
     </>
   );
 }
-
-// keyboard
 
 const CPFrame = styled.div`
   border-radius: 1rem;
@@ -190,7 +194,7 @@ const Keyboard = styled.div`
   }
 `;
 
-const CommandLineRow = styled.div`
+const KeyRow = styled.div`
   display: flex;
   gap: 0.6rem;
   justify-content: center;
@@ -199,15 +203,6 @@ const CommandLineRow = styled.div`
 const Key = styled.div`
   font-size: 14px;
   min-width: 2.7rem;
-
-  @media only screen and (max-width: 900px) {
-    font-size: 12px;
-  }
-
-  @media only screen and (max-width: 600px) {
-    font-size: 11px;
-  }
-
   display: flex;
   color: black;
   border-radius: 100px;
@@ -218,6 +213,15 @@ const Key = styled.div`
   background: var(--${props => props.colorvar});
   box-shadow: 3px 3px var(--${props => props.darkvar});
   cursor: pointer;
+
+  @media only screen and (max-width: 900px) {
+    font-size: 12px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 11px;
+  }
+
   &:hover {
     animation: buttonwow 0.5s;
   }
@@ -312,19 +316,6 @@ const GoKey = styled.div`
   background: var(--${props => props.colorvar});
   box-shadow: 3px 3px var(--${props => props.darkvar});
   cursor: pointer;
-
-  ${props =>
-    props.cpStatus === 1 &&
-    props.cockpitCount <= props.remCount &&
-    css`
-      &:hover {
-        animation: buttonwow 0.5s;
-      }
-      &:active {
-        transform: scale(90%);
-        filter: brightness(150%);
-      }
-    `}
 
   ${props =>
     props.cpStatus > 1 &&
@@ -474,65 +465,3 @@ const DelKey = styled.div`
       filter: none;
     `}
 `;
-
-const DashCounter = styled.div`
-  display: flex;
-  color: white;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  animation: type 1s;
-  color: var(--puremint);
-
-  ${props =>
-    props.cockpitCount > props.remCount &&
-    css`
-      color: var(--purepink);
-      animation: blinker 1s linear infinite;
-    `}
-
-  ${props =>
-    props.cockpitCount === props.remCount &&
-    css`
-      animation: blinker 1s linear infinite;
-    `}
-
-  ${props =>
-    props.cpStatus > 1 &&
-    css`
-      display: none;
-    `}
-`;
-
-const TempCounter = styled.div`
-  display: flex;
-  color: white;
-  align-items: center;
-  justify-content: center;
-  width: auto;
-  animation: type 1s;
-  color: var(--puresky);
-
-  ${props =>
-    props.tempCount >= 5 &&
-    css`
-      color: var(--purepink);
-      animation: blinker 1s linear infinite;
-    `}
-
-  ${props =>
-    props.cpStatus === 1 &&
-    css`
-      display: none;
-    `}
-`;
-
-const ThisLevelInfo = styled.div`
-  color: var(--puremint);
-  text-transform: uppercase;
-  text-align: center;
-  font-size: 1.3rem;
-  border-bottom: 2px solid var(--puremint);
-`;
-
-//*animation: cmd 0.3s;

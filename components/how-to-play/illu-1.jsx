@@ -2,11 +2,10 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import ufo from '../../public/images/future_ufo.svg';
 import greenslayer from '../../public/images/charge.svg';
-import planetring from '../../public/images/planetring_narrow.svg';
 import planetoverlay from '../../public/images/overlay150.svg';
 import planet3 from '../../public/images/planets/planet3.svg';
 
-export function ChargeAndGoal() {
+export function IlluOne() {
   return (
     <VisualHowTo>
       <VisualExample>
