@@ -2,6 +2,11 @@ import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
 import { textHowTo } from '../../utils/text-how-to';
+import { IlluOne } from './illu-1';
+import { IlluTwo } from './illu-2';
+import { IlluThree } from './illu-3';
+import { IlluFour } from './illu-4';
+import { IlluFive } from './illu-5';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);
@@ -23,7 +28,21 @@ export function HowToPlay() {
     <TTFrame>
       <TextField>
         <HeadLine>{textHowTo[indexHowTo].headline}</HeadLine>
-        {textHowTo[indexHowTo].text}
+
+        <Text>{textHowTo[indexHowTo].text}</Text>
+        <Illu1 illu={textHowTo[indexHowTo].illu}>
+          <IlluOne />
+        </Illu1>
+        <Illu2 illu={textHowTo[indexHowTo].illu}>
+          <IlluTwo />
+        </Illu2>
+        <Illu4 illu={textHowTo[indexHowTo].illu}>
+          <IlluFour />
+        </Illu4>
+        <Illu5 illu={textHowTo[indexHowTo].illu}>
+          <IlluFive />
+        </Illu5>
+
         <AllButtons>
           <BackButtonCntn indexHowTo={indexHowTo}>
             <MyButton click={lastHowTo} text="back" color="puresky" />
@@ -50,7 +69,7 @@ const TTFrame = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.8rem;
+  padding: 5rem;
 `;
 
 const TextField = styled.div`
@@ -58,16 +77,26 @@ const TextField = styled.div`
   box-shadow: 5px 5px 0 0 var(--puresky);
   border-radius: 50px;
   display: flex;
-  padding: 50px;
-  line-height: 30px;
-  color: var(--puremint);
-  background: black;
-  width: 60%;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 2.4vw;
-  @media and(orientation:portrait) {
-    width: 100%;
+  padding: 3rem;
+  background: black;
+  max-width: 60%;
+  flex-direction: column;
+  gap: 2vw;
+  color: var(--puremint);
+  font-size: 0.7 rem;
+  line-height: 1.8rem;
+
+  @media only screen and (max-width: 1000px) {
+    font-size: 0.6rem;
+    padding: 2rem;
+    max-width: 100%;
+  }
+  @media only screen and (orientation: portrait) and (max-width: 600px) {
+    font-size: 0.5rem;
+    padding: 2rem;
+    max-width: 100%;
   }
 `;
 
@@ -75,6 +104,12 @@ const AllButtons = styled.div`
   display: flex;
   gap: 5vw;
   align-items: center;
+`;
+
+const Text = styled.p`
+  margin: 0;
+  padding: 0;
+  text-align: justify;
 `;
 
 const HeadLine = styled.h2`
@@ -97,6 +132,46 @@ const BackButtonCntn = styled.div`
 const NextButtonCntn = styled.div`
   ${props =>
     props.indexHowTo >= props.lengthHowTo &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu1 = styled.div`
+  ${props =>
+    props.illu !== 'illu-1' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu2 = styled.div`
+  ${props =>
+    props.illu !== 'illu-2' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu3 = styled.div`
+  ${props =>
+    props.illu !== 'illu-3' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu4 = styled.div`
+  ${props =>
+    props.illu !== 'illu-4' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu5 = styled.div`
+  ${props =>
+    props.illu !== 'illu-5' &&
     css`
       display: none;
     `}

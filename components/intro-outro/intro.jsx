@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { Starry } from '../starry';
 import { MyButton } from '../anybutton';
@@ -12,17 +11,17 @@ export function Intro() {
         <Headline>lush:3000</Headline>
         <Link href="/how-to-play">
           <a>
-            <MyButton text="play the first time" color="puremint" />
+            <MyButton text="play first time" color="puremint" />
           </a>
         </Link>
         <Link href="/levels/levelone">
           <a>
-            <MyButton text="play again" color="purelemon" />
+            <MyButton text="play again" color="puremint" />
           </a>
         </Link>
         <Link href="/about">
           <a>
-            <MyButton text="about / contribute" color="purepink" />
+            <MyButton text="about" color="puremint" />
           </a>
         </Link>
       </MyMain>

@@ -15,7 +15,7 @@ export const introLevel = [
             limit: true,
             parent: 'una',
             angl: 20,
-            dist: 80,
+            dist: 60,
             ring: 0,
           },
 
@@ -27,7 +27,7 @@ export const introLevel = [
             limit: true,
             parent: 'una',
             angl: 220,
-            dist: 70,
+            dist: 50,
             ring: 2,
           },
         ],

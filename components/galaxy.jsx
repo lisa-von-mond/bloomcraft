@@ -207,6 +207,7 @@ const MyGalaxy = styled.div`
     css`
       height: 80px;
       width: 80px;
+      filter: hue-rotate(-45deg);
     `}
   
 ${props =>
@@ -214,6 +215,7 @@ ${props =>
     css`
       height: 60px;
       width: 60px;
+      filter: hue-rotate(45deg);
     `}
   
 ${props =>
@@ -279,6 +281,7 @@ const Ufo = styled.div`
   align-items: flex-start;
   animation: orbit-rev 600s linear infinite;
   visibility: hidden;
+  filter: hue-rotate(45deg);
 
   ${props =>
     props.active === true &&
@@ -343,8 +346,8 @@ const PlanetOverlay = styled.div`
 const LegendId = styled.div`
   position: absolute;
   animation: orbit-rev 600s linear infinite;
-  width: 150%;
-  height: 150%;
+  width: 160%;
+  height: 160%;
   display: flex;
   justify-content: flex-end;
   align-content: flex-end;
