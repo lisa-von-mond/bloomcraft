@@ -53,11 +53,9 @@ export function Cockpit({
         <ThisLevelInfo color="puremint">Level {thisLevel}</ThisLevelInfo>
         <CommandLine cpStatus={cpStatus}>
           {commandLine.map((element, index) => (
-            <AnimatePresence>
-              <Command key={index} cpStatus={cpStatus}>
-                {element}
-              </Command>
-            </AnimatePresence>
+            <Command key={index} cpStatus={cpStatus}>
+              {element}
+            </Command>
           ))}
           <CommandLineTemp cpStatus={cpStatus}>
             {tempArr.map((element, index) => (

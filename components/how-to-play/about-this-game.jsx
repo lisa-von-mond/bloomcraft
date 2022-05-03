@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import { useState } from 'react';
 import { MyButton } from '../anybutton';
 import { textAbout } from '../../utils/text-about';
-import Link from 'next/link';
 
 export function AboutThisGame() {
   const [indexAbout, setIndexAbout] = useState(0);
