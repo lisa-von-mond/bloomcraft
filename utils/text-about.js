@@ -10,7 +10,7 @@ export const textAbout = [
   {
     page: 3,
     headline: 'About lush:3000',
-    text: 'lush:3000 is made with: react // styled-components // next // framer:motion',
+    text: 'lush:3000 is made with: react * styled-components * next.js * framer/motion',
     buttontext: 'next page',
     linktext: null,
     url: '',

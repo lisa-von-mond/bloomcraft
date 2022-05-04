@@ -37,6 +37,10 @@ const AnyButton = styled.button`
     css`
       display: none;
     `}
+
+  @media only screen and (max-width: 600px) {
+    font-size: 0, 6rem;
+  }
 `;
 
 const NotAButton = styled.button`

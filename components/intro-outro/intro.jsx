@@ -11,7 +11,7 @@ export function Intro() {
         <Headline>lush:3000</Headline>
         <Link href="/how-to-play">
           <a>
-            <MyButton text="play first time" color="puremint" />
+            <MyButton text="play 1st time" color="puremint" />
           </a>
         </Link>
         <Link href="/levels/levelone">
@@ -21,7 +21,7 @@ export function Intro() {
         </Link>
         <Link href="/about">
           <a>
-            <MyButton text="about" color="puremint" />
+            <MyButton text="about / contribute" color="puremint" />
           </a>
         </Link>
       </MyMain>

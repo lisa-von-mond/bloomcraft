@@ -23,7 +23,7 @@ export function AboutThisGame() {
     <TTFrame>
       <TextField>
         <HeadLine>{textAbout[indexAbout].headline}</HeadLine>
-        {textAbout[indexAbout].text}
+        <Text>{textAbout[indexAbout].text}</Text>
         <AllButtons>
           <BackButtonCntn indexAbout={indexAbout}>
             <MyButton click={lastAbout} text="back" color="puresky" />
@@ -58,7 +58,15 @@ const TTFrame = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 0.8rem;
+  padding: 5rem;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 3rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 const TextField = styled.div`
@@ -66,16 +74,33 @@ const TextField = styled.div`
   box-shadow: 5px 5px 0 0 var(--puresky);
   border-radius: 50px;
   display: flex;
-  padding: 50px;
-  line-height: 30px;
-  color: var(--puremint);
-  background: black;
-  width: 60%;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 2.4vw;
-  @media and(orientation:portrait) {
-    width: 100%;
+  background: black;
+  flex-direction: column;
+  color: var(--puremint);
+  max-width: 60%;
+  padding: 3rem;
+  gap: 2rem;
+
+  @media only screen and (max-width: 1000px) {
+    max-width: 90%;
+    padding: 2rem;
+  }
+`;
+
+const Text = styled.p`
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+
+  -webkit-hyphens: auto;
+
+  font-size: 2vh;
+  line-height: 3vh;
+
+  @media only screen and (max-width: 600px) {
+    font-size: 1.6vh;
   }
 `;
 
@@ -83,15 +108,21 @@ const AllButtons = styled.div`
   display: flex;
   gap: 5vw;
   align-items: center;
+
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const HeadLine = styled.h2`
-  color: var(--purelemon);
+  color: var(--puresky);
   font-size: 1.4rem;
   font-weight: 400;
   text-transform: uppercase;
   margin: 0;
   padding: 0;
+  line-height: 2rem;
+  text-align: center;
 `;
 
 const BackButtonCntn = styled.div`
