@@ -116,5 +116,5 @@ export default {
   thisLevel: 3,
   nextLevel: 'levelfour',
   atronautName: '',
-  galaxyName: 'heaven',
+  galaxyName: 'heaven:3000',
 };

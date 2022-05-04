@@ -4,6 +4,7 @@ import levelone from '../../levels/level1';
 import leveltwo from '../../levels/level2';
 import levelthree from '../../levels/level3';
 import levelfour from '../../levels/level4';
+import levelfive from '../../levels/level5';
 import { useRouter } from 'next/router';
 
 export default function Level({ levelData }) {
@@ -29,6 +30,7 @@ const levels = {
   leveltwo,
   levelthree,
   levelfour,
+  levelfive,
 };
 
 export async function getStaticPaths() {

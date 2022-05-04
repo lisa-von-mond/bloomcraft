@@ -1,7 +1,5 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import Image from 'next/image';
-import ufo from '../../public/images/future_ufo.svg';
-import greenslayer from '../../public/images/charge.svg';
 import planetoverlay from '../../public/images/overlay150.svg';
 import planet3 from '../../public/images/planets/planet3.svg';
 

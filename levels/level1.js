@@ -60,25 +60,14 @@ export default {
               children: [],
               limit: true,
               parent: 'dos',
-              angl: 150,
-              dist: 100,
-              ring: 0,
-            },
-
-            {
-              name: 'deux',
-              id: '2.2',
-              children: [],
-              limit: true,
-              parent: 'dos',
               angl: 340,
               dist: 200,
               ring: 1,
             },
 
             {
-              name: 'tres',
-              id: '2.3',
+              name: 'deux',
+              id: '2.2',
               children: [],
               limit: true,
               parent: 'dos',

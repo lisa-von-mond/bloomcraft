@@ -428,20 +428,19 @@ export function Field({
             remCount={remCount}
             thisLevel={thisLevel}
           />
-          <CSFrame>
-            <InfoConsole
-              globalCount={globalCount}
-              thisPlanet={thisPlanet}
-              chargeStatus={chargeStatus}
-              thisId={thisId}
-              destination={destination}
-              focusNow={focusNow}
-              parentNow={parentNow}
-              charge={charge}
-              goal={goal}
-              galaxyName={galaxyName}
-            />
-          </CSFrame>
+
+          <InfoConsole
+            globalCount={globalCount}
+            thisPlanet={thisPlanet}
+            chargeStatus={chargeStatus}
+            thisId={thisId}
+            destination={destination}
+            focusNow={focusNow}
+            parentNow={parentNow}
+            charge={charge}
+            goal={goal}
+            galaxyName={galaxyName}
+          />
         </CTRLFrame>
       </BGFrame>
       <NoteFrame hand={hand}>
@@ -502,6 +501,7 @@ const BGFrame = styled.div`
   padding: 2rem;
   gap: 2rem;
   background: var(--darkbg);
+
   @media only screen and (orientation: landscape) {
     flex-direction: row;
     ${props =>
@@ -523,17 +523,21 @@ const CTRLFrame = styled.div`
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  font-size: 0.8rem;
-  gap: 1rem;
+  gap: 2rem;
+
+  @media only screen and (orientation: portrait) {
+    heigth: 30%;
+    width: 100%;
+  }
 
   @media only screen and (orientation: landscape) {
     width: 30%;
     height: 100%;
   }
 
-  @media only screen and (orientation: portrait) {
-    heigth: 30%;
-    width: 100%;
+  @media only screen and (orientation: landscape) and (min-width: 1200px) {
+    width: 25%;
+    height: 100%;
   }
 `;
 
@@ -551,20 +555,10 @@ const SCFrame = styled.div`
     width: 70%;
     height: 100%;
   }
-`;
 
-const CSFrame = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  @media only screen and (orientation: portrait) {
-    display: none;
-  }
-  @media only screen and (max-height: 600px) {
-    display: none;
-  }
-  @media only screen and (max-width: 800px) {
-    display: none;
+  @media only screen and (orientation: landscape) and (min-width: 1200px) {
+    width: 75%;
+    height: 100%;
   }
 `;
 

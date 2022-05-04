@@ -10,6 +10,11 @@ export function Outro() {
       <MyMain>
         <Starry />
         <Headline>Congrats, future space activist!</Headline>
+        <TextLine>
+          {' '}
+          You finished all levels of lush:3000 and saved your universe from
+          another climate crisis. See you out in space!
+        </TextLine>
         <Link href="/">
           <a>
             <MyButton text="back to start" color="puremint" />
@@ -34,7 +39,11 @@ const MyMain = styled.div`
 const Headline = styled.div`
   color: white;
   font-size: 3rem;
-  :&hover  {
-    color: blue;
-  }
+`;
+
+const TextLine = styled.p`
+  max-width: 70%;
+  color: var(--puresky);
+  font-size: 1rem;
+  text-align: center;
 `;

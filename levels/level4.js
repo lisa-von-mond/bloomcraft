@@ -3,14 +3,11 @@ export default {
     {
       name: 'new earth',
       id: '0',
-      scope: 0,
-      active: false,
       tracked: true,
       children: [
         {
           name: 'jupiter',
           id: '1',
-          focus: true,
           parent: 'new earth',
           children: [
             {
@@ -64,13 +61,11 @@ export default {
         {
           name: 'gaia',
           id: '2',
-          scope: 1,
           parent: 'new earth',
           children: [
             {
               name: 'venus',
               id: '2.1',
-              scope: 2,
               parent: 'gaia',
               children: [],
               limit: true,
@@ -196,12 +191,12 @@ export default {
   max: 10,
   initialPosition: 'svea',
   initialId: '3.2.3',
-  initialFocus: 'jupiter',
+  initialFocus: false,
   initialParent: false,
   charge: 'anna',
   goal: 'venus',
-  thisLevel: 3,
-  nextLevel: false,
+  thisLevel: 4,
+  nextLevel: 'levelfive',
   atronautName: '',
   galaxyName: 'future:3000',
 };
