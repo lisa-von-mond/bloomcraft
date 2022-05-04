@@ -33,9 +33,22 @@ export function InfoConsole({
 }
 
 const ConsoleFrame = styled.div`
-  font-size: 0.8rem;
+  width: 100%;
   display: flex;
   flex-direction: column;
+  font-size: 1rem;
+
+  @media only screen and (orientation: landscape) and (max-width: 1000px) {
+    font-size: 0.9rem;
+  }
+
+  @media only screen and (orientation: landscape) and (max-width: 900px) {
+    font-size: 0.7rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    display: none;
+  }
 `;
 
 const ChargeInfo1 = styled.p`

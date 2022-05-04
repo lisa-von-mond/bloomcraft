@@ -4,7 +4,6 @@ import { MyButton } from '../anybutton';
 import { textHowTo } from '../../utils/text-how-to';
 import { IlluOne } from './illu-1';
 import { IlluTwo } from './illu-2';
-import { IlluThree } from './illu-3';
 import { IlluFour } from './illu-4';
 import { IlluFive } from './illu-5';
 

@@ -79,7 +79,7 @@ export function Cockpit({
           {tempCount} / 5
         </TempCounter>
         <Keyboard>
-          <CommandLineRow>
+          <KeyRow>
             <Key
               colorvar="mint"
               darkvar="darkmint"
@@ -122,8 +122,8 @@ export function Cockpit({
                 del
               </DelKey>
             </div>
-          </CommandLineRow>
-          <CommandLineRow>
+          </KeyRow>
+          <KeyRow>
             <Key
               colorvar="sky"
               darkvar="darksky"
@@ -156,7 +156,7 @@ export function Cockpit({
             >
               GO
             </GoKey>
-          </CommandLineRow>
+          </KeyRow>
         </Keyboard>
       </CPFrame>
     </>
@@ -166,12 +166,14 @@ export function Cockpit({
 // keyboard
 
 const CPFrame = styled.div`
+  width: 100%;
   border-radius: 1rem;
   gap: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
+
 const Keyboard = styled.div`
   display: flex;
   align-items: center;
@@ -188,7 +190,7 @@ const Keyboard = styled.div`
   }
 `;
 
-const CommandLineRow = styled.div`
+const KeyRow = styled.div`
   display: flex;
   gap: 0.6rem;
   justify-content: center;
@@ -372,6 +374,7 @@ const CommandLine = styled.div`
   border: 1.5px solid var(--puremint);
   box-shadow: 3px 3px 0 0 var(--puremint);
 `;
+
 const Command = styled.div`
   display: flex;
   border-radius: 50px;
@@ -474,13 +477,15 @@ const DelKey = styled.div`
 `;
 
 const DashCounter = styled.div`
-  display: flex;
-  color: white;
-  align-items: center;
-  justify-content: center;
-  width: auto;
+  max-width: 85%;
+  text-align: center;
   animation: type 1s;
   color: var(--puremint);
+  font-size: 0.8rem;
+
+  @media only screen and (orientation: landscape) and (max-width: 800px) {
+    font-size: 0.6rem;
+  }
 
   ${props =>
     props.cockpitCount > props.remCount &&
@@ -510,6 +515,12 @@ const TempCounter = styled.div`
   width: auto;
   animation: type 1s;
   color: var(--puresky);
+
+  font-size: 0.8rem;
+
+  @media only screen and (orientation: landscape) and (max-width: 800px) {
+    font-size: 0.6rem;
+  }
 
   ${props =>
     props.tempCount >= 5 &&
