@@ -4,11 +4,10 @@ import Image from 'next/image';
 import ufo from '../public/images/future_ufo.svg';
 import greenslayer from '../public/images/charge.svg';
 import planetring from '../public/images/planetring_narrow.svg';
-import planetoverlay from '../public/images/overlay150.svg';
-import planet1 from '../public/images/planets/planet1.svg';
-import planet2 from '../public/images/planets/planet2.svg';
-import planet3 from '../public/images/planets/planet3.svg';
-import planet4 from '../public/images/planets/planet4.svg';
+import planet1 from '../public/images/planets/planet1_overlay.svg';
+import planet2 from '../public/images/planets/planet2_overlay.svg';
+import planet3 from '../public/images/planets/planet3_overlay.svg';
+import planet4 from '../public/images/planets/planet4_overlay.svg';
 
 export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
   return (
@@ -18,9 +17,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
           <Planet name={one.name} goal={goal}>
             <Image src={planet1} alt="planet" />
           </Planet>
-          <PlanetOverlay>
-            <Image src={planetoverlay} />
-          </PlanetOverlay>
+
           <Greens name={one.name} greens={charge} chargeStatus={chargeStatus}>
             <Image src={greenslayer} />
           </Greens>
@@ -49,9 +46,6 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                 <Planet name={two.name} goal={goal} focus={two.focus}>
                   <Image src={planet2} alt="planet" />
                 </Planet>
-                <PlanetOverlay focus={two.focus}>
-                  <Image src={planetoverlay} />
-                </PlanetOverlay>
                 <Greens
                   name={two.name}
                   greens={charge}
@@ -88,10 +82,6 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                       <Planet name={three.name} goal={goal} focus={three.focus}>
                         <Image src={planet3} alt="planet" />
                       </Planet>
-
-                      <PlanetOverlay focus={three.focus}>
-                        <Image src={planetoverlay} />
-                      </PlanetOverlay>
                       <Greens
                         name={three.name}
                         greens={charge}
@@ -132,10 +122,6 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                             >
                               <Image src={planet4} alt="planet" />
                             </Planet>
-
-                            <PlanetOverlay focus={four.focus}>
-                              <Image src={planetoverlay} />
-                            </PlanetOverlay>
                             <Greens
                               name={four.name}
                               greens={charge}
@@ -186,6 +172,7 @@ const MyGalaxy = styled.div`
   justify-content: center;
   align-items: center;
   background-size: contain;
+
   .scope {
     position: absolute;
     top: 0;
@@ -210,15 +197,15 @@ const MyGalaxy = styled.div`
       filter: hue-rotate(-45deg);
     `}
   
-${props =>
+  ${props =>
     props.scope === '2' &&
     css`
       height: 60px;
       width: 60px;
       filter: hue-rotate(45deg);
     `}
-  
-${props =>
+    
+  ${props =>
     props.scope === '3' &&
     css`
       height: 50px;
@@ -265,11 +252,11 @@ const PlanetRing = styled.div`
       filter: invert(100%) brightness(400%);
     `}
 
-${props =>
-  props.focus === true &&
-  css`
-    animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
-  `}
+  ${props =>
+    props.focus === true &&
+    css`
+      animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
+    `}
 `;
 
 const Ufo = styled.div`
@@ -327,21 +314,6 @@ const Greens = styled.div`
       display: none;
     `}
 `;
-const PlanetOverlay = styled.div`
-  position: absolute;
-  width: 101;
-  height: 101;
-  animation: orbit-rev 600s linear infinite;
-  transform-origin: ${props => props.distx}*-1px;
-  ${props => props.disty}*-1px;
-
-  ${props =>
-    props.focus === true &&
-    css`
-      animation: blinker 1s linear infinite, orbit-rev 600s linear infinite;
-    `}
-`;
-//
 
 const LegendId = styled.div`
   position: absolute;

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import Image from 'next/image';
 import planetoverlay from '../../public/images/overlay150.svg';
-import planet3 from '../../public/images/planets/planet3.svg';
+import planet3 from '../../public/images/planets/planet3_overlay.svg';
 
 export function IlluFive() {
   return (
@@ -9,9 +9,6 @@ export function IlluFive() {
       <VisualExample>
         <Planet>
           <Image src={planet3} alt="planet" />
-          <PlanetOverlay>
-            <Image src={planetoverlay} />
-          </PlanetOverlay>
         </Planet>
       </VisualExample>
     </VisualHowTo>
@@ -41,13 +38,3 @@ const Planet = styled.div`
   height: 70px;
   animation: blinker 1s linear infinite;
 `;
-
-const PlanetOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-//
