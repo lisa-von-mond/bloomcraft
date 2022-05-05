@@ -6,18 +6,19 @@ import { IlluOne } from './illu-1';
 import { IlluTwo } from './illu-2';
 import { IlluFour } from './illu-4';
 import { IlluFive } from './illu-5';
+import { IlluSix } from './illu-6';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);
   const lengthHowTo = textHowTo.length - 1;
 
-  function nextHowTo() {
+  function next() {
     if (indexHowTo < lengthHowTo) {
       setIndexHowTo(indexHowTo + 1);
     }
   }
 
-  function lastHowTo() {
+  function last() {
     if (indexHowTo > 0) {
       setIndexHowTo(indexHowTo - 1);
     }
@@ -41,14 +42,17 @@ export function HowToPlay() {
         <Illu5 illu={textHowTo[indexHowTo].illu}>
           <IlluFive />
         </Illu5>
+        <Illu6 illu={textHowTo[indexHowTo].illu}>
+          <IlluSix />
+        </Illu6>
 
         <AllButtons>
           <BackButtonCntn indexHowTo={indexHowTo}>
-            <MyButton click={lastHowTo} text="back" color="puresky" />
+            <MyButton click={last} text="back" color="puresky" />
           </BackButtonCntn>
           <NextButtonCntn indexHowTo={indexHowTo} lengthHowTo={lengthHowTo}>
             <MyButton
-              click={nextHowTo}
+              click={next}
               text={textHowTo[indexHowTo].buttontext}
               color="puremint"
             />
@@ -69,6 +73,14 @@ const TTFrame = styled.div`
   justify-content: center;
   align-items: center;
   padding: 5rem;
+
+  @media only screen and (max-width: 1000px) {
+    padding: 3rem;
+  }
+
+  @media only screen and (max-width: 600px) {
+    padding: 1rem;
+  }
 `;
 
 const TextField = styled.div`
@@ -78,24 +90,16 @@ const TextField = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 3rem;
   background: black;
-  max-width: 60%;
   flex-direction: column;
-  gap: 2vw;
   color: var(--puremint);
-  font-size: 0.7 rem;
-  line-height: 1.8rem;
+  max-width: 60%;
+  padding: 3rem;
+  gap: 2rem;
 
   @media only screen and (max-width: 1000px) {
-    font-size: 0.6rem;
+    max-width: 90%;
     padding: 2rem;
-    max-width: 100%;
-  }
-  @media only screen and (orientation: portrait) and (max-width: 600px) {
-    font-size: 0.5rem;
-    padding: 2rem;
-    max-width: 100%;
   }
 `;
 
@@ -103,21 +107,41 @@ const AllButtons = styled.div`
   display: flex;
   gap: 5vw;
   align-items: center;
+
+  @media only screen and (max-width: 500px) {
+    flex-direction: column;
+    gap: 2vw;
+  }
 `;
 
 const Text = styled.p`
   margin: 0;
   padding: 0;
   text-align: justify;
+  -webkit-hyphens: auto;
+  font-size: 1rem;
+  line-height: 1.5rem;
+
+  @media only screen and (max-width: 800px) {
+    font-size: 2vh;
+    line-height: 3vh;
+  }
+
+  @media only screen and (max-width: 600px) {
+    font-size: 1.6vh;
+    line-height: 3vh;
+  }
 `;
 
 const HeadLine = styled.h2`
-  color: var(--purepink);
+  color: var(--puresky);
   font-size: 1.4rem;
   font-weight: 400;
   text-transform: uppercase;
   margin: 0;
   padding: 0;
+  line-height: 2rem;
+  text-align: center;
 `;
 
 const BackButtonCntn = styled.div`
@@ -171,6 +195,14 @@ const Illu4 = styled.div`
 const Illu5 = styled.div`
   ${props =>
     props.illu !== 'illu-5' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu6 = styled.div`
+  ${props =>
+    props.illu !== 'illu-6' &&
     css`
       display: none;
     `}

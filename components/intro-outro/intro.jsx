@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { Starry } from '../starry';
 import { MyButton } from '../anybutton';
 import Link from 'next/link';
+import { MobileAlertIntro } from '../mobile-warn-intro';
 
 export function Intro() {
   return (
@@ -11,7 +12,7 @@ export function Intro() {
         <Headline>lush:3000</Headline>
         <Link href="/how-to-play">
           <a>
-            <MyButton text="play first time" color="puremint" />
+            <MyButton text="play 1st time" color="puremint" />
           </a>
         </Link>
         <Link href="/levels/levelone">
@@ -21,9 +22,12 @@ export function Intro() {
         </Link>
         <Link href="/about">
           <a>
-            <MyButton text="about" color="puremint" />
+            <MyButton text="about / contribute" color="puremint" />
           </a>
         </Link>
+        <MobileHello>
+          <MobileAlertIntro />
+        </MobileHello>
       </MyMain>
     </>
   );
@@ -43,4 +47,10 @@ const MyMain = styled.div`
 const Headline = styled.div`
   color: white;
   font-size: 3rem;
+`;
+
+const MobileHello = styled.div`
+  @media only screen and (min-width: 500px) {
+    display: none;
+  }
 `;

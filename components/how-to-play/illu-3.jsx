@@ -46,6 +46,7 @@ export function IlluThree() {
         <Key onClick={ufoIn}>in</Key>
         <Key onClick={ufoTurn}>turn</Key>
       </Keyboard>
+
       <VisualHowTo>
         <Planet2 testFocus={testFocus}>
           <Image src={planet2} alt="planet" />2

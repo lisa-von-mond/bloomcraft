@@ -2,8 +2,7 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import ufo from '../../public/images/future_ufo.svg';
 import greenslayer from '../../public/images/charge.svg';
-import planetoverlay from '../../public/images/overlay150.svg';
-import planet3 from '../../public/images/planets/planet3.svg';
+import planet3 from '../../public/images/planets/planet3_overlay.svg';
 
 export function IlluOne() {
   return (
@@ -11,12 +10,9 @@ export function IlluOne() {
       <VisualExample>
         <Planet>
           <Image src={planet3} alt="planet" />
-          <PlanetOverlay>
-            <Image src={planetoverlay} />
-          </PlanetOverlay>
           <Ufo>
             <UfoWobble>
-              <Image src={ufo} />
+              <Image src={ufo} alt="ufo" />
             </UfoWobble>
           </Ufo>
         </Planet>
@@ -25,21 +21,15 @@ export function IlluOne() {
       <VisualExample>
         <Planet>
           <Image src={planet3} alt="planet" />
-          <PlanetOverlay>
-            <Image src={planetoverlay} />
-            <Greens>
-              <Image src={greenslayer} />
-            </Greens>
-          </PlanetOverlay>
+          <Greens>
+            <Image src={greenslayer} alt="" />
+          </Greens>
         </Planet>
         planet with charge
       </VisualExample>
       <VisualExample>
         <Planet type="goal">
           <Image src={planet3} alt="planet" />
-          <PlanetOverlay>
-            <Image src={planetoverlay} />
-          </PlanetOverlay>
         </Planet>
         destination planet
       </VisualExample>
@@ -68,6 +58,7 @@ const Planet = styled.div`
   position: relative;
   width: 70px;
   height: 70px;
+  margin-bottom: 1rem;
 
   ${props =>
     props.type === 'goal' &&
@@ -102,12 +93,3 @@ const Greens = styled.div`
 
   animation: greens 6s linear infinite;
 `;
-const PlanetOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-//
