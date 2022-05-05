@@ -6,6 +6,7 @@ import { IlluOne } from './illu-1';
 import { IlluTwo } from './illu-2';
 import { IlluFour } from './illu-4';
 import { IlluFive } from './illu-5';
+import { IlluSix } from './illu-6';
 
 export function HowToPlay() {
   const [indexHowTo, setIndexHowTo] = useState(0);
@@ -41,6 +42,9 @@ export function HowToPlay() {
         <Illu5 illu={textHowTo[indexHowTo].illu}>
           <IlluFive />
         </Illu5>
+        <Illu6 illu={textHowTo[indexHowTo].illu}>
+          <IlluSix />
+        </Illu6>
 
         <AllButtons>
           <BackButtonCntn indexHowTo={indexHowTo}>
@@ -106,6 +110,7 @@ const AllButtons = styled.div`
 
   @media only screen and (max-width: 500px) {
     flex-direction: column;
+    gap: 2vw;
   }
 `;
 
@@ -113,14 +118,18 @@ const Text = styled.p`
   margin: 0;
   padding: 0;
   text-align: justify;
-
   -webkit-hyphens: auto;
+  font-size: 1rem;
+  line-height: 1.5rem;
 
-  font-size: 2vh;
-  line-height: 3vh;
+  @media only screen and (max-width: 800px) {
+    font-size: 2vh;
+    line-height: 3vh;
+  }
 
   @media only screen and (max-width: 600px) {
     font-size: 1.6vh;
+    line-height: 3vh;
   }
 `;
 
@@ -186,6 +195,14 @@ const Illu4 = styled.div`
 const Illu5 = styled.div`
   ${props =>
     props.illu !== 'illu-5' &&
+    css`
+      display: none;
+    `}
+`;
+
+const Illu6 = styled.div`
+  ${props =>
+    props.illu !== 'illu-6' &&
     css`
       display: none;
     `}

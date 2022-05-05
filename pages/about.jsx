@@ -2,7 +2,7 @@ import { SimpleButton } from '../components/anybutton';
 import styled, { css } from 'styled-components';
 import Link from 'next/link';
 import { Starry } from '../components/starry';
-import { AboutThisGame } from '../components/how-to-play/about-this-game';
+import { AboutThisGame } from '../components/intro-outro/about-this-game';
 
 export default function About() {
   return (

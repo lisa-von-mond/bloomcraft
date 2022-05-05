@@ -2,7 +2,6 @@ import styled, { css } from 'styled-components';
 import Image from 'next/image';
 import ufo from '../../public/images/future_ufo.svg';
 import greenslayer from '../../public/images/charge.svg';
-import planetoverlay from '../../public/images/overlay150.svg';
 import planet3 from '../../public/images/planets/planet3_overlay.svg';
 
 export function IlluOne() {
@@ -11,10 +10,9 @@ export function IlluOne() {
       <VisualExample>
         <Planet>
           <Image src={planet3} alt="planet" />
-
           <Ufo>
             <UfoWobble>
-              <Image src={ufo} />
+              <Image src={ufo} alt="ufo" />
             </UfoWobble>
           </Ufo>
         </Planet>
@@ -23,9 +21,8 @@ export function IlluOne() {
       <VisualExample>
         <Planet>
           <Image src={planet3} alt="planet" />
-
           <Greens>
-            <Image src={greenslayer} />
+            <Image src={greenslayer} alt="" />
           </Greens>
         </Planet>
         planet with charge
@@ -61,6 +58,7 @@ const Planet = styled.div`
   position: relative;
   width: 70px;
   height: 70px;
+  margin-bottom: 1rem;
 
   ${props =>
     props.type === 'goal' &&
@@ -95,5 +93,3 @@ const Greens = styled.div`
 
   animation: greens 6s linear infinite;
 `;
-
-//

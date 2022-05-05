@@ -2,6 +2,7 @@ import styled, { css } from 'styled-components';
 import { Starry } from '../starry';
 import { MyButton } from '../anybutton';
 import Link from 'next/link';
+import { MobileAlertIntro } from '../mobile-warn-intro';
 
 export function Intro() {
   return (
@@ -24,6 +25,9 @@ export function Intro() {
             <MyButton text="about / contribute" color="puremint" />
           </a>
         </Link>
+        <MobileHello>
+          <MobileAlertIntro />
+        </MobileHello>
       </MyMain>
     </>
   );
@@ -43,4 +47,10 @@ const MyMain = styled.div`
 const Headline = styled.div`
   color: white;
   font-size: 3rem;
+`;
+
+const MobileHello = styled.div`
+  @media only screen and (min-width: 500px) {
+    display: none;
+  }
 `;

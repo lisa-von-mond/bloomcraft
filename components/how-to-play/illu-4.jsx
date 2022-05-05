@@ -182,16 +182,9 @@ const Keyboard = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 0.7rem;
   font-weight: 600;
-
-  @media only screen and (orientation: portrait) {
-    flex-wrap: nowrap;
-  }
-  @media only screen and (max-width: 370px) {
-    flex-wrap: wrap;
-  }
 `;
 
 const KeyRow = styled.div`
@@ -220,6 +213,11 @@ const Key = styled.div`
 
   @media only screen and (max-width: 600px) {
     font-size: 11px;
+  }
+
+  @media only screen and (max-width: 300px) {
+    font-size: 10px;
+    padding: 0.3rem;
   }
 
   &:hover {
@@ -346,15 +344,9 @@ const GoKey = styled.div`
 
 const CommandLine = styled.div`
   min-height: 10rem;
-  @media only screen and (max-width: 450px) {
-    min-height: 7rem;
-  }
-  @media only screen and (orientation: portrait) {
-    min-height: 7rem;
-  }
   border-radius: 2rem;
   display: flex;
-  width: 100%;
+  width: 24rem;
   align-items: flex-start;
   justify-content: flex-start;
   align-content: flex-start;
@@ -364,6 +356,14 @@ const CommandLine = styled.div`
   background: black;
   border: 1.5px solid var(--puremint);
   box-shadow: 3px 3px 0 0 var(--puremint);
+
+  @media only screen and (max-width: 500px) {
+    min-height: 7rem;
+    width: 100%;
+  }
+  @media only screen and (orientation: portrait) {
+    min-height: 7rem;
+  }
 `;
 const Command = styled.div`
   display: flex;
@@ -376,11 +376,14 @@ const Command = styled.div`
   border: 2px solid var(--puremint);
   animation: cmd 0.6s;
 
+  @media only screen and (max-width: 500px) {
+    min-width: 2rem;
+  }
+
   ${props =>
     props.cpStatus > 1 &&
     css`
-      border: 2px solid #445232;
-      color: #445232;
+      filter: brightness(50%);
     `}
 `;
 const CommandLineTemp = styled.div`

@@ -44,6 +44,12 @@ export const textHowTo = [
     buttontext: 'got it',
   },
   {
+    headline: 'View',
+    text: 'Use the arrows to change your viewzone easily',
+    illu: 'illu-6',
+    buttontext: 'got it',
+  },
+  {
     headline: 'Survival',
     text: 'You start the game with 3 lives. Every level fail or system crash will make you lose one life. If you have energy left at the end of a level, every unit will be transformed into one additional life.',
     buttontext: 'got it',

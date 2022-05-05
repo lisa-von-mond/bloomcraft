@@ -19,7 +19,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
           </Planet>
 
           <Greens name={one.name} greens={charge} chargeStatus={chargeStatus}>
-            <Image src={greenslayer} />
+            <Image src={greenslayer} alt="" />
           </Greens>
           <LegendId>
             <p>
@@ -29,7 +29,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
           <Ufo active={one.active} chargeStatus={chargeStatus}>
             <UfoInner active={one.active}>
               <UfoWobble>
-                <Image src={ufo} />
+                <Image src={ufo} alt="ufo" />
               </UfoWobble>
             </UfoInner>
           </Ufo>
@@ -51,7 +51,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                   greens={charge}
                   chargeStatus={chargeStatus}
                 >
-                  <Image src={greenslayer} />
+                  <Image src={greenslayer} alt="" />
                 </Greens>
                 <LegendId>
                   <p>
@@ -61,13 +61,13 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                 <Ufo active={two.active} chargeStatus={chargeStatus}>
                   <UfoInner active={two.active}>
                     <UfoWobble>
-                      <Image src={ufo} />
+                      <Image src={ufo} alt="ufo" />
                     </UfoWobble>
                   </UfoInner>
                 </Ufo>
 
                 <PlanetRing ring={two.ring} focus={two.focus}>
-                  <Image src={planetring} />
+                  <Image src={planetring} alt="" />
                 </PlanetRing>
 
                 <div className="scope">
@@ -87,7 +87,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                         greens={charge}
                         chargeStatus={chargeStatus}
                       >
-                        <Image src={greenslayer} />
+                        <Image src={greenslayer} alt="" />
                       </Greens>
                       <LegendId>
                         <p>
@@ -97,13 +97,13 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                       <Ufo active={three.active} chargeStatus={chargeStatus}>
                         <UfoInner active={three.active}>
                           <UfoWobble>
-                            <Image src={ufo} />
+                            <Image src={ufo} alt="ufo" />
                           </UfoWobble>
                         </UfoInner>
                       </Ufo>
 
                       <PlanetRing ring={three.ring} focus={three.focus}>
-                        <Image src={planetring} />
+                        <Image src={planetring} alt="" />
                       </PlanetRing>
 
                       <div className="scope">
@@ -127,7 +127,7 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                               greens={charge}
                               chargeStatus={chargeStatus}
                             >
-                              <Image src={greenslayer} />
+                              <Image src={greenslayer} alt="" />
                             </Greens>
                             <LegendId>
                               <p>
@@ -140,13 +140,13 @@ export function Galaxy({ galaxy, chargeStatus, charge, goal }) {
                             >
                               <UfoInner active={four.active}>
                                 <UfoWobble>
-                                  <Image src={ufo} />
+                                  <Image src={ufo} alt="ufo" />
                                 </UfoWobble>
                               </UfoInner>
                             </Ufo>
 
                             <PlanetRing ring={four.ring} focus={four.focus}>
-                              <Image src={planetring} />
+                              <Image src={planetring} alt="" />
                             </PlanetRing>
                           </MyGalaxy>
                         ))}
